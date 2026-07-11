@@ -15,10 +15,27 @@ Python 3 stdlib uniquement. A relancer a chaque mise a jour du contenu :
 Spec de reference : docs/2026-07-10-wiki-gaia2-spec.md
 """
 
+import base64
 import html
 import re
 import unicodedata
 from pathlib import Path
+
+TYPE_LABELS = {
+    "personnages": "Personnage", "lieux": "Lieu", "factions": "Faction",
+    "affaires": "Affaire", "objets": "Objet", "creatures": "Creature",
+    "concepts": "Concept", "sessions": "Session", "systeme/races": "Race",
+    "systeme/classes": "Classe", "": "Page",
+}
+
+MIME = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
+        ".gif": "image/gif", ".webp": "image/webp"}
+
+# Ordre d'affichage + libelle des attributs de la fiche technique.
+ATTR_ORDER = [
+    ("force", "Force"), ("dexterite", "Dexterite"), ("empathie", "Empathie"),
+    ("sagesse", "Sagesse"), ("intelligence", "Intelligence"),
+]
 
 # [[Nom]] ou [[Nom|texte affiche]]
 WIKILINK = re.compile(r"\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]")
@@ -444,3 +461,212 @@ def collect_links(fiches, resolver, include_private):
             else:
                 dead.append((f["slug"], name))
     return links_out, backlinks, dead
+
+
+# ===========================================================================
+#  Images, infobox, badges, fiche technique
+# ===========================================================================
+
+def embed_img(path):
+    """Data URI d'une image (mime par extension). "" si introuvable."""
+    path = Path(path)
+    if not path.is_file():
+        return ""
+    mime = MIME.get(path.suffix.lower(), "application/octet-stream")
+    data = base64.b64encode(path.read_bytes()).decode("ascii")
+    return "data:%s;base64,%s" % (mime, data)
+
+
+def _int(v):
+    try:
+        return int(str(v).strip())
+    except (TypeError, ValueError):
+        return 0
+
+
+def render_badges(meta):
+    """Badges de statut/etat. "" si confirme et sans etat."""
+    out = []
+    statut = meta.get("statut")
+    if statut == "hypothese":
+        out.append('<span class="st st-hyp">? HYPOTHESE</span>')
+    elif statut == "fragment":
+        out.append('<span class="st st-frag">~ FRAGMENT</span>')
+    etat_labels = {
+        "en-cours": ("st-encours", "EN COURS"),
+        "resolu": ("st-resolu", "RESOLU"),
+        "ferme": ("st-ferme", "FERME"),
+    }
+    etat = meta.get("etat")
+    if etat in etat_labels:
+        cls, lab = etat_labels[etat]
+        out.append('<span class="st %s">%s</span>' % (cls, lab))
+    return "".join(out)
+
+
+def render_infobox(fiche, wiki_root, resolver=None):
+    """Bloc infobox flottant : portrait + lignes cle/valeur. "" si rien a montrer."""
+    meta = fiche["meta"]
+    rows = []  # (label, valeur_html)
+    rows.append(("Type", html.escape(TYPE_LABELS.get(fiche["reldir"], "Page"))))
+    statut = meta.get("statut")
+    if statut and statut != "confirme":
+        rows.append(("Statut", html.escape(str(statut))))
+    if meta.get("etat"):
+        rows.append(("Etat", html.escape(str(meta["etat"]))))
+    if meta.get("decouverte"):
+        rows.append(("Decouverte", inline(str(meta["decouverte"]), resolver)))
+    tags = meta.get("tags")
+    if tags:
+        if isinstance(tags, str):
+            tags = [tags]
+        rows.append(("Tags", html.escape(", ".join(str(t) for t in tags))))
+    box = meta.get("infobox")
+    if isinstance(box, dict):
+        for k, v in box.items():
+            rows.append((html.escape(str(k)), inline(str(v), resolver)))
+
+    portrait = meta.get("portrait")
+    img_html = ""
+    if portrait:
+        uri = embed_img(Path(wiki_root) / portrait)
+        if uri:
+            img_html = '<img src="%s" alt="%s">' % (
+                uri, html.escape(str(fiche.get("title", ""))))
+    if not rows and not img_html:
+        return ""
+    parts = ['<aside class="infobox">', img_html]
+    for label, val in rows:
+        parts.append('<div class="k">%s</div><div class="v">%s</div>' % (label, val))
+    parts.append("</aside>")
+    return "".join(parts)
+
+
+def render_fusion_warning(meta, resolver):
+    """Avertissement anti-fusion (affaires). "" si non present."""
+    names = meta.get("ne-pas-fusionner")
+    if not names:
+        return ""
+    if isinstance(names, str):
+        names = [names]
+    links = ", ".join(inline("[[%s]]" % n, resolver) for n in names)
+    return ('<div class="warn-fusion">Ne pas fusionner avec %s '
+            "sans preuve en seance.</div>") % links
+
+
+def render_fiche_technique(profile, wiki_root):
+    """Rendu de data/zogzork_profile.json (attributs, PV/PF, degats, RD, etc.).
+
+    Les champs bonusRace / abilities / descriptions viennent de l'outil de fiche
+    de Benoit : HTML de confiance insere sans echappement. Les valeurs libres
+    (attributs, notes, competences) sont echappees.
+    """
+    sheet = profile.get("sheet", {})
+    out = ['<div class="fiche-tech">']
+
+    # Identite
+    out.append("<h3>%s</h3>" % html.escape(str(sheet.get("name", ""))))
+    parts = []
+    if sheet.get("level"):
+        parts.append("Niveau %s" % sheet["level"])
+    for key in ("race", "classe", "alignement"):
+        if sheet.get(key):
+            parts.append(str(sheet[key]))
+    if parts:
+        out.append('<p class="tech-ident">%s</p>'
+                   % " &middot; ".join(html.escape(p) for p in parts))
+
+    # Attributs
+    attrs = sheet.get("attributes", {}) or {}
+    bonuses = sheet.get("attributeBonuses", {}) or {}
+    arows = []
+    for key, label in ATTR_ORDER:
+        if key in attrs:
+            val = html.escape(str(attrs[key]))
+            bonus = html.escape(str(bonuses.get(key, "")))
+            cell = "%s (D%s) %s" % (val, val, bonus)
+            arows.append("<tr><td>%s</td><td>%s</td></tr>" % (label, cell.strip()))
+    if arows:
+        out.append('<h4>Attributs</h4><div class="tablewrap"><table><thead><tr>'
+                   "<th>Attribut</th><th>Valeur</th></tr></thead><tbody>%s"
+                   "</tbody></table></div>" % "".join(arows))
+
+    # Vitaux
+    vit = sheet.get("vitals", {}) or {}
+    vparts = []
+    if vit.get("pvMax"):
+        vparts.append("PV %s" % html.escape(str(vit["pvMax"])))
+    if vit.get("pfMax"):
+        vparts.append("PF %s" % html.escape(str(vit["pfMax"])))
+    if vparts:
+        out.append('<p class="tech-vitals">%s</p>' % " &middot; ".join(vparts))
+
+    # Degats
+    dmg = sheet.get("damageEntries", []) or []
+    if dmg:
+        items = []
+        for d in dmg:
+            expr = "%sd%s" % (d.get("diceCount", ""), d.get("diceType", ""))
+            bonus = str(d.get("bonus", "")).strip()
+            if bonus and bonus not in ("0",):
+                expr += "+%s" % bonus
+            label = str(d.get("label", "")).strip()
+            items.append("<li>%s</li>" % html.escape(
+                ("%s %s" % (expr, label)).strip()))
+        out.append("<h4>Degats</h4><ul>%s</ul>" % "".join(items))
+
+    # Reduction de degats
+    rd = sheet.get("rdEntries", []) or []
+    if rd:
+        items, total, base = [], 0, 0
+        for e in rd:
+            v = _int(e.get("value"))
+            total += v
+            cond = bool(e.get("conditional"))
+            if not cond:
+                base += v
+            label = html.escape(str(e.get("label", "")).strip())
+            suffix = " (conditionnel)" if cond else ""
+            items.append("<li>%s : %d%s</li>" % (label, v, suffix))
+        out.append("<h4>Reduction de degats</h4><ul>%s</ul>"
+                   "<p>RD max %d (base %d)</p>" % ("".join(items), total, base))
+
+    # Competences
+    skills = sheet.get("skills", []) or []
+    if skills:
+        srows = ""
+        for s in skills:
+            srows += "<tr><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+                html.escape(str(s.get("name", ""))),
+                html.escape(str(s.get("attr", ""))),
+                html.escape(str(s.get("bonus", ""))))
+        out.append('<h4>Competences</h4><div class="tablewrap"><table><thead><tr>'
+                   "<th>Nom</th><th>Attribut</th><th>Bonus</th></tr></thead>"
+                   "<tbody>%s</tbody></table></div>" % srows)
+
+    # Bonus de race (HTML de confiance)
+    race_bonus = sheet.get("bonusRace", []) or []
+    if race_bonus:
+        out.append("<h4>Bonus de race</h4><ul>%s</ul>"
+                   % "".join("<li>%s</li>" % b for b in race_bonus))
+
+    # Capacites (HTML de confiance)
+    abilities = sheet.get("abilities", []) or []
+    if abilities:
+        out.append("<h4>Capacites</h4><ul>%s</ul>"
+                   % "".join("<li>%s</li>" % a for a in abilities))
+
+    # Descriptions (HTML de confiance, meme outil)
+    desc = sheet.get("descriptions", {}) or {}
+    for label, txt in desc.items():
+        if str(txt).strip():
+            out.append("<h4>%s</h4><p>%s</p>" % (html.escape(str(label)), txt))
+
+    # Notes (texte libre, echappe, pre-wrap)
+    notes = str(sheet.get("notes", "")).strip()
+    if notes:
+        out.append('<h4>Notes</h4><div class="tech-notes">%s</div>'
+                   % html.escape(notes))
+
+    out.append("</div>")
+    return "".join(out)

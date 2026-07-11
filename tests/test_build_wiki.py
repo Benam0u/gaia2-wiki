@@ -1,9 +1,11 @@
-import sys, unittest
+import json, sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
                         load_fiches, build_resolver, collect_links,
-                        extract_private, render_private)
+                        extract_private, render_private,
+                        render_infobox, render_badges, render_fiche_technique,
+                        TYPE_LABELS)
 
 FIX = Path(__file__).resolve().parent / "fixtures" / "mini_wiki"
 
@@ -105,6 +107,27 @@ class TestPrivate(unittest.TestCase):
 
     def test_marqueur_hypothese(self):
         self.assertIn('class="hyp"', md_convert("Elle serait {?: Axxel deguise}."))
+
+class TestInfobox(unittest.TestCase):
+    def test_infobox_map(self):
+        fiches = load_fiches(FIX)
+        simpol = next(f for f in fiches if f["slug"] == "simpol")
+        h = render_infobox(simpol, FIX)
+        self.assertIn("Dirigeant", h); self.assertIn("M. LeMaire", h); self.assertIn("Lieu", h)
+
+    def test_badges(self):
+        self.assertIn("EN COURS", render_badges({"etat": "en-cours"}))
+        self.assertIn("HYPOTHESE", render_badges({"statut": "hypothese"}))
+        self.assertEqual(render_badges({"statut": "confirme"}), "")
+
+class TestFicheTechnique(unittest.TestCase):
+    def test_rendu(self):
+        prof = json.loads((Path(__file__).resolve().parent / "fixtures" / "mini_profile.json").read_text())
+        h = render_fiche_technique(prof, FIX)
+        self.assertIn("ZogZork", h); self.assertIn("12 (D12) +4", h)
+        self.assertIn("RD max 32 (base 18)", h)
+        self.assertIn("<strong>Paume de Boudh'Orc", h)   # HTML passe tel quel
+        self.assertIn("Bagarre", h)
 
 if __name__ == "__main__":
     unittest.main()
