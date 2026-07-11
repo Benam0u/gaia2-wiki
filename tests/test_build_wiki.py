@@ -2,7 +2,8 @@ import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
-                        load_fiches, build_resolver, collect_links)
+                        load_fiches, build_resolver, collect_links,
+                        extract_private, render_private)
 
 FIX = Path(__file__).resolve().parent / "fixtures" / "mini_wiki"
 
@@ -84,6 +85,26 @@ class TestLinks(unittest.TestCase):
         h = md_convert("Voir [[Neros|le mage]] et [[Inconnu]].", resolver=self.resolver)
         self.assertIn('href="#neros">le mage</a>', h)
         self.assertIn('class="deadlink"', h)
+
+class TestPrivate(unittest.TestCase):
+    def test_inline_et_multiligne(self):
+        body, blocks, bad = extract_private("A %%secret%% B\n\n%%multi\nlignes%%")
+        self.assertFalse(bad); self.assertEqual(len(blocks), 2)
+        self.assertNotIn("secret", body)
+        h = render_private(md_convert(body), blocks, share=False)
+        self.assertIn('<span class="prive">', h); self.assertIn('<div class="prive">', h)
+
+    def test_partage_supprime(self):
+        body, blocks, _ = extract_private("A %%secret%% B")
+        h = render_private(md_convert(body), blocks, share=True)
+        self.assertNotIn("secret", h); self.assertIn("A", h)
+
+    def test_non_ferme(self):
+        body, blocks, bad = extract_private("A %%oubli")
+        self.assertTrue(bad); self.assertEqual(body, "A %%oubli")
+
+    def test_marqueur_hypothese(self):
+        self.assertIn('class="hyp"', md_convert("Elle serait {?: Axxel deguise}."))
 
 if __name__ == "__main__":
     unittest.main()

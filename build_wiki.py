@@ -131,6 +131,11 @@ def inline(text, resolver=None, ctx=None):
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
     text = re.sub(r"(?<!\*)\*([^*\s][^*]*?)\*(?!\*)", r"<em>\1</em>", text)
     text = re.sub(r"(?<![\w\\])_([^_]+)_(?![\w])", r"<em>\1</em>", text)
+    text = re.sub(
+        r"\{\?:\s*([^}]+)\}",
+        r'<span class="hyp"><span class="hyp-b">?</span> \1</span>',
+        text,
+    )
 
     def unstash(m):
         return "<code>%s</code>" % html.escape(codes[int(m.group(1))], quote=False)
@@ -375,6 +380,43 @@ def build_resolver(fiches):
         for ignored in ordered[1:]:
             conflicts.append((nk, ordered[0], ignored))
     return resolver, conflicts
+
+
+def extract_private(body):
+    """Remplace chaque bloc %%...%% par un token \\x02PRIVn\\x03.
+
+    Retourne (body_tokenise, blocs, unbalanced). Si nombre de %% impair :
+    (body inchange, [], True).
+    """
+    if body.count("%%") % 2 != 0:
+        return body, [], True
+    blocks = []
+
+    def repl(m):
+        blocks.append(m.group(1))
+        return "\x02PRIV%d\x03" % (len(blocks) - 1)
+
+    return PRIVATE_RE.sub(repl, body), blocks, False
+
+
+def render_private(html_text, blocks, share, resolver=None, ctx=None):
+    """Substitue les tokens PRIVn dans le HTML deja converti.
+
+    share=True : les blocs disparaissent. Sinon : bloc sans saut de ligne ->
+    span.prive (inline) ; bloc avec saut de ligne -> div.prive (md_convert).
+    """
+    def repl(m):
+        idx = int(m.group(1))
+        if idx >= len(blocks):
+            return ""
+        block = blocks[idx]
+        if share:
+            return ""
+        if "\n" in block:
+            return '<div class="prive">%s</div>' % md_convert(block, resolver, ctx)
+        return '<span class="prive">%s</span>' % inline(block, resolver, ctx)
+
+    return re.sub(r"\x02PRIV(\d+)\x03", repl, html_text)
 
 
 def collect_links(fiches, resolver, include_private):
