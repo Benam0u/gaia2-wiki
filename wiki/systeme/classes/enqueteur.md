@@ -1,7 +1,7 @@
 ---
 resume: Investigateur charismatique et combattant agile, l'enquêteur résout les mystères et sait se défendre avec élégance
 tags: [classe]
-portrait: img/classes/enqueteur.png
+portrait: img/classes/enqueteur.jpg
 ---
 
 # Enquêteur

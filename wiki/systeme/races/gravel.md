@@ -1,7 +1,7 @@
 ---
 resume: Les Gravels vivent en caravanes lentes qui parcourent les routes commerciales les plus dangereuses, là où nul autre peuple n'ose s'installer durablement
 tags: [race]
-portrait: img/races/gravel.png
+portrait: img/races/gravel.jpg
 ---
 
 # Gravel

@@ -1,7 +1,7 @@
 ---
 resume: Combattant discipliné et vigilant, le garde excelle dans la protection et le combat à distance
 tags: [classe]
-portrait: img/classes/garde.png
+portrait: img/classes/garde.jpg
 ---
 
 # Garde

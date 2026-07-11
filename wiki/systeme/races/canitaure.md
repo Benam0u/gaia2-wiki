@@ -1,7 +1,7 @@
 ---
 resume: Probablement les invités les plus rares à un banquet
 tags: [race]
-portrait: img/races/canitaure.png
+portrait: img/races/canitaure.jpg
 ---
 
 # Canitaure

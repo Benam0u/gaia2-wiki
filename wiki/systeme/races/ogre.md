@@ -1,7 +1,7 @@
 ---
 resume: Un ogre, c'est moche
 tags: [race]
-portrait: img/races/ogre.png
+portrait: img/races/ogre.jpg
 ---
 
 # Ogre

@@ -1,7 +1,7 @@
 ---
 resume: Ingénieur et cavalier, le convoyeur combine expertise technique et maîtrise équestre pour des missions de transport et de combat
 tags: [classe]
-portrait: img/classes/convoyeur.png
+portrait: img/classes/convoyeur.jpg
 ---
 
 # Convoyeur

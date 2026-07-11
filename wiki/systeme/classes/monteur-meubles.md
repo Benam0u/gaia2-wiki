@@ -1,7 +1,7 @@
 ---
 resume: Artisan robuste et polyvalent, le monteur de meubles excelle dans le bricolage et sait transformer n'importe quoi en arme redoutable
 tags: [classe]
-portrait: img/classes/monteur-meubles.png
+portrait: img/classes/monteur-meubles.jpg
 ---
 
 # Monteur de Meubles

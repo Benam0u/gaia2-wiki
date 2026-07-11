@@ -1,7 +1,7 @@
 ---
 resume: Serviteur dévoué d'une entité (maire, dieu, entité métaphysique...), l'ami du maire canalise des pouvoirs de soin et de destruction
 tags: [classe]
-portrait: img/classes/ami-maire.png
+portrait: img/classes/ami-maire.jpg
 ---
 
 # Ami du Maire

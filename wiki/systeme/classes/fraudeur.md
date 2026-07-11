@@ -1,7 +1,7 @@
 ---
 resume: Rôdeur des bas-fonds et expert en survie, le fraudeur connaît tous les chemins secrets et les contacts douteux
 tags: [classe]
-portrait: img/classes/fraudeur.png
+portrait: img/classes/fraudeur.jpg
 ---
 
 # Fraudeur

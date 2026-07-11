@@ -1,7 +1,7 @@
 ---
 resume: Spécialiste de l'antimagie et de l'anatomie, le croque-mort est à la fois un expert en neutralisation magique et un connaisseur des corps
 tags: [classe]
-portrait: img/classes/croque-mort.png
+portrait: img/classes/croque-mort.jpg
 ---
 
 # Croque-Mort

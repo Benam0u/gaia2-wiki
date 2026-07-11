@@ -1,7 +1,7 @@
 ---
 resume: Combattant à mains nues redoutable et maître de l'hospitalité, le tavernier sait autant servir une bière que distribuer des coups
 tags: [classe]
-portrait: img/classes/tavernier.png
+portrait: img/classes/tavernier.jpg
 ---
 
 # Tavernier

@@ -1,7 +1,7 @@
 ---
 resume: Peau gris clair, cheveux comme de la fumée, voix sifflante
 tags: [race]
-portrait: img/races/sylphide-cendre.png
+portrait: img/races/sylphide-cendre.jpg
 ---
 
 # Sylphide Cendré

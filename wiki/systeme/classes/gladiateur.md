@@ -1,7 +1,7 @@
 ---
 resume: Combattant spectaculaire et artiste de l'arène, le gladiateur allie prouesses martiales et charisme
 tags: [classe]
-portrait: img/classes/gladiateur.png
+portrait: img/classes/gladiateur.jpg
 ---
 
 # Gladiateur

@@ -1,6 +1,7 @@
 ---
 resume: Fleur liee aux baies de loyaute, etudiee par Neros ; nature du lien inconnue
 tags: [magie]
+alias: [La fleur des baies]
 decouverte: Vol des recherches
 ---
 

@@ -1,7 +1,7 @@
 ---
 resume: Race souterraine, ils protègent jalousement le lieu de leurs bastions
 tags: [race]
-portrait: img/races/corion.png
+portrait: img/races/corion.jpg
 ---
 
 # Corion

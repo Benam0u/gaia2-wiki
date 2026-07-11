@@ -1,7 +1,7 @@
 ---
 resume: Manipulateur charismatique aux méthodes parfois brutales, le yandere excelle en social comme au combat
 tags: [classe]
-portrait: img/classes/yandere.png
+portrait: img/classes/yandere.jpg
 ---
 
 # Yandere

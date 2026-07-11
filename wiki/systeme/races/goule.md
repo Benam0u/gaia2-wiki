@@ -1,7 +1,7 @@
 ---
 resume: D'apparence repoussante (tête rappelant des êtres troglodytes, sabots, etc.), les goules ont trouvé jadis un moyen de passer inaperçu… la métamorphose !
 tags: [race]
-portrait: img/races/goule.png
+portrait: img/races/goule.jpg
 ---
 
 # Goule

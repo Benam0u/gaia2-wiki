@@ -1,7 +1,7 @@
 ---
 resume: Les elfes du vent sont les seuls elfes rescapés de la colère d'Axell
 tags: [race]
-portrait: img/races/elfe-vent.png
+portrait: img/races/elfe-vent.jpg
 ---
 
 # Elfe du Vent

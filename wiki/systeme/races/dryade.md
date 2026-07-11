@@ -1,7 +1,7 @@
 ---
 resume: Nées des arbres, les dryades apprécient les arts et le calme
 tags: [race]
-portrait: img/races/dryade.png
+portrait: img/races/dryade.jpg
 ---
 
 # Dryade

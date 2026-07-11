@@ -1,7 +1,7 @@
 ---
 resume: Souvent plus athlétiques et coriaces, les orcs vivent dans une société clanique patriarcale
 tags: [race]
-portrait: img/races/orc.png
+portrait: img/races/orc.jpg
 ---
 
 # Orc

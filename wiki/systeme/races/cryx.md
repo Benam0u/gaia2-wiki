@@ -1,7 +1,7 @@
 ---
 resume: Espèce la moins courante, en trouver un est toujours un événement majeur
 tags: [race]
-portrait: img/races/cryx.png
+portrait: img/races/cryx.jpg
 ---
 
 # Cryx

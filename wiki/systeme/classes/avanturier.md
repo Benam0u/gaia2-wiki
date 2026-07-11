@@ -1,7 +1,7 @@
 ---
 resume: Combattant polyvalent et tacticien, l'aventurier sait s'adapter à toutes les situations et protéger ses alliés
 tags: [classe]
-portrait: img/classes/aventurier.png
+portrait: img/classes/aventurier.jpg
 ---
 
 # Aventurier

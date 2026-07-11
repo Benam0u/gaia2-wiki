@@ -1,7 +1,7 @@
 ---
 resume: Les Ananostégits vivent légèrement décalés par rapport au monde qui les entoure : ils perçoivent le temps comme un flux élastique et agissent parfois « avant » ou « après » les événements
 tags: [race]
-portrait: img/races/ananostegit.png
+portrait: img/races/ananostegit.jpg
 ---
 
 # Ananostégit

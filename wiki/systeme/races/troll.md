@@ -1,7 +1,7 @@
 ---
 resume: Les Trolls vivent dans de gigantesques ruches creusées dans le sol, d'argile et de boue
 tags: [race]
-portrait: img/races/troll.png
+portrait: img/races/troll.jpg
 ---
 
 # Troll

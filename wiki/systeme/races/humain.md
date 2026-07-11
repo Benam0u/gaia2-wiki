@@ -1,7 +1,7 @@
 ---
 resume: Espèce « dominante », réputée pour son adaptabilité et son sens des affaires
 tags: [race]
-portrait: img/races/humain.png
+portrait: img/races/humain.jpg
 ---
 
 # Humain

@@ -1,7 +1,7 @@
 ---
 resume: Scientifique et guérisseur, le laborantin maîtrise l'art des soins et possède une résistance naturelle à la magie
 tags: [classe]
-portrait: img/classes/laborantin.png
+portrait: img/classes/laborantin.jpg
 ---
 
 # Laborantin

@@ -1,7 +1,7 @@
 ---
 resume: Expert en infiltration urbaine et en analyse, l'inspecteur des impôts sait se fondre dans la masse et débusquer les secrets les mieux gardés
 tags: [classe]
-portrait: img/classes/inspecteur-impots.png
+portrait: img/classes/inspecteur-impots.jpg
 ---
 
 # Inspecteur des Impôts

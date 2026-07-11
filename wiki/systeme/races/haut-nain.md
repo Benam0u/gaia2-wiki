@@ -1,7 +1,7 @@
 ---
 resume: La légende raconte que les nains étaient à l'époque faits de chair et de sang comme toutes autres races
 tags: [race]
-portrait: img/races/haut-nain.png
+portrait: img/races/haut-nain.jpg
 ---
 
 # Haut-Nain

@@ -5,6 +5,12 @@ Source de verite : `const characterData = {...}` dans le createur de fiche
 (JDR/index.html, ~ligne 3780). Ce script est REJOUABLE : il regenere les
 fiches races/classes/competences/avantages et reimporte les images.
 
+ATTENTION : rejouer ce script ECRASE les fiches wiki/systeme/ (y compris les
+editions manuelles faites apres l'import initial du 2026-07-11, ex. les alias
+ajoutes sur mits.md). Ne le relancer que si le createur de fiche change, et
+re-appliquer les editions wiki ensuite (git diff est ton ami).
+Les images sont toutes converties en JPEG (fond #0E0F11 sous la transparence).
+
 Sorties :
   wiki/systeme/races/<id>.md      (20 fiches)
   wiki/systeme/classes/<id>.md    (13 fiches)
@@ -128,7 +134,7 @@ def write_fiche(path, lines):
 def gen_races(races):
     for race in races:
         rid = race["id"]
-        ext = "jpg" if rid == "centaure" else "png"
+        ext = "jpg"
         desc = sanitize(race["description"])
         lines = [
             "---",
@@ -153,7 +159,7 @@ def gen_races(races):
 def gen_classes(classes):
     for cls in classes:
         cid = cls["id"]
-        img_name = IMG_RENAME.get(cid + ".png", cid + ".png")
+        img_name = IMG_RENAME.get(cid + ".png", cid + ".png").rsplit(".", 1)[0] + ".jpg"
         desc = sanitize(cls["description"])
         lines = [
             "---",
@@ -238,7 +244,7 @@ def import_images():
         for name in sorted(os.listdir(src_dir)):
             if not name.lower().endswith((".png", ".jpg", ".jpeg")):
                 continue
-            dst_name = IMG_RENAME.get(name, name)
+            dst_name = IMG_RENAME.get(name, name).rsplit(".", 1)[0] + ".jpg"
             src = os.path.join(src_dir, name)
             dst = os.path.join(dst_dir, dst_name)
             if have_pil:
@@ -246,11 +252,14 @@ def import_images():
                 if img.width > MAX_WIDTH:
                     h = round(img.height * MAX_WIDTH / img.width)
                     img = img.resize((MAX_WIDTH, h), Image.LANCZOS)
-                if dst.lower().endswith((".jpg", ".jpeg")):
-                    img = img.convert("RGB")
-                    img.save(dst, quality=88)
+                if img.mode in ("RGBA", "LA", "P"):
+                    img = img.convert("RGBA")
+                    bg = Image.new("RGB", img.size, (14, 15, 17))
+                    bg.paste(img, mask=img.split()[-1])
+                    img = bg
                 else:
-                    img.save(dst)
+                    img = img.convert("RGB")
+                img.save(dst, "JPEG", quality=82, optimize=True)
             else:
                 shutil.copy2(src, dst)
             count += 1

@@ -1,7 +1,7 @@
 ---
 resume: Les Vermelunes organisent toute leur société autour de cycles internes invisibles qu'eux seuls perçoivent : périodes de force, de retrait, de lucidité ou de rêve
 tags: [race]
-portrait: img/races/vermelune.png
+portrait: img/races/vermelune.jpg
 ---
 
 # Vermelune

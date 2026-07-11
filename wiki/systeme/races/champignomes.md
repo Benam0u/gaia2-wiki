@@ -1,7 +1,7 @@
 ---
 resume: Peuple de petite taille, les champignomes sont des charognards qui ne mangent que ce qu'ils trouvent par terre
 tags: [race]
-portrait: img/races/champignomes.png
+portrait: img/races/champignomes.jpg
 ---
 
 # Champignome

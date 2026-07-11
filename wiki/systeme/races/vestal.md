@@ -1,7 +1,7 @@
 ---
 resume: Les vestals vivent dans les cieux, sur des rochers escarpés à l'écart des autres populations
 tags: [race]
-portrait: img/races/vestal.png
+portrait: img/races/vestal.jpg
 ---
 
 # Vestal

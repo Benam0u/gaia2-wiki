@@ -1,7 +1,7 @@
 ---
 resume: Doués dans des sphères spécifiques dès la naissance, les lustriens se sont organisés comme des fourmis, se répartissant les rôles telles des ouvrières pour être plus efficaces
 tags: [race]
-portrait: img/races/lustrien.png
+portrait: img/races/lustrien.jpg
 ---
 
 # Lustrien

@@ -1,7 +1,7 @@
 ---
 resume: Souverain de l'Empire PaxAlpha, allié revendiqué d'Axxel pendant la guerre
 tags: [empire]
-alias: [l'Empereur]
+alias: [l'Empereur, L'Empereur de PaxAlpha]
 infobox:
   Rôle: Souverain de l'Empire PaxAlpha
   Épouse: Axelle
