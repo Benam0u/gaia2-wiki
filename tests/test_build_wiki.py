@@ -88,6 +88,16 @@ class TestLinks(unittest.TestCase):
         self.assertIn('href="#neros">le mage</a>', h)
         self.assertIn('class="deadlink"', h)
 
+    def test_titre_bat_alias(self):
+        # Un titre H1 exact l'emporte sur l'alias d'une autre fiche (spec §6).
+        fiches = [
+            {"slug": "autre", "title": "Autre", "meta": {"alias": ["Axelle"]}},
+            {"slug": "axelle", "title": "Axelle", "meta": {}},
+        ]
+        resolver, conflicts = build_resolver(fiches)
+        self.assertEqual(resolver[norm_key("Axelle")], "axelle")
+        self.assertIn((norm_key("Axelle"), "axelle", "autre"), conflicts)
+
 class TestPrivate(unittest.TestCase):
     def test_inline_et_multiligne(self):
         body, blocks, bad = extract_private("A %%secret%% B\n\n%%multi\nlignes%%")

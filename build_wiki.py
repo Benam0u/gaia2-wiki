@@ -411,27 +411,44 @@ def load_fiches(root):
     return fiches
 
 
-def build_resolver(fiches):
-    """Map norm_key(titre|alias) -> slug ; premier gagnant par ordre de slug.
-
-    Retourne (resolver, conflicts) ou conflicts = [(cle, slug_garde, slug_ignore)].
-    """
+def _claims(fiches, key_fn):
+    """{norm_key -> [slugs]} pour les cles produites par key_fn(fiche)."""
     claims = {}
     for f in fiches:
-        keys = [f["title"]]
-        alias = f["meta"].get("alias") or []
-        if isinstance(alias, str):
-            alias = [alias]
-        keys += alias
-        for k in keys:
+        for k in key_fn(f):
             nk = norm_key(k)
             if not nk:
                 continue
             claims.setdefault(nk, [])
             if f["slug"] not in claims[nk]:
                 claims[nk].append(f["slug"])
+    return claims
+
+
+def _aliases(f):
+    alias = f["meta"].get("alias") or []
+    return [alias] if isinstance(alias, str) else alias
+
+
+def build_resolver(fiches):
+    """Map norm_key(titre|alias) -> slug. Precedence : titre H1 avant alias (spec §6).
+
+    Deux passes : d'abord les titres, puis les alias uniquement sur les cles
+    encore libres. Un alias qui heurte un titre = conflit signale, titre garde.
+    Retourne (resolver, conflicts) ou conflicts = [(cle, slug_garde, slug_ignore)].
+    """
     resolver, conflicts = {}, []
-    for nk, slugs in claims.items():
+    for nk, slugs in _claims(fiches, lambda f: [f["title"]]).items():
+        ordered = sorted(slugs)
+        resolver[nk] = ordered[0]
+        for ignored in ordered[1:]:
+            conflicts.append((nk, ordered[0], ignored))
+    for nk, slugs in _claims(fiches, _aliases).items():
+        if nk in resolver:
+            for ignored in sorted(slugs):
+                if ignored != resolver[nk]:
+                    conflicts.append((nk, resolver[nk], ignored))
+            continue
         ordered = sorted(slugs)
         resolver[nk] = ordered[0]
         for ignored in ordered[1:]:
