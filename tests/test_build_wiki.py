@@ -202,5 +202,44 @@ class TestIntegration(unittest.TestCase):
             self.assertIn("RD max 32", html)
             self.assertLess(dt, 2.0)
 
+class TestUnderscore(unittest.TestCase):
+    def test_fichiers_underscore_ignores(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "w"
+            shutil.copytree(FIX, d)
+            (d / "sessions" / "_template.md").write_text(
+                "---\nresume: gabarit\n---\n\n# Template\n", encoding="utf-8")
+            slugs = {f["slug"] for f in load_fiches(d)}
+            self.assertNotIn("_template", slugs)
+            self.assertIn("session-21", slugs)
+
+
+class TestImages(unittest.TestCase):
+    PNG_1PX = ("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk"
+               "+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==")
+
+    def test_registre_dedup(self):
+        import base64
+        import build_wiki as bw
+        bw.IMG_REGISTRY.clear()
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            (root / "img").mkdir()
+            (root / "img" / "x.png").write_bytes(base64.b64decode(self.PNG_1PX))
+            t1 = bw.img_ref(root, "img/x.png", alt="a")
+            t2 = bw.img_ref(root, "img/x.png", alt="b")
+            self.assertIn('data-img="img/x.png"', t1)
+            self.assertNotIn("base64", t1 + t2)        # pas de data URI inline
+            self.assertEqual(len(bw.IMG_REGISTRY), 1)  # une seule copie embarquee
+            self.assertEqual(bw.img_ref(root, "img/absente.png"), "")
+
+    def test_imgdata_injecte(self):
+        fiches = load_fiches(FIX)
+        resolver, conflicts = build_resolver(fiches)
+        out, _ = build_html(fiches, resolver, conflicts, FIX, share=False, profile=None)
+        self.assertIn("var IMGS=", out)
+        self.assertNotIn("__IMGDATA__", out)
+
+
 if __name__ == "__main__":
     unittest.main()

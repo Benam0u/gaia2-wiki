@@ -373,6 +373,8 @@ def load_fiches(root):
     root = Path(root)
     fiches = []
     for path in sorted(root.rglob("*.md")):
+        if path.name.startswith("_"):
+            continue  # gabarits (_template.md) : jamais rendus
         rel = path.relative_to(root)
         reldir = rel.parent.as_posix()
         if reldir == ".":
@@ -500,6 +502,22 @@ def embed_img(path):
     return "data:%s;base64,%s" % (mime, data)
 
 
+# Registre des images du build en cours : chaque image n'est embarquee qu'UNE
+# fois (dans __IMGDATA__) ; les <img class="pimg"> sont hydratees par JS.
+IMG_REGISTRY = {}
+
+
+def img_ref(wiki_root, relpath, alt=""):
+    """Enregistre l'image et retourne un <img> hydrate au chargement. "" si introuvable."""
+    uri = embed_img(Path(wiki_root) / relpath)
+    if not uri:
+        return ""
+    key = str(relpath)
+    IMG_REGISTRY[key] = uri
+    return '<img class="pimg" data-img="%s" alt="%s">' % (
+        html.escape(key), html.escape(alt))
+
+
 def _int(v):
     try:
         return int(str(v).strip())
@@ -552,10 +570,7 @@ def render_infobox(fiche, wiki_root, resolver=None, ctx=None):
     portrait = meta.get("portrait")
     img_html = ""
     if portrait:
-        uri = embed_img(Path(wiki_root) / portrait)
-        if uri:
-            img_html = '<img src="%s" alt="%s">' % (
-                uri, html.escape(str(fiche.get("title", ""))))
+        img_html = img_ref(wiki_root, portrait, alt=str(fiche.get("title", "")))
     if not rows and not img_html:
         return ""
     parts = ['<aside class="infobox">', img_html]
@@ -857,10 +872,9 @@ def render_systeme(entity_fiches, wiki_root):
     def grid(items):
         cells = []
         for f in items:
-            uri = ""
+            img = ""
             if f["meta"].get("portrait"):
-                uri = embed_img(Path(wiki_root) / f["meta"]["portrait"])
-            img = "<img src='%s' alt=''>" % uri if uri else ""
+                img = img_ref(wiki_root, f["meta"]["portrait"])
             cells.append('<a href="#%s">%s%s</a>' % (
                 f["slug"], img, html.escape(f["title"])))
         return '<div class="portrait-grid">%s</div>' % "".join(cells)
@@ -1091,6 +1105,9 @@ document.addEventListener('keydown',function(e){
   else if(e.key==='Enter'){var t=items[sel]||items[0];if(t){location.hash=t.getAttribute('href');closeSearch();}}
 });
 function mark(items){items.forEach(function(a,i){a.classList.toggle('sel',i===sel);});}
+var IMGS=__IMGDATA__;
+document.querySelectorAll('img.pimg').forEach(function(el){
+  var u=IMGS[el.dataset.img];if(u)el.src=u;else el.style.display='none';});
 route();
 </script>
 </body>
@@ -1106,6 +1123,7 @@ def _nav_button(slug, label):
 def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
     """Assemble le HTML complet + un rapport partiel. Voir docstring du module."""
     wiki_root = Path(wiki_root)
+    IMG_REGISTRY.clear()
     report = {"counts": {}, "dead": [], "conflicts": list(conflicts), "orphans": [],
               "unbalanced": [], "missing_images": [], "n_fiches": 0}
 
@@ -1152,7 +1170,8 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
            .replace("__TITLE__", title)
            .replace("__TIMESTAMP__", stamp)
            .replace("__NAV__", "\n    ".join(nav))
-           .replace("__SECTIONS__", "\n".join(sections)))
+           .replace("__SECTIONS__", "\n".join(sections))
+           .replace("__IMGDATA__", json.dumps(IMG_REGISTRY, separators=(",", ":"))))
     return out, report
 
 
