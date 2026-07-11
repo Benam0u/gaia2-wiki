@@ -1,0 +1,144 @@
+{
+  "version": "1.0",
+  "savedAt": "2026-07-10T13:29:01.785Z",
+  "sheet": {
+    "name": "ZogZork",
+    "level": "3",
+    "race": "Orc",
+    "classe": "Enquêteur",
+    "alignement": "Chaotique Bon",
+    "attributes": {
+      "force": "12",
+      "dex": "12",
+      "emp": "12",
+      "sag": "12",
+      "int": "8"
+    },
+    "attributeBonuses": {
+      "force": "+4",
+      "dex": "+2",
+      "emp": "+0",
+      "sag": "+0",
+      "int": "+0"
+    },
+    "vitals": {
+      "pvMax": "61",
+      "pvTemp": "",
+      "pvCurrent": "",
+      "pfMax": "59",
+      "pfCurrent": ""
+    },
+    "bonusRace": [
+      "<strong>Berz'Orc</strong> : ignore 1 blessure en combat",
+      "<strong>Aware</strong> : l'orc commence avec +1 dans les compétences Perception et Discrétion",
+      "<strong>« Shot Magus First »</strong> : les Orcs se méfient de la magie et n'aiment pas les mages. Lui lancer un sort, même gentil, c'est prendre l'aggro"
+    ],
+    "skills": [
+      {
+        "name": "Acrobatie",
+        "attr": "DEX",
+        "bonus": "+1"
+      },
+      {
+        "name": "Bagarre",
+        "attr": "DEX",
+        "bonus": "+5"
+      },
+      {
+        "name": "Discrétion",
+        "attr": "DEX",
+        "bonus": "+1"
+      },
+      {
+        "name": "Esquive",
+        "attr": "DEX",
+        "bonus": "+5"
+      },
+      {
+        "name": "Perception ☑☑☑☐",
+        "attr": "EMP",
+        "bonus": "+1"
+      },
+      {
+        "name": "Résistance",
+        "attr": "FOR",
+        "bonus": "+1"
+      },
+      {
+        "name": "Tir",
+        "attr": "DEX",
+        "bonus": "+1"
+      },
+      {
+        "name": "Volonté",
+        "attr": "SAG",
+        "bonus": "+4"
+      }
+    ],
+    "abilities": [
+      "<strong>Enchaînement</strong> : Si 5 de différence, attaque supplémentaire",
+      "<strong>Paume de Boudh'Orc ✦</strong> : 3 PF / Ignore l'armure",
+      "<strong>Peau de Fer ✦</strong> : 3 PF par Round actif / Résistance du corps accrue",
+      "<strong>Projection Astrale ✦</strong> : 1 fois par session / Passer outre les murs et les portes pour de la reconnaissance / détectable (magie)",
+      "<strong>Régénération (Passif) ✦</strong> : + 2 PV par Tour (en début de tour de ZogZork) / Régénération complète sur un repos long",
+      "<strong>Ambidextrie ◆</strong> : Le personnage dispose de deux actions par tour de combat.",
+      "<strong>Accompagner les coups ◆</strong> : Ajoute la Dextérité à la RD, uniquement si une tentative d'esquive ou de parade a pu être faite.",
+      "<strong>Attaque Charismatique</strong> : Ajoute Charisme/Empathie au score d'attaque (+D12 au jet d'attaque)",
+      "<strong>Défense Charismatique</strong> : Ajoute Charisme/Empathie à la défense&nbsp;(+D12 au jet de défense)",
+      "<strong>Résistance contre le Mal ⟐</strong> : +RD5",
+      "<strong>Supériorité martiale ◆</strong> : Permet de rajouter la moitié de la différence entre son attaque et la défense de l'adversaire aux dégâts."
+    ],
+    "descriptions": {
+      "Description Physique": "ZogZork est un orc d’environ 2,15 mètres, au corps noueux et solide sans être hors normes pour sa race. Il dégage une force tranquille, un calme inattendu chez un orc, renforcé par sa posture décontractée. Rien en lui ne crie l’exception ou la grandeur : il est simplement là, massif et silencieux, comme un roc oublié.\n\nSon visage est large, aux traits marqués par des années de combat, avec une mâchoire carrée et deux petites défenses inférieures visibles. Son nez est épaté, sa peau d’un vert olive sombre. Des cheveux noirs sont rassemblés en un chignon sommaire sur le crâne. Son regard, souvent fixe, oscille entre l’absence et une attention brute, comme s’il observait sans comprendre ou cherchait à comprendre sans juger.\n\nIl porte une robe simple couleur ocre, rapiécée, nouée par une ceinture de cuir grossier garnie de disques métalliques. Ses avant-bras et jambes sont entourés de brassards et chevillières de cuirs bardés de cordages usés, plus pratiques pour le combat que décoratifs. Un pagne en toile violette abîmée couvre partiellement ses jambes. Il marche pieds nus, indifférent à la rudesse du sol.",
+      "Histoire": "Né dans un petit village orc des plaines rocheuses, ZogZork n’a jamais manié d’armes. Très jeune, il s’est tourné vers une discipline\noubliée par son clan : la B’orcs Thaï, un art de combat brutal et exigeant basé uniquement sur les coups de poing, de coude, de genou et de pied. Il a passé des années à frapper des troncs, briser des rochers à coups de tibia et renforcer chaque partie de son corps par l’endurance et la douleur.\n\nUn jour, lors d’un tournoi de B’orcs Thaï entre son village et un clan voisin, un adversaire se mit à railler violemment la blessure invalidante de Krog, le , le partenaire d’entraînement de ZogZork depuis l’enfance. Aveuglé par la colère, ZogZork perdit le contrôle et brisa en deux son adversaire d’un coup de genou en pleine cage\nthoracique.\n\nL’incident provoqua un déchaînement de tensions entre les deux villages. Pour éviter une guerre ouverte, les anciens prirent la décision d'exiler ZogZork.\n\nDéchiré mais résolu, ZogZork rejoignit une ville humaine cosmopolite. Là, il espère se bâtir une réputation, prouver la valeur de son art, et\nvivre de ses poings sans trahir ses principes.",
+      "Relations - Alliés et Enemies": ""
+    },
+    "notes": "• Point d'espoir : 1                        • Pièces d'or = 3\n• Point d'anarchisme : 0               • Pièces d'argent = 72\n• Santé mentale : 15                    • Pièces de cuivre = 19\n\n• Brassards = Cruauté (immunité magie Divine) + Protection (+RD2)\n• Gantelets en corde enchant foudre (+1D6 de Foudre)\n• Armure en cuir renforcé allégé de célérité (+RD10 // Déplacements plus long)\n• Anneau de Protection (+RD1)   • Bonus druides +2 FOR / -2 PF\n• Neros cours gratuit                    • Sauvages = Bracelet force attente\n\n• Prévaut Bertrand + Wolframe (commerce) = Nemesis\n• Rebels Sauvage = Amicaux",
+    "avatar": "",
+    "damageEntries": [
+      {
+        "id": 1769355904908.7795,
+        "diceCount": 1,
+        "diceType": "D12",
+        "bonus": 4,
+        "label": "Mains nues"
+      },
+      {
+        "id": 1769355921967.6511,
+        "diceCount": 1,
+        "diceType": "D6",
+        "bonus": 0,
+        "label": "Gantelets en corde de foudre"
+      }
+    ],
+    "rdEntries": [
+      {
+        "id": 1769355981427.5933,
+        "value": 10,
+        "label": "Armure en cuir renforcé allégé de célérité"
+      },
+      {
+        "id": 1769355982380.0227,
+        "value": 5,
+        "label": "Résistance contre le Mal ⟐"
+      },
+      {
+        "id": 1769355982944.8147,
+        "value": 2,
+        "label": "Brassard de Protection"
+      },
+      {
+        "id": 1769356005584.4875,
+        "value": 14,
+        "label": "Accompagner les coups ◆ (si tentative d'esquive)",
+        "conditional": true
+      },
+      {
+        "id": 1776439037103.6016,
+        "value": 1,
+        "label": "Anneau de Protection",
+        "conditional": false
+      }
+    ]
+  }
+}
