@@ -5,7 +5,7 @@ from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
                         load_fiches, build_resolver, collect_links,
                         extract_private, render_private,
                         render_infobox, render_badges, render_fiche_technique,
-                        TYPE_LABELS)
+                        TYPE_LABELS, build_html)
 
 FIX = Path(__file__).resolve().parent / "fixtures" / "mini_wiki"
 
@@ -128,6 +128,30 @@ class TestFicheTechnique(unittest.TestCase):
         self.assertIn("RD max 32 (base 18)", h)
         self.assertIn("<strong>Paume de Boudh'Orc", h)   # HTML passe tel quel
         self.assertIn("Bagarre", h)
+
+class TestAssembly(unittest.TestCase):
+    def setUp(self):
+        fiches = load_fiches(FIX)
+        resolver, conflicts = build_resolver(fiches)
+        self.html, self.report = build_html(fiches, resolver, conflicts, FIX, share=False, profile=None)
+
+    def test_sections_et_nav(self):
+        for pid in ("p-accueil", "p-neros", "p-index-personnages", "p-chronologie"):
+            self.assertIn(f'id="{pid}"', self.html)
+        self.assertIn("ARCHIVES DE ZOGZORK", self.html)
+
+    def test_accueil(self):
+        self.assertIn("La Fleche", self.html)          # affaire en cours
+        self.assertIn("Fiches a creer", self.html)
+        self.assertIn("Kretel", self.html)             # lien mort liste
+
+    def test_recherche_data(self):
+        neros = self.html.split('id="p-neros"')[1].split("</section>")[0]
+        self.assertIn("data-alias", neros)
+        self.assertIn("Archimage", neros)
+
+    def test_backlinks_affiches(self):
+        self.assertIn("Mentionne dans", self.html)
 
 if __name__ == "__main__":
     unittest.main()
