@@ -170,10 +170,8 @@ def inline(text, resolver=None, ctx=None):
             target = resolver.get(norm_key(name))
             if target:
                 if ctx and ctx.get("share") and target in ctx.get("private_targets", ()):
-                    # Partage : ne pas teaser une fiche privee. Lien nu -> supprime,
-                    # lien avec libelle explicite -> texte simple aplati.
-                    if raw_label is None:
-                        return ""
+                    # Partage (spec §8) : le nom reste en texte simple, le lien saute
+                    # (pas de lien mort : ne pas teaser l'existence de la fiche privee).
                     return '<span class="flat">%s</span>' % label
                 return '<a class="wl" href="#%s">%s</a>' % (target, label)
             return '<span class="deadlink" title="Fiche a creer">%s</span>' % label

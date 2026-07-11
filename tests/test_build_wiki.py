@@ -161,17 +161,21 @@ class TestShareBuild(unittest.TestCase):
         self.share, _ = build_html(fiches, resolver, conflicts, FIX, share=True, profile=None)
 
     def test_fiche_privee_absente(self):
-        self.assertIn("Contact Secret", self.full)
-        self.assertNotIn("Contact Secret", self.share)
-        self.assertNotIn("p-secret", self.share)
+        # La fiche privee : pas de section, pas d'entree d'index/recherche/backlink.
+        self.assertIn('id="p-secret"', self.full)
+        self.assertNotIn('id="p-secret"', self.share)
+        self.assertNotIn('href="#secret"', self.share)
 
     def test_blocs_prives_absents(self):
         self.assertIn("une biere", self.full)
         self.assertNotIn("une biere", self.share)
 
     def test_lien_vers_prive_aplati(self):
+        # En partage, un [[lien]] vers une fiche privee est aplati en texte (spec §8) :
+        # le nom reste, mais aucun lien ni ancre vers la fiche.
         self.assertIn('href="#secret"', self.full)
         self.assertNotIn('href="#secret"', self.share)
+        self.assertIn('class="flat">Contact Secret</span>', self.share)
 
     def test_backlinks_partage(self):
         neros_share = self.share.split('id="p-neros"')[1].split("</section>")[0]
