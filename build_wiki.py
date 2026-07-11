@@ -164,9 +164,9 @@ def inline(text, resolver=None, ctx=None):
 
     if resolver is not None:
         def _wl(m):
-            name = m.group(1).strip()
             raw_label = m.group(2)
-            label = (raw_label or m.group(1)).strip()
+            label = (raw_label or m.group(1)).strip()          # deja echappe, pour l'affichage
+            name = html.unescape(m.group(1)).strip()           # desechappe pour le lookup (& < >)
             target = resolver.get(norm_key(name))
             if target:
                 if ctx and ctx.get("share") and target in ctx.get("private_targets", ()):
@@ -179,8 +179,9 @@ def inline(text, resolver=None, ctx=None):
 
     text = re.sub(
         r"\[([^\]]+)\]\(([^)]+)\)",
+        # L'URL est deja html.escape-ee (& < >) ; on ne protege plus que les quotes.
         lambda m: '<a href="%s" target="_blank" rel="noopener">%s</a>'
-        % (html.escape(m.group(2), quote=True), m.group(1)),
+        % (m.group(2).replace('"', "&quot;"), m.group(1)),
         text,
     )
     text = re.sub(r"\*\*([^*]+)\*\*", r"<strong>\1</strong>", text)
@@ -199,12 +200,23 @@ def inline(text, resolver=None, ctx=None):
 
 
 def split_row(line):
-    s = line.strip()
+    # Protege les pipes internes de [[X|label]] et de `code|pipe` avant le decoupage.
+    protect = []
+
+    def _stash(m):
+        protect.append(m.group(0))
+        return "\x00T%d\x00" % (len(protect) - 1)
+
+    s = re.sub(r"\[\[[^\]]*\]\]|`[^`]*`", _stash, line).strip()
     if s.startswith("|"):
         s = s[1:]
     if s.endswith("|"):
         s = s[:-1]
-    return [c.strip() for c in s.split("|")]
+
+    def _restore(cell):
+        return re.sub(r"\x00T(\d+)\x00", lambda m: protect[int(m.group(1))], cell)
+
+    return [_restore(c.strip()) for c in s.split("|")]
 
 
 def is_table_sep(s):
@@ -285,7 +297,7 @@ def render_tree(nodes, resolver=None, ctx=None):
         tm = re.match(r"^\[([ xX~!])\]\s+(.*)$", text)
         if tm:
             glyph, state = TASK_ICONS[tm.group(1)]
-            li = '<li class="task %s"><span class="cb">%s</span><div class="txt">%s</span>' % (
+            li = '<li class="task %s"><span class="cb">%s</span><div class="txt">%s' % (
                 state, glyph, inline(tm.group(2), resolver, ctx))
         else:
             li = "<li>%s" % inline(text, resolver, ctx)
@@ -524,9 +536,9 @@ def collect_links(fiches, resolver, include_private):
     for f in fiches:
         if not include_private and f["meta"].get("prive"):
             continue
-        body = f["body"]
+        body = CODE_SPAN_RE.sub(" ", f["body"])  # les [[liens]] en code ne comptent pas
         if not include_private:
-            body = PRIVATE_RE.sub("", body)
+            body = PRIVATE_RE.sub(" ", body)
         for m in WIKILINK.finditer(body):
             name = m.group(1).strip()
             target = resolver.get(norm_key(name))

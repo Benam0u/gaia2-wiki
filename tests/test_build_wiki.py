@@ -3,7 +3,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
                         load_fiches, build_resolver, collect_links,
-                        extract_private, render_private,
+                        extract_private, render_private, inline, split_row,
                         render_infobox, render_badges, render_fiche_technique,
                         TYPE_LABELS, build_html)
 
@@ -57,6 +57,28 @@ class TestMarkdown(unittest.TestCase):
     def test_echappement(self):
         self.assertIn("&lt;script&gt;", md_convert("du <script> mechant"))
 
+    def test_split_row_pipe_interne(self):
+        self.assertEqual(split_row("| [[Kretel|le marchand]] | victime |"),
+                         ["[[Kretel|le marchand]]", "victime"])
+        self.assertEqual(split_row("| `a|b` | code |"), ["`a|b`", "code"])
+
+    def test_url_pas_double_echappee(self):
+        h = inline("[doc](https://x.test/?a=1&b=2)")
+        self.assertIn("a=1&amp;b=2", h)
+        self.assertNotIn("&amp;amp;", h)
+
+    def test_wikilink_esperluette(self):
+        fiches = [{"slug": "ol", "title": "Ombre & Lumiere", "meta": {}}]
+        resolver, _ = build_resolver(fiches)
+        h = md_convert("Voir [[Ombre & Lumiere]].", resolver=resolver)
+        self.assertIn('href="#ol"', h)
+        self.assertNotIn("deadlink", h)
+
+    def test_tasklist_markup_valide(self):
+        h = md_convert("- [x] fait")
+        self.assertIn('<div class="txt">fait</div>', h)
+        self.assertNotIn("</span></div>", h)
+
 class TestLinks(unittest.TestCase):
     def setUp(self):
         self.fiches = load_fiches(FIX)
@@ -98,6 +120,19 @@ class TestLinks(unittest.TestCase):
         self.assertEqual(resolver[norm_key("Axelle")], "axelle")
         self.assertIn((norm_key("Axelle"), "axelle", "autre"), conflicts)
 
+    def test_liens_dans_code_ignores(self):
+        fiches = [
+            {"slug": "a", "title": "A", "meta": {},
+             "body": "```\nvoir [[B]]\n```\net `[[B]]` inline.",
+             "reldir": "concepts", "mtime": 0},
+            {"slug": "b", "title": "B", "meta": {}, "body": "# B",
+             "reldir": "concepts", "mtime": 0},
+        ]
+        resolver, _ = build_resolver(fiches)
+        _, back, dead = collect_links(fiches, resolver, include_private=True)
+        self.assertNotIn("a", back["b"])
+        self.assertEqual(dead, [])
+
 class TestPrivate(unittest.TestCase):
     def test_inline_et_multiligne(self):
         body, blocks, bad = extract_private("A %%secret%% B\n\n%%multi\nlignes%%")
@@ -117,6 +152,13 @@ class TestPrivate(unittest.TestCase):
 
     def test_marqueur_hypothese(self):
         self.assertIn('class="hyp"', md_convert("Elle serait {?: Axxel deguise}."))
+
+    def test_private_ignore_code(self):
+        body, blocks, bad = extract_private(
+            "```\nexemple %%cache%% ici\n```\n\n%%vrai secret%%")
+        self.assertFalse(bad)
+        self.assertEqual(blocks, ["vrai secret"])
+        self.assertIn("%%cache%%", body)   # le code reste litteral
 
 class TestInfobox(unittest.TestCase):
     def test_infobox_map(self):
