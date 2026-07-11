@@ -1,4 +1,4 @@
-import json, sys, unittest
+import json, shutil, subprocess, sys, tempfile, time, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
@@ -176,6 +176,31 @@ class TestShareBuild(unittest.TestCase):
     def test_backlinks_partage(self):
         neros_share = self.share.split('id="p-neros"')[1].split("</section>")[0]
         self.assertNotIn("Contact Secret", neros_share)
+
+class TestIntegration(unittest.TestCase):
+    def test_cli_bout_en_bout(self):
+        repo = Path(__file__).resolve().parent.parent
+        script = repo / "build_wiki.py"
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            shutil.copytree(FIX, td / "wiki")
+            (td / "data").mkdir()
+            shutil.copy(FIX.parent / "mini_profile.json",
+                        td / "data" / "zogzork_profile.json")
+            (td / "wiki" / "personnages" / "zogzork.md").write_text(
+                "---\nresume: PJ orc enqueteur\ntags: [pj]\n---\n\n# ZogZork\n\n"
+                "Narratif court, lie a [[Neros]].\n\n## Fiche technique\n{{fiche_technique}}\n",
+                encoding="utf-8")
+            t0 = time.time()
+            proc = subprocess.run([sys.executable, str(script), "--root", str(td)],
+                                  capture_output=True, text=True)
+            dt = time.time() - t0
+            self.assertEqual(proc.returncode, 0, proc.stderr)
+            self.assertTrue((td / "wiki.html").is_file())
+            self.assertTrue((td / "wiki_partage.html").is_file())
+            html = (td / "wiki.html").read_text(encoding="utf-8")
+            self.assertIn("RD max 32", html)
+            self.assertLess(dt, 2.0)
 
 if __name__ == "__main__":
     unittest.main()
