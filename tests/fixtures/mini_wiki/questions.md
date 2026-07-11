@@ -9,3 +9,5 @@ resume: Questions ouvertes
 
 ## A surveiller a la prochaine partie
 - Le navire bloque.
+
+%%Note MJ privee a ne pas partager.%%

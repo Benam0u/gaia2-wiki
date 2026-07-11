@@ -241,5 +241,50 @@ class TestImages(unittest.TestCase):
         self.assertNotIn("__IMGDATA__", out)
 
 
+class TestReviewFixes(unittest.TestCase):
+    def setUp(self):
+        self.fiches = load_fiches(FIX)
+        self.resolver, self.conflicts = build_resolver(self.fiches)
+        self.full, _ = build_html(self.fiches, self.resolver, self.conflicts,
+                                  FIX, share=False, profile=None)
+        self.share, _ = build_html(self.fiches, self.resolver, self.conflicts,
+                                   FIX, share=True, profile=None)
+
+    # Fix 1 : blocs %% de questions.md / chronologie.md passent le pipeline prive
+    def test_pages_speciales_pipeline_prive(self):
+        self.assertIn("Note MJ privee", self.full)        # accueil, complet
+        self.assertIn("periode secrete", self.full)       # chronologie, complet
+        self.assertNotIn("Note MJ privee", self.share)
+        self.assertNotIn("periode secrete", self.share)
+        self.assertNotIn("%%", self.share)
+
+    # Fix 10 : plus de <p><div> parasite
+    def test_pas_de_p_div(self):
+        self.assertNotIn("<p><div", self.full)
+        self.assertNotIn("<p><div", self.share)
+
+    # Fix 9 : backlink vers un slug special resout vers sa page generee
+    def test_backlink_special_slug(self):
+        self.assertNotIn('href="#questions"', self.full)
+        self.assertNotIn('href="#questions"', self.share)
+
+    # Fix 2 : %% non ferme fait echouer le build, aucune sortie ecrite
+    def test_pourcent_non_ferme_fail_closed(self):
+        repo = Path(__file__).resolve().parent.parent
+        script = repo / "build_wiki.py"
+        with tempfile.TemporaryDirectory() as td:
+            td = Path(td)
+            shutil.copytree(FIX, td / "wiki")
+            (td / "wiki" / "affaires" / "oubli.md").write_text(
+                "---\nresume: x\n---\n\n# Oubli\n\n%%secret non ferme\n", encoding="utf-8")
+            sentinel = "SENTINEL-INTACT"
+            (td / "wiki_partage.html").write_text(sentinel, encoding="utf-8")
+            proc = subprocess.run([sys.executable, str(script), "--root", str(td)],
+                                  capture_output=True, text=True)
+            self.assertEqual(proc.returncode, 2, proc.stderr)
+            self.assertEqual((td / "wiki_partage.html").read_text(encoding="utf-8"), sentinel)
+            self.assertFalse((td / "wiki.html").is_file())
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -57,8 +57,25 @@ ATTR_ORDER = [
 WIKILINK = re.compile(r"\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]")
 # Bloc prive %%...%% (non-greedy, multi-lignes)
 PRIVATE_RE = re.compile(r"%%(.*?)%%", re.S)
+# Fence ```...``` ou code inline `...` : masque les [[liens]] et %% qu'ils contiennent
+CODE_SPAN_RE = re.compile(r"```.*?```|`[^`]+`", re.S)
 # Premier H1 du corps (cle de resolution)
 H1_RE = re.compile(r"^#\s+(.+)$", re.M)
+# Slugs speciaux (pages generees) -> ancre reelle de la page qui les affiche.
+SPECIAL_PAGE = {"questions": "accueil", "chronologie": "chronologie"}
+
+
+class UnbalancedPrivateError(Exception):
+    """Levee si une fiche a un nombre impair de %% : build fail-closed (exit 2)."""
+
+    def __init__(self, slugs):
+        self.slugs = list(slugs)
+        super().__init__("Blocs prives non fermes : %s" % ", ".join(self.slugs))
+
+
+def _unbalanced_private(body):
+    """True si le nombre de %% (hors code) est impair."""
+    return CODE_SPAN_RE.sub("", body).count("%%") % 2 != 0
 
 
 # ===========================================================================
@@ -427,18 +444,36 @@ def build_resolver(fiches):
 def extract_private(body):
     """Remplace chaque bloc %%...%% par un token \\x02PRIVn\\x03.
 
-    Retourne (body_tokenise, blocs, unbalanced). Si nombre de %% impair :
-    (body inchange, [], True).
+    Les %% situes dans du code (fence ``` ou inline `...`) sont litteraux.
+    Retourne (body_tokenise, blocs, unbalanced). Si nombre de %% (hors code)
+    impair : (body inchange, [], True).
     """
-    if body.count("%%") % 2 != 0:
+    if _unbalanced_private(body):
         return body, [], True
+
+    # Protege le code pour que ses %% ne soient pas pris pour des blocs prives.
+    code = []
+
+    def _stash_code(m):
+        code.append(m.group(0))
+        return "\x00C%d\x00" % (len(code) - 1)
+
+    protected = CODE_SPAN_RE.sub(_stash_code, body)
+
     blocks = []
 
     def repl(m):
         blocks.append(m.group(1))
         return "\x02PRIV%d\x03" % (len(blocks) - 1)
 
-    return PRIVATE_RE.sub(repl, body), blocks, False
+    tokenized = PRIVATE_RE.sub(repl, protected)
+
+    def _restore(text):
+        return re.sub(r"\x00C(\d+)\x00", lambda m: code[int(m.group(1))], text)
+
+    tokenized = _restore(tokenized)
+    blocks = [_restore(b) for b in blocks]
+    return tokenized, blocks, False
 
 
 def render_private(html_text, blocks, share, resolver=None, ctx=None):
@@ -728,17 +763,31 @@ def _attr(s):
     return html.escape(str(s), quote=True)
 
 
-def render_body(fiche, resolver, share, profile, wiki_root, report, ctx=None):
-    """Corps d'une fiche : blocs prives + directive fiche technique + markdown."""
-    body = fiche["body"]
-    tokbody, blocks, unbalanced = extract_private(body)
-    if unbalanced:
-        report["unbalanced"].append(fiche["slug"])
+def _dewrap_blocks(out, blocks):
+    """Sort les tokens de niveau bloc (fiche technique, %% multi-lignes) de leur
+    <p> pour eviter le <p><div>...</div></p> invalide apres substitution."""
+    out = out.replace("<p>\x02TECH\x03</p>", "\x02TECH\x03")
+    for i, b in enumerate(blocks):
+        if "\n" in b:
+            out = out.replace("<p>\x02PRIV%d\x03</p>" % i, "\x02PRIV%d\x03" % i)
+    return out
+
+
+def _render_markdown(body, resolver, share, ctx, tech_html=""):
+    """Pipeline complet d'un corps : blocs prives + directive fiche technique +
+    markdown. Partage par les fiches et par les pages speciales embarquees."""
+    tokbody, blocks, _ = extract_private(body)
     tokbody = tokbody.replace("{{fiche_technique}}", "\x02TECH\x03")
     out = md_convert(tokbody, resolver, ctx)
+    out = _dewrap_blocks(out, blocks)
     out = render_private(out, blocks, share, resolver, ctx)
+    return out.replace("\x02TECH\x03", tech_html)
+
+
+def render_body(fiche, resolver, share, profile, wiki_root, report, ctx=None):
+    """Corps d'une fiche : blocs prives + directive fiche technique + markdown."""
     tech = render_fiche_technique(profile, wiki_root) if profile is not None else ""
-    return out.replace("\x02TECH\x03", tech)
+    return _render_markdown(fiche["body"], resolver, share, ctx, tech)
 
 
 def render_backlinks(slug, backlinks, share, by_slug):
@@ -750,7 +799,8 @@ def render_backlinks(slug, backlinks, share, by_slug):
             continue
         if share and src["meta"].get("prive"):
             continue
-        links.append('<a class="wl" href="#%s">%s</a>' % (s, html.escape(src["title"])))
+        href = SPECIAL_PAGE.get(s, s)  # questions -> accueil, etc.
+        links.append('<a class="wl" href="#%s">%s</a>' % (href, html.escape(src["title"])))
     if not links:
         return ""
     return '<div class="backlinks">Mentionne dans : %s</div>' % ", ".join(links)
@@ -799,6 +849,7 @@ def render_index(reldir, label, entity_fiches):
 
 
 def render_accueil(entity_fiches, by_slug, resolver, dead, ctx=None):
+    share = bool(ctx and ctx.get("share"))
     ec = [f for f in entity_fiches
           if f["reldir"] == "affaires" and f["meta"].get("etat") == "en-cours"]
     questions = by_slug.get("questions")
@@ -814,7 +865,7 @@ def render_accueil(entity_fiches, by_slug, resolver, dead, ctx=None):
                 html.escape(f["meta"].get("resume", ""))))
         left.append("</ul>")
     if questions:
-        left.append(md_convert(_strip_h1(questions["body"]), resolver, ctx))
+        left.append(_render_markdown(_strip_h1(questions["body"]), resolver, share, ctx))
 
     right = []
     if sessions:
@@ -847,9 +898,10 @@ def render_accueil(entity_fiches, by_slug, resolver, dead, ctx=None):
 
 
 def render_chronologie(chrono, sessions, resolver, ctx=None):
+    share = bool(ctx and ctx.get("share"))
     parts = ['<section class="page" id="p-chronologie"><h1>Chronologie</h1>']
     if chrono:
-        parts.append(md_convert(_strip_h1(chrono["body"]), resolver, ctx))
+        parts.append(_render_markdown(_strip_h1(chrono["body"]), resolver, share, ctx))
     if sessions:
         parts.append("<h2>Sessions</h2><ul>")
         for f in sorted(sessions, key=_session_num):
@@ -1121,9 +1173,15 @@ def _nav_button(slug, label):
 
 
 def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
-    """Assemble le HTML complet + un rapport partiel. Voir docstring du module."""
+    """Assemble le HTML complet + un rapport partiel. Voir docstring du module.
+
+    Leve UnbalancedPrivateError si une fiche a un bloc %% non ferme (fail-closed).
+    """
     wiki_root = Path(wiki_root)
     IMG_REGISTRY.clear()
+    bad = sorted({f["slug"] for f in fiches if _unbalanced_private(f["body"])})
+    if bad:
+        raise UnbalancedPrivateError(bad)
     report = {"counts": {}, "dead": [], "conflicts": list(conflicts), "orphans": [],
               "unbalanced": [], "missing_images": [], "n_fiches": 0}
 
@@ -1220,10 +1278,18 @@ def main(argv=None):
     if prof_path.is_file():
         profile = json.loads(prof_path.read_text(encoding="utf-8"))
 
-    full, report = build_html(fiches, resolver, conflicts, wiki_root,
-                              share=False, profile=profile)
-    share, _ = build_html(fiches, resolver, conflicts, wiki_root,
-                          share=True, profile=profile)
+    try:
+        full, report = build_html(fiches, resolver, conflicts, wiki_root,
+                                  share=False, profile=profile)
+        share, _ = build_html(fiches, resolver, conflicts, wiki_root,
+                              share=True, profile=profile)
+    except UnbalancedPrivateError as e:
+        print("ERREUR fail-closed : bloc prive %% non ferme dans : %s"
+              % ", ".join(e.slugs), file=sys.stderr)
+        print("Aucune sortie ecrite ; corrige la ou les fiches puis relance.",
+              file=sys.stderr)
+        return 2
+
     (root / "wiki.html").write_text(full, encoding="utf-8")
     (root / "wiki_partage.html").write_text(share, encoding="utf-8")
 
