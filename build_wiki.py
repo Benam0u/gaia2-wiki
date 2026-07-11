@@ -18,6 +18,14 @@ Spec de reference : docs/2026-07-10-wiki-gaia2-spec.md
 import html
 import re
 import unicodedata
+from pathlib import Path
+
+# [[Nom]] ou [[Nom|texte affiche]]
+WIKILINK = re.compile(r"\[\[([^\]|]+?)(?:\|([^\]]+?))?\]\]")
+# Bloc prive %%...%% (non-greedy, multi-lignes)
+PRIVATE_RE = re.compile(r"%%(.*?)%%", re.S)
+# Premier H1 du corps (cle de resolution)
+H1_RE = re.compile(r"^#\s+(.+)$", re.M)
 
 
 # ===========================================================================
@@ -103,6 +111,17 @@ def inline(text, resolver=None, ctx=None):
 
     text = re.sub(r"`([^`]+)`", stash, text)
     text = html.escape(text, quote=False)
+
+    if resolver is not None:
+        def _wl(m):
+            name = m.group(1).strip()
+            label = (m.group(2) or m.group(1)).strip()
+            target = resolver.get(norm_key(name))
+            if target:
+                return '<a class="wl" href="#%s">%s</a>' % (target, label)
+            return '<span class="deadlink" title="Fiche a creer">%s</span>' % label
+        text = WIKILINK.sub(_wl, text)
+
     text = re.sub(
         r"\[([^\]]+)\]\(([^)]+)\)",
         lambda m: '<a href="%s" target="_blank" rel="noopener">%s</a>'
@@ -298,3 +317,88 @@ def md_convert(md, resolver=None, ctx=None):
 
     flush_para()
     return "\n".join(out)
+
+
+# ===========================================================================
+#  Chargement des fiches, resolution, backlinks
+# ===========================================================================
+
+def load_fiches(root):
+    """Scanne root/**/*.md. Retourne une liste de dicts fiche (tries par chemin)."""
+    root = Path(root)
+    fiches = []
+    for path in sorted(root.rglob("*.md")):
+        rel = path.relative_to(root)
+        reldir = rel.parent.as_posix()
+        if reldir == ".":
+            reldir = ""
+        text = path.read_text(encoding="utf-8")
+        meta, body = parse_frontmatter(text)
+        m = H1_RE.search(body)
+        slug = path.stem
+        title = m.group(1).strip() if m else slug
+        fiches.append({
+            "path": path,
+            "reldir": reldir,
+            "slug": slug,
+            "title": title,
+            "meta": meta,
+            "body": body,
+            "mtime": path.stat().st_mtime,
+        })
+    return fiches
+
+
+def build_resolver(fiches):
+    """Map norm_key(titre|alias) -> slug ; premier gagnant par ordre de slug.
+
+    Retourne (resolver, conflicts) ou conflicts = [(cle, slug_garde, slug_ignore)].
+    """
+    claims = {}
+    for f in fiches:
+        keys = [f["title"]]
+        alias = f["meta"].get("alias") or []
+        if isinstance(alias, str):
+            alias = [alias]
+        keys += alias
+        for k in keys:
+            nk = norm_key(k)
+            if not nk:
+                continue
+            claims.setdefault(nk, [])
+            if f["slug"] not in claims[nk]:
+                claims[nk].append(f["slug"])
+    resolver, conflicts = {}, []
+    for nk, slugs in claims.items():
+        ordered = sorted(slugs)
+        resolver[nk] = ordered[0]
+        for ignored in ordered[1:]:
+            conflicts.append((nk, ordered[0], ignored))
+    return resolver, conflicts
+
+
+def collect_links(fiches, resolver, include_private):
+    """Retourne (links_out, backlinks, dead).
+
+    links_out : {slug: set(slugs cibles)} ; backlinks : {slug: set(slugs sources)} ;
+    dead : [(slug_source, nom brut)]. Si include_private est False : ignore les
+    fiches prive comme sources et retire les blocs %% avant analyse.
+    """
+    links_out = {f["slug"]: set() for f in fiches}
+    backlinks = {f["slug"]: set() for f in fiches}
+    dead = []
+    for f in fiches:
+        if not include_private and f["meta"].get("prive"):
+            continue
+        body = f["body"]
+        if not include_private:
+            body = PRIVATE_RE.sub("", body)
+        for m in WIKILINK.finditer(body):
+            name = m.group(1).strip()
+            target = resolver.get(norm_key(name))
+            if target:
+                links_out[f["slug"]].add(target)
+                backlinks[target].add(f["slug"])
+            else:
+                dead.append((f["slug"], name))
+    return links_out, backlinks, dead

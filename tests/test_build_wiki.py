@@ -1,7 +1,10 @@
 import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from build_wiki import parse_frontmatter, slugify, norm_key, md_convert
+from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
+                        load_fiches, build_resolver, collect_links)
+
+FIX = Path(__file__).resolve().parent / "fixtures" / "mini_wiki"
 
 class TestFrontmatter(unittest.TestCase):
     def test_basic(self):
@@ -50,6 +53,37 @@ class TestMarkdown(unittest.TestCase):
 
     def test_echappement(self):
         self.assertIn("&lt;script&gt;", md_convert("du <script> mechant"))
+
+class TestLinks(unittest.TestCase):
+    def setUp(self):
+        self.fiches = load_fiches(FIX)
+        self.resolver, self.conflicts = build_resolver(self.fiches)
+
+    def test_resolution_titre_alias_casse(self):
+        self.assertEqual(self.resolver[norm_key("Neros")], "neros")
+        self.assertEqual(self.resolver[norm_key("l'archimage")], "neros")
+
+    def test_backlinks(self):
+        _, back, _ = collect_links(self.fiches, self.resolver, include_private=True)
+        self.assertIn("simpol", back["neros"])     # simpol.md cite [[Neros]]
+        self.assertIn("session-21", back["neros"])
+
+    def test_liens_morts(self):
+        _, _, dead = collect_links(self.fiches, self.resolver, include_private=True)
+        self.assertIn(("la-fleche", "Kretel"), dead)
+
+    def test_partage_exclut_prive(self):
+        _, back_full, _ = collect_links(self.fiches, self.resolver, include_private=True)
+        _, back_share, _ = collect_links(self.fiches, self.resolver, include_private=False)
+        self.assertIn("secret", back_full["neros"])       # fiche privee
+        self.assertNotIn("secret", back_share["neros"])
+        self.assertIn("la-fleche", back_full["neros"])    # via bloc %% de la-fleche
+        self.assertNotIn("la-fleche", back_share["neros"])
+
+    def test_rendu_lien(self):
+        h = md_convert("Voir [[Neros|le mage]] et [[Inconnu]].", resolver=self.resolver)
+        self.assertIn('href="#neros">le mage</a>', h)
+        self.assertIn('class="deadlink"', h)
 
 if __name__ == "__main__":
     unittest.main()
