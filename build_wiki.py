@@ -48,9 +48,14 @@ MIME = {".png": "image/png", ".jpg": "image/jpeg", ".jpeg": "image/jpeg",
         ".gif": "image/gif", ".webp": "image/webp"}
 
 # Ordre d'affichage + libelle des attributs de la fiche technique.
+# Chaque entree liste les cles possibles du JSON (l'export reel utilise les
+# cles courtes dex/emp/sag/int ; les longues sont gardees par robustesse).
 ATTR_ORDER = [
-    ("force", "Force"), ("dexterite", "Dexterite"), ("empathie", "Empathie"),
-    ("sagesse", "Sagesse"), ("intelligence", "Intelligence"),
+    (("force",), "Force"),
+    (("dex", "dexterite"), "Dextérité"),
+    (("emp", "empathie"), "Empathie"),
+    (("sag", "sagesse"), "Sagesse"),
+    (("int", "intelligence"), "Intelligence"),
 ]
 
 # [[Nom]] ou [[Nom|texte affiche]]
@@ -654,117 +659,144 @@ def render_fusion_warning(meta, resolver, ctx=None):
             "sans preuve en seance.</div>") % links
 
 
-def render_fiche_technique(profile, wiki_root):
-    """Rendu de data/zogzork_profile.json (attributs, PV/PF, degats, RD, etc.).
+def _die_expr(entry):
+    """Formule de des "(D12+4)" depuis {diceCount, diceType, bonus} ('D12' ou '12')."""
+    t = str(entry.get("diceType", "")).strip()
+    if t[:1] in ("D", "d"):
+        t = t[1:]
+    n = _int(entry.get("diceCount")) or 1
+    core = ("%dD%s" % (n, t)) if n > 1 else ("D%s" % t)
+    b = _int(entry.get("bonus"))
+    return "(%s+%d)" % (core, b) if b else "(%s)" % core
 
-    Les champs bonusRace / abilities viennent de l'outil de fiche de Benoit :
-    HTML de confiance insere sans echappement. Les valeurs libres (attributs,
-    notes, competences) sont echappees. Le narratif (descriptions) n'est PAS
-    rendu ici : il vit dans zogzork.md (spec §5).
+
+def _ft_box(label, value_html, cls=""):
+    """Boite bordee facon fiche PDF : libelle centre au-dessus de la valeur."""
+    cls = (" " + cls) if cls else ""
+    return ('<div class="ft-box%s"><div class="ft-l">%s</div>'
+            '<div class="ft-v">%s</div></div>'
+            % (cls, html.escape(label), value_html))
+
+
+def _ft_notes_html(notes):
+    """Puces du bloc Notes : 1 ligne source = 1 item, '•' internes en separateurs."""
+    items = []
+    for line in notes.splitlines():
+        line = re.sub(r"\s+", " ", line).strip()
+        if not line:
+            continue
+        frags = [f.strip() for f in line.split("•") if f.strip()]
+        items.append("<li>%s</li>" % '<span class="ft-sep">•</span>'.join(
+            html.escape(f) for f in frags))
+    return "<ul>%s</ul>" % "".join(items)
+
+
+def render_fiche_technique(profile, wiki_root):
+    """Rendu de data/zogzork_profile.json au layout de la fiche PDF officielle.
+
+    Boites bordees : identite, attributs, PV/PF/alignement, notes, degats/RD,
+    bonus de race, competences, avantages. bonusRace / abilities = HTML de
+    confiance de l'outil de fiche (non echappe) ; tout le reste est echappe.
+    Le narratif (descriptions) vit dans zogzork.md (spec section 5).
     """
     sheet = profile.get("sheet", {})
-    out = ['<div class="fiche-tech">']
+    out = ['<div class="fiche-tech">',
+           '<div class="ft-title">Gaïa 2 - Fiche de personnage</div>']
 
-    # Identite
-    out.append("<h3>%s</h3>" % html.escape(str(sheet.get("name", ""))))
-    parts = []
+    # Rang identite : Nom / Niveau / Race / Classe
+    idboxes = [_ft_box("Nom du personnage", html.escape(str(sheet.get("name", ""))))]
     if sheet.get("level"):
-        parts.append("Niveau %s" % sheet["level"])
-    for key in ("race", "classe", "alignement"):
+        idboxes.append(_ft_box("Niveau", html.escape(str(sheet["level"]))))
+    for key, label in (("race", "Race"), ("classe", "Classe")):
         if sheet.get(key):
-            parts.append(str(sheet[key]))
-    if parts:
-        out.append('<p class="tech-ident">%s</p>'
-                   % " &middot; ".join(html.escape(p) for p in parts))
+            idboxes.append(_ft_box(label, html.escape(str(sheet[key]))))
+    out.append('<div class="ft-row ft-id">%s</div>' % "".join(idboxes))
 
-    # Attributs
+    # Zone principale : attributs | vitaux | notes
     attrs = sheet.get("attributes", {}) or {}
     bonuses = sheet.get("attributeBonuses", {}) or {}
-    arows = []
-    for key, label in ATTR_ORDER:
-        if key in attrs:
-            val = html.escape(str(attrs[key]))
-            bonus = html.escape(str(bonuses.get(key, "")))
-            cell = "%s (D%s) %s" % (val, val, bonus)
-            arows.append("<tr><td>%s</td><td>%s</td></tr>" % (label, cell.strip()))
-    if arows:
-        out.append('<h4>Attributs</h4><div class="tablewrap"><table><thead><tr>'
-                   "<th>Attribut</th><th>Valeur</th></tr></thead><tbody>%s"
-                   "</tbody></table></div>" % "".join(arows))
-
-    # Vitaux
+    aboxes = []
+    for keys, label in ATTR_ORDER:
+        key = next((k for k in keys if k in attrs), None)
+        if key is None:
+            continue
+        val = html.escape(str(attrs[key]))
+        bonus = html.escape(str(bonuses.get(key, "")).strip())
+        v = '%s <span class="ft-die">(D%s)</span>' % (val, val)
+        if bonus:
+            v += ' <span class="ft-bonus">%s</span>' % bonus
+        aboxes.append(_ft_box(label, v))
     vit = sheet.get("vitals", {}) or {}
-    vparts = []
+    vboxes = []
     if vit.get("pvMax"):
-        vparts.append("PV %s" % html.escape(str(vit["pvMax"])))
+        vboxes.append(_ft_box("PV", html.escape(str(vit["pvMax"])), "ft-big"))
     if vit.get("pfMax"):
-        vparts.append("PF %s" % html.escape(str(vit["pfMax"])))
-    if vparts:
-        out.append('<p class="tech-vitals">%s</p>' % " &middot; ".join(vparts))
+        vboxes.append(_ft_box("PF", html.escape(str(vit["pfMax"])), "ft-big"))
+    if sheet.get("alignement"):
+        vboxes.append(_ft_box("Alignement", html.escape(str(sheet["alignement"]))))
+    notes = str(sheet.get("notes", "")).strip()
+    nbox = (_ft_box("Notes - Quêtes - Équipements", _ft_notes_html(notes),
+                    "ft-list") if notes else "")
+    out.append('<div class="ft-main"><div class="ft-col">%s</div>'
+               '<div class="ft-col">%s</div>%s</div>'
+               % ("".join(aboxes), "".join(vboxes), nbox))
 
-    # Degats
+    # Combat : degats | reduction de degats
+    cboxes = []
     dmg = sheet.get("damageEntries", []) or []
     if dmg:
-        items = []
-        for d in dmg:
-            expr = "%sd%s" % (d.get("diceCount", ""), d.get("diceType", ""))
-            bonus = str(d.get("bonus", "")).strip()
-            if bonus and bonus not in ("0",):
-                expr += "+%s" % bonus
-            label = str(d.get("label", "")).strip()
-            items.append("<li>%s</li>" % html.escape(
-                ("%s %s" % (expr, label)).strip()))
-        out.append("<h4>Degats</h4><ul>%s</ul>" % "".join(items))
-
-    # Reduction de degats
+        formula = " + ".join(_die_expr(d) for d in dmg)
+        labels = " + ".join(str(d.get("label", "")).strip()
+                            for d in dmg if str(d.get("label", "")).strip())
+        v = html.escape(formula)
+        if labels:
+            v += '<div class="ft-sub">%s</div>' % html.escape(labels)
+        cboxes.append(_ft_box("Dégâts", v))
     rd = sheet.get("rdEntries", []) or []
     if rd:
-        items, total, base = [], 0, 0
-        for e in rd:
-            v = _int(e.get("value"))
-            total += v
-            cond = bool(e.get("conditional"))
-            if not cond:
-                base += v
-            label = html.escape(str(e.get("label", "")).strip())
-            suffix = " (conditionnel)" if cond else ""
-            items.append("<li>%s : %d%s</li>" % (label, v, suffix))
-        out.append("<h4>Reduction de degats</h4><ul>%s</ul>"
-                   "<p>RD max %d (base %d)</p>" % ("".join(items), total, base))
+        total = sum(_int(e.get("value")) for e in rd)
+        base = sum(_int(e.get("value")) for e in rd if not e.get("conditional"))
+        detail = " • ".join(
+            "%s %d%s" % (str(e.get("label", "")).strip(), _int(e.get("value")),
+                         " (conditionnel)" if e.get("conditional") else "")
+            for e in rd)
+        v = "RD %d (%d)" % (total, base)
+        v += '<div class="ft-sub">%s</div>' % html.escape(detail)
+        cboxes.append(_ft_box("Réduction de dégâts", v))
+    if cboxes:
+        out.append('<div class="ft-row ft-combat">%s</div>' % "".join(cboxes))
 
-    # Competences
+    # Bonus de race | Competences
+    duo = []
+    race_bonus = sheet.get("bonusRace", []) or []
+    if race_bonus:
+        duo.append(_ft_box(
+            "Bonus de race",
+            "<ul>%s</ul>" % "".join("<li>%s</li>" % b for b in race_bonus),
+            "ft-list"))
     skills = sheet.get("skills", []) or []
     if skills:
-        srows = ""
-        for s in skills:
-            srows += "<tr><td>%s</td><td>%s</td><td>%s</td></tr>" % (
+        srows = "".join(
+            "<tr><td>%s</td><td>%s</td><td>%s</td></tr>" % (
                 html.escape(str(s.get("name", ""))),
                 html.escape(str(s.get("attr", ""))),
                 html.escape(str(s.get("bonus", ""))))
-        out.append('<h4>Competences</h4><div class="tablewrap"><table><thead><tr>'
-                   "<th>Nom</th><th>Attribut</th><th>Bonus</th></tr></thead>"
-                   "<tbody>%s</tbody></table></div>" % srows)
+            for s in skills)
+        duo.append(_ft_box(
+            "Compétences",
+            '<div class="tablewrap"><table><thead><tr><th>Nom</th>'
+            "<th>Attribut</th><th>Bonus</th></tr></thead>"
+            "<tbody>%s</tbody></table></div>" % srows, "ft-list"))
+    if duo:
+        out.append('<div class="ft-row ft-duo">%s</div>' % "".join(duo))
 
-    # Bonus de race (HTML de confiance)
-    race_bonus = sheet.get("bonusRace", []) or []
-    if race_bonus:
-        out.append("<h4>Bonus de race</h4><ul>%s</ul>"
-                   % "".join("<li>%s</li>" % b for b in race_bonus))
-
-    # Capacites (HTML de confiance)
+    # Avantages / Capacites (pleine largeur, HTML de confiance)
     abilities = sheet.get("abilities", []) or []
     if abilities:
-        out.append("<h4>Capacites</h4><ul>%s</ul>"
-                   % "".join("<li>%s</li>" % a for a in abilities))
-
-    # Le narratif (descriptions Physique/Histoire/Relations) vit dans zogzork.md
-    # (spec §5, un fait un endroit) : la fiche technique ne le duplique pas.
-
-    # Notes (texte libre, echappe, pre-wrap)
-    notes = str(sheet.get("notes", "")).strip()
-    if notes:
-        out.append('<h4>Notes</h4><div class="tech-notes">%s</div>'
-                   % html.escape(notes))
+        out.append(_ft_box(
+            "Avantages / Capacités",
+            "<ul>%s</ul>" % "".join("<li>%s</li>" % a for a in abilities),
+            "ft-list"))
 
     out.append("</div>")
     return "".join(out)
@@ -1113,11 +1145,31 @@ div.prive{padding:10px 14px;margin:12px 0}
 .portrait-grid a{text-align:center;color:var(--text-2);text-decoration:none;font-size:13px}
 .portrait-grid img{width:100%;border:1px solid var(--line)}
 .home-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
-.fiche-tech h4{margin-top:1.2em}
-.tech-ident{font-family:var(--mono);color:var(--text-2)}
-.tech-vitals{font-family:var(--mono);color:var(--text-2)}
-.tech-notes{white-space:pre-wrap;font-family:var(--mono);font-size:12.5px;color:var(--text-2);
-  background:var(--surface);border:1px solid var(--line);padding:12px 14px}
+.fiche-tech{clear:both;margin-top:8px}
+.ft-title{text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;
+  letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
+  border:1px solid var(--line-strong);padding:10px;margin-bottom:12px}
+.ft-row{display:grid;gap:10px;margin-bottom:10px}
+.ft-id{grid-template-columns:2fr 1fr 1fr 1fr}
+.ft-main{display:grid;grid-template-columns:11fr 8fr 19fr;gap:10px;margin-bottom:10px}
+.ft-col{display:flex;flex-direction:column;gap:10px}
+.ft-col .ft-box{flex:1;display:flex;flex-direction:column;justify-content:center}
+.ft-box{border:1px solid var(--line);background:var(--surface);padding:10px 14px;min-width:0}
+.ft-l{font-family:var(--mono);font-size:10px;text-transform:uppercase;letter-spacing:.16em;
+  color:var(--text-3);text-align:center;margin-bottom:6px}
+.ft-v{text-align:center;color:var(--text)}
+.ft-big .ft-v{font-family:var(--serif);font-size:26px;font-weight:500}
+.ft-die{color:var(--text-3);font-size:12px}
+.ft-bonus{color:var(--gold);font-weight:600}
+.ft-sub{color:var(--text-3);font-size:12px;margin-top:5px;line-height:1.5}
+.ft-combat{grid-template-columns:1fr 1fr}
+.ft-duo{grid-template-columns:1fr 1fr;align-items:start}
+.ft-list .ft-v{text-align:left}
+.ft-list ul{margin:0;padding-left:16px}
+.ft-list li{margin:5px 0;color:var(--text-2);font-size:13.5px}
+.ft-sep{color:var(--text-3);margin:0 7px}
+.fiche-tech .tablewrap{margin:0}
+.fiche-tech table{width:100%}
 @media(max-width:680px){
   .topbar,nav{padding-left:22px;padding-right:22px}
   nav{flex-wrap:nowrap;overflow-x:auto}
@@ -1127,6 +1179,7 @@ div.prive{padding:10px 14px;margin:12px 0}
   .page h1{font-size:32px}.page h2{font-size:23px}
   .home-cols{grid-template-columns:1fr}
   .infobox{float:none;width:auto;margin:0 0 18px}
+  .ft-id,.ft-main,.ft-combat,.ft-duo{grid-template-columns:1fr}
 }
 </style>
 </head>

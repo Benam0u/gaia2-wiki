@@ -4,16 +4,16 @@
   "sheet": {
     "name": "ZogZork", "level": "3", "race": "Orc", "classe": "Enqueteur",
     "alignement": "Chaotique Bon",
-    "attributes": {"force": "12", "dexterite": "12", "empathie": "12", "sagesse": "12", "intelligence": "8"},
-    "attributeBonuses": {"force": "+4", "dexterite": "+2", "empathie": "+0", "sagesse": "+0", "intelligence": "+0"},
+    "attributes": {"force": "12", "dex": "12", "emp": "12", "sag": "12", "int": "8"},
+    "attributeBonuses": {"force": "+4", "dex": "+2", "emp": "+0", "sag": "+0", "int": "+0"},
     "vitals": {"pvMax": "61", "pvTemp": "0", "pvCurrent": "", "pfMax": "59", "pfCurrent": ""},
     "bonusRace": ["<strong>Berz'Orc :</strong> ignore 1 blessure en combat"],
     "skills": [{"name": "Bagarre", "attr": "FOR", "bonus": "+5"}, {"name": "Esquive", "attr": "DEX", "bonus": "+5"}],
     "abilities": ["<strong>Paume de Boudh'Orc :</strong> 3 PF, ignore l'armure"],
     "descriptions": {"Description Physique": "Grand orc noueux.", "Histoire": "Ne dans les plaines.", "Relations - Allies et Enemies": ""},
-    "notes": "Point d'espoir 1. 3 po / 72 pa / 19 pc.",
+    "notes": "• Point d'espoir : 1        • Pièces d'or = 3\n• Neros cours gratuit",
     "avatar": "",
-    "damageEntries": [{"id": 1, "diceCount": "1", "diceType": "12", "bonus": "4", "label": "Poings"}],
+    "damageEntries": [{"id": 1, "diceCount": 1, "diceType": "D12", "bonus": 4, "label": "Mains nues"}, {"id": 2, "diceCount": 1, "diceType": "D6", "bonus": 0, "label": "Gantelets de foudre"}],
     "rdEntries": [{"id": 1, "value": "18", "label": "Base"}, {"id": 2, "value": "14", "label": "Peau de Fer", "conditional": true}]
   }
 }

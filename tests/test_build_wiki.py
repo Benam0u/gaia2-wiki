@@ -176,8 +176,14 @@ class TestFicheTechnique(unittest.TestCase):
     def test_rendu(self):
         prof = json.loads((Path(__file__).resolve().parent / "fixtures" / "mini_profile.json").read_text())
         h = render_fiche_technique(prof, FIX)
-        self.assertIn("ZogZork", h); self.assertIn("12 (D12) +4", h)
-        self.assertIn("RD max 32 (base 18)", h)
+        self.assertIn("ZogZork", h)
+        # Layout PDF : valeur, de en petit, bonus en accent
+        self.assertIn('12 <span class="ft-die">(D12)</span> <span class="ft-bonus">+4</span>', h)
+        self.assertIn("Dextérité", h)      # cles courtes dex/emp/sag/int du JSON reel
+        self.assertIn("Intelligence", h)
+        self.assertIn("RD 32 (18)", h)
+        self.assertIn("(D12+4) + (D6)", h)
+        self.assertIn("Notes - Quêtes - Équipements", h)
         self.assertIn("<strong>Paume de Boudh'Orc", h)   # HTML passe tel quel
         self.assertIn("Bagarre", h)
 
@@ -262,7 +268,7 @@ class TestIntegration(unittest.TestCase):
             self.assertTrue((td / "wiki.html").is_file())
             self.assertTrue((td / "wiki_partage.html").is_file())
             html = (td / "wiki.html").read_text(encoding="utf-8")
-            self.assertIn("RD max 32", html)
+            self.assertIn("RD 32 (18)", html)
             self.assertLess(dt, 2.0)
 
 class TestUnderscore(unittest.TestCase):
