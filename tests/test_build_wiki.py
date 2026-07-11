@@ -181,6 +181,13 @@ class TestFicheTechnique(unittest.TestCase):
         self.assertIn("<strong>Paume de Boudh'Orc", h)   # HTML passe tel quel
         self.assertIn("Bagarre", h)
 
+    def test_pas_de_descriptions(self):
+        # Le narratif vit dans zogzork.md (spec §5) : la fiche technique ne le duplique pas.
+        prof = json.loads((Path(__file__).resolve().parent / "fixtures" / "mini_profile.json").read_text())
+        h = render_fiche_technique(prof, FIX)
+        self.assertNotIn("Grand orc noueux", h)
+        self.assertNotIn("Ne dans les plaines", h)
+
 class TestAssembly(unittest.TestCase):
     def setUp(self):
         fiches = load_fiches(FIX)

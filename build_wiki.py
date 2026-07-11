@@ -657,9 +657,10 @@ def render_fusion_warning(meta, resolver, ctx=None):
 def render_fiche_technique(profile, wiki_root):
     """Rendu de data/zogzork_profile.json (attributs, PV/PF, degats, RD, etc.).
 
-    Les champs bonusRace / abilities / descriptions viennent de l'outil de fiche
-    de Benoit : HTML de confiance insere sans echappement. Les valeurs libres
-    (attributs, notes, competences) sont echappees.
+    Les champs bonusRace / abilities viennent de l'outil de fiche de Benoit :
+    HTML de confiance insere sans echappement. Les valeurs libres (attributs,
+    notes, competences) sont echappees. Le narratif (descriptions) n'est PAS
+    rendu ici : il vit dans zogzork.md (spec §5).
     """
     sheet = profile.get("sheet", {})
     out = ['<div class="fiche-tech">']
@@ -756,11 +757,8 @@ def render_fiche_technique(profile, wiki_root):
         out.append("<h4>Capacites</h4><ul>%s</ul>"
                    % "".join("<li>%s</li>" % a for a in abilities))
 
-    # Descriptions (HTML de confiance, meme outil)
-    desc = sheet.get("descriptions", {}) or {}
-    for label, txt in desc.items():
-        if str(txt).strip():
-            out.append("<h4>%s</h4><p>%s</p>" % (html.escape(str(label)), txt))
+    # Le narratif (descriptions Physique/Histoire/Relations) vit dans zogzork.md
+    # (spec §5, un fait un endroit) : la fiche technique ne le duplique pas.
 
     # Notes (texte libre, echappe, pre-wrap)
     notes = str(sheet.get("notes", "")).strip()
