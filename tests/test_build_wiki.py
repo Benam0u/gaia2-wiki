@@ -1,7 +1,7 @@
 import sys, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
-from build_wiki import parse_frontmatter, slugify, norm_key
+from build_wiki import parse_frontmatter, slugify, norm_key, md_convert
 
 class TestFrontmatter(unittest.TestCase):
     def test_basic(self):
@@ -34,6 +34,22 @@ class TestSlug(unittest.TestCase):
     def test_norm_key(self):
         self.assertEqual(norm_key("KRETEL"), norm_key("Kretel"))
         self.assertEqual(norm_key("Mère  des monstres"), norm_key("mere des Monstres"))
+
+class TestMarkdown(unittest.TestCase):
+    def test_heading_et_gras(self):
+        h = md_convert("## Titre\n\nDu **gras** et de l'*italique*.")
+        self.assertIn("<h2", h); self.assertIn("<strong>gras</strong>", h)
+
+    def test_table(self):
+        h = md_convert("| A | B |\n|---|---|\n| 1 | 2 |")
+        self.assertIn("tablewrap", h); self.assertIn("<td>1</td>", h)
+
+    def test_tasklist(self):
+        h = md_convert("- [x] fait\n- [ ] a faire")
+        self.assertIn("tasklist", h)
+
+    def test_echappement(self):
+        self.assertIn("&lt;script&gt;", md_convert("du <script> mechant"))
 
 if __name__ == "__main__":
     unittest.main()
