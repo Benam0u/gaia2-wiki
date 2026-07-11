@@ -358,6 +358,22 @@ class TestReviewFixes(unittest.TestCase):
     def test_recherche_clic_ferme(self):
         self.assertIn("sres.addEventListener('click'", self.full)
 
+    # Fix 18 : le H1 d'ouverture du corps est retire (render_section porte le titre)
+    def test_h1_unique_par_fiche(self):
+        neros = self.full.split('id="p-neros"')[1].split("</section>")[0]
+        self.assertEqual(neros.count("<h1"), 1)
+
+    # Fix 18 : un H1 en milieu de corps reste rendu
+    def test_h1_milieu_corps_conserve(self):
+        fiches = [{"slug": "x", "title": "X", "meta": {"resume": "r"},
+                   "body": "# X\n\nIntro.\n\n# Sous-titre\n\nTexte.",
+                   "reldir": "concepts", "mtime": 0}]
+        resolver, conflicts = build_resolver(fiches)
+        out, _ = build_html(fiches, resolver, conflicts, FIX, share=False, profile=None)
+        sec = out.split('id="p-x"')[1].split("</section>")[0]
+        self.assertEqual(sec.count("<h1>X</h1>"), 1)     # titre non duplique
+        self.assertIn("<h1>Sous-titre</h1>", sec)        # H1 en milieu conserve
+
     # Fix 2 : %% non ferme fait echouer le build, aucune sortie ecrite
     def test_pourcent_non_ferme_fail_closed(self):
         repo = Path(__file__).resolve().parent.parent
@@ -374,6 +390,25 @@ class TestReviewFixes(unittest.TestCase):
             self.assertEqual(proc.returncode, 2, proc.stderr)
             self.assertEqual((td / "wiki_partage.html").read_text(encoding="utf-8"), sentinel)
             self.assertFalse((td / "wiki.html").is_file())
+
+
+class TestH1Unique(unittest.TestCase):
+    def test_h1_unique_et_h1_median_conserve(self):
+        # Le H1 d'ouverture du corps ne doit pas doubler celui de render_section ;
+        # un H1 en milieu de corps reste rendu.
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "w"
+            shutil.copytree(FIX, d)
+            p = d / "personnages" / "neros.md"
+            p.write_text(p.read_text(encoding="utf-8")
+                         + "\n# Chapitre tardif\n\nSuite.\n", encoding="utf-8")
+            fiches = load_fiches(d)
+            resolver, conflicts = build_resolver(fiches)
+            out, _ = build_html(fiches, resolver, conflicts, d,
+                                share=False, profile=None)
+            sec = out.split('id="p-neros"')[1].split("</section>")[0]
+            self.assertEqual(sec.count("<h1"), 2)
+            self.assertIn("Chapitre tardif", sec)
 
 
 if __name__ == "__main__":

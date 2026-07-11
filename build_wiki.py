@@ -809,10 +809,16 @@ def _render_markdown(body, resolver, share, ctx, tech_html=""):
     return out.replace("\x02TECH\x03", tech_html)
 
 
+LEAD_H1_RE = re.compile(r"\A\s*#\s+[^\n]*\n?")
+
+
 def render_body(fiche, resolver, share, profile, wiki_root, report, ctx=None):
     """Corps d'une fiche : blocs prives + directive fiche technique + markdown."""
     tech = render_fiche_technique(profile, wiki_root) if profile is not None else ""
-    return _render_markdown(fiche["body"], resolver, share, ctx, tech)
+    # Le H1 d'ouverture est la cle de resolution ; render_section affiche deja
+    # le titre (avec badges) : on ne le rend pas une deuxieme fois.
+    body = LEAD_H1_RE.sub("", fiche["body"], count=1)
+    return _render_markdown(body, resolver, share, ctx, tech)
 
 
 def render_backlinks(slug, backlinks, share, by_slug):
