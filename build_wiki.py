@@ -18,7 +18,10 @@ Spec de reference : docs/2026-07-10-wiki-gaia2-spec.md
 import base64
 import datetime
 import html
+import json
 import re
+import sys
+import time
 import unicodedata
 from pathlib import Path
 
@@ -145,9 +148,16 @@ def inline(text, resolver=None, ctx=None):
     if resolver is not None:
         def _wl(m):
             name = m.group(1).strip()
-            label = (m.group(2) or m.group(1)).strip()
+            raw_label = m.group(2)
+            label = (raw_label or m.group(1)).strip()
             target = resolver.get(norm_key(name))
             if target:
+                if ctx and ctx.get("share") and target in ctx.get("private_targets", ()):
+                    # Partage : ne pas teaser une fiche privee. Lien nu -> supprime,
+                    # lien avec libelle explicite -> texte simple aplati.
+                    if raw_label is None:
+                        return ""
+                    return '<span class="flat">%s</span>' % label
                 return '<a class="wl" href="#%s">%s</a>' % (target, label)
             return '<span class="deadlink" title="Fiche a creer">%s</span>' % label
         text = WIKILINK.sub(_wl, text)
@@ -517,7 +527,7 @@ def render_badges(meta):
     return "".join(out)
 
 
-def render_infobox(fiche, wiki_root, resolver=None):
+def render_infobox(fiche, wiki_root, resolver=None, ctx=None):
     """Bloc infobox flottant : portrait + lignes cle/valeur. "" si rien a montrer."""
     meta = fiche["meta"]
     rows = []  # (label, valeur_html)
@@ -528,7 +538,7 @@ def render_infobox(fiche, wiki_root, resolver=None):
     if meta.get("etat"):
         rows.append(("Etat", html.escape(str(meta["etat"]))))
     if meta.get("decouverte"):
-        rows.append(("Decouverte", inline(str(meta["decouverte"]), resolver)))
+        rows.append(("Decouverte", inline(str(meta["decouverte"]), resolver, ctx)))
     tags = meta.get("tags")
     if tags:
         if isinstance(tags, str):
@@ -537,7 +547,7 @@ def render_infobox(fiche, wiki_root, resolver=None):
     box = meta.get("infobox")
     if isinstance(box, dict):
         for k, v in box.items():
-            rows.append((html.escape(str(k)), inline(str(v), resolver)))
+            rows.append((html.escape(str(k)), inline(str(v), resolver, ctx)))
 
     portrait = meta.get("portrait")
     img_html = ""
@@ -555,14 +565,14 @@ def render_infobox(fiche, wiki_root, resolver=None):
     return "".join(parts)
 
 
-def render_fusion_warning(meta, resolver):
+def render_fusion_warning(meta, resolver, ctx=None):
     """Avertissement anti-fusion (affaires). "" si non present."""
     names = meta.get("ne-pas-fusionner")
     if not names:
         return ""
     if isinstance(names, str):
         names = [names]
-    links = ", ".join(inline("[[%s]]" % n, resolver) for n in names)
+    links = ", ".join(inline("[[%s]]" % n, resolver, ctx) for n in names)
     return ('<div class="warn-fusion">Ne pas fusionner avec %s '
             "sans preuve en seance.</div>") % links
 
@@ -703,15 +713,15 @@ def _attr(s):
     return html.escape(str(s), quote=True)
 
 
-def render_body(fiche, resolver, share, profile, wiki_root, report):
+def render_body(fiche, resolver, share, profile, wiki_root, report, ctx=None):
     """Corps d'une fiche : blocs prives + directive fiche technique + markdown."""
     body = fiche["body"]
     tokbody, blocks, unbalanced = extract_private(body)
     if unbalanced:
         report["unbalanced"].append(fiche["slug"])
     tokbody = tokbody.replace("{{fiche_technique}}", "\x02TECH\x03")
-    out = md_convert(tokbody, resolver)
-    out = render_private(out, blocks, share, resolver)
+    out = md_convert(tokbody, resolver, ctx)
+    out = render_private(out, blocks, share, resolver, ctx)
     tech = render_fiche_technique(profile, wiki_root) if profile is not None else ""
     return out.replace("\x02TECH\x03", tech)
 
@@ -731,7 +741,7 @@ def render_backlinks(slug, backlinks, share, by_slug):
     return '<div class="backlinks">Mentionne dans : %s</div>' % ", ".join(links)
 
 
-def render_section(f, resolver, backlinks, share, profile, wiki_root, by_slug, report):
+def render_section(f, resolver, backlinks, share, profile, wiki_root, by_slug, report, ctx):
     meta = f["meta"]
     alias = meta.get("alias") or []
     if isinstance(alias, str):
@@ -746,9 +756,9 @@ def render_section(f, resolver, backlinks, share, profile, wiki_root, by_slug, r
     return ('<section class="page" id="p-%s"%s>'
             "<h1>%s%s</h1>%s%s%s%s</section>") % (
         f["slug"], attrs, html.escape(f["title"]), render_badges(meta),
-        render_infobox(f, wiki_root, resolver),
-        render_fusion_warning(meta, resolver),
-        render_body(f, resolver, share, profile, wiki_root, report),
+        render_infobox(f, wiki_root, resolver, ctx),
+        render_fusion_warning(meta, resolver, ctx),
+        render_body(f, resolver, share, profile, wiki_root, report, ctx),
         render_backlinks(f["slug"], backlinks, share, by_slug))
 
 
@@ -773,7 +783,7 @@ def render_index(reldir, label, entity_fiches):
         reldir, html.escape(label), table)
 
 
-def render_accueil(entity_fiches, by_slug, resolver, dead):
+def render_accueil(entity_fiches, by_slug, resolver, dead, ctx=None):
     ec = [f for f in entity_fiches
           if f["reldir"] == "affaires" and f["meta"].get("etat") == "en-cours"]
     questions = by_slug.get("questions")
@@ -789,7 +799,7 @@ def render_accueil(entity_fiches, by_slug, resolver, dead):
                 html.escape(f["meta"].get("resume", ""))))
         left.append("</ul>")
     if questions:
-        left.append(md_convert(_strip_h1(questions["body"]), resolver))
+        left.append(md_convert(_strip_h1(questions["body"]), resolver, ctx))
 
     right = []
     if sessions:
@@ -821,10 +831,10 @@ def render_accueil(entity_fiches, by_slug, resolver, dead):
         "".join(left), "".join(right))
 
 
-def render_chronologie(chrono, sessions, resolver):
+def render_chronologie(chrono, sessions, resolver, ctx=None):
     parts = ['<section class="page" id="p-chronologie"><h1>Chronologie</h1>']
     if chrono:
-        parts.append(md_convert(_strip_h1(chrono["body"]), resolver))
+        parts.append(md_convert(_strip_h1(chrono["body"]), resolver, ctx))
     if sessions:
         parts.append("<h2>Sessions</h2><ul>")
         for f in sorted(sessions, key=_session_num):
@@ -983,6 +993,7 @@ td.empty{color:var(--text-3);font-style:italic}
 a.wl{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,168,90,.35)}
 a.wl:hover{border-bottom-color:var(--gold)}
 .deadlink{color:var(--rust);border-bottom:1px dotted var(--rust);cursor:help}
+.flat{color:var(--text-2)}
 .prive{background:var(--surface-2);border-left:2px solid var(--text-3);padding:2px 6px}
 div.prive{padding:10px 14px;margin:12px 0}
 .hyp{border-bottom:1px dashed var(--gold)}
@@ -1103,6 +1114,9 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
     _, backlinks, dead = collect_links(fiches, resolver, include_private=not share)
     report["dead"] = dead
 
+    ctx = {"share": share,
+           "private_targets": {f["slug"] for f in fiches if f["meta"].get("prive")}}
+
     entity_fiches = [f for f in visible
                      if not (f["reldir"] == "" and f["slug"] in SPECIAL_SLUGS)]
     report["n_fiches"] = len(entity_fiches)
@@ -1115,15 +1129,15 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
             report["orphans"].append(f["slug"])
 
     sections = [render_section(f, resolver, backlinks, share, profile,
-                               wiki_root, by_slug, report)
+                               wiki_root, by_slug, report, ctx)
                 for f in entity_fiches]
 
     chrono = by_slug.get("chronologie")
     sessions = [f for f in entity_fiches if f["reldir"] == "sessions"]
-    sections.append(render_accueil(entity_fiches, by_slug, resolver, dead))
+    sections.append(render_accueil(entity_fiches, by_slug, resolver, dead, ctx))
     for reldir, label in NAV_TYPES:
         sections.append(render_index(reldir, label, entity_fiches))
-    sections.append(render_chronologie(chrono, sessions, resolver))
+    sections.append(render_chronologie(chrono, sessions, resolver, ctx))
     sections.append(render_systeme(entity_fiches, wiki_root))
 
     nav = [_nav_button("accueil", "Accueil"), _nav_button("chronologie", "Chronologie")]
@@ -1140,3 +1154,63 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
            .replace("__NAV__", "\n    ".join(nav))
            .replace("__SECTIONS__", "\n".join(sections)))
     return out, report
+
+
+# ===========================================================================
+#  Rapport et point d'entree CLI
+# ===========================================================================
+
+def print_report(report, dt):
+    counts = report["counts"]
+    detail = ", ".join("%d %s" % (counts[r], r or "racine") for r in sorted(counts))
+    print("%d fiches (%s)" % (report["n_fiches"], detail))
+    if report["dead"]:
+        print("Liens morts (%d) :" % len(report["dead"]))
+        for src, name in report["dead"]:
+            print("  %s -> %s" % (src, name))
+    if report["conflicts"]:
+        print("Conflits d'alias (%d) :" % len(report["conflicts"]))
+        for key, kept, ignored in report["conflicts"]:
+            print("  '%s' -> %s (ignore %s)" % (key, kept, ignored))
+    if report["orphans"]:
+        print("Orphelines (%d) : %s"
+              % (len(report["orphans"]), ", ".join(report["orphans"])))
+    if report["unbalanced"]:
+        print("Blocs prives non fermes : %s" % ", ".join(report["unbalanced"]))
+    if report["missing_images"]:
+        print("Images manquantes : %s" % ", ".join(report["missing_images"]))
+    print("Build en %.2f s" % dt)
+
+
+def main(argv=None):
+    argv = list(sys.argv[1:] if argv is None else argv)
+    root = Path(".")
+    if "--root" in argv:
+        root = Path(argv[argv.index("--root") + 1])
+    wiki_root = root / "wiki"
+
+    t0 = time.time()
+    fiches = load_fiches(wiki_root)
+    if not fiches:
+        print("Aucune fiche trouvee dans %s" % wiki_root)
+        return 1
+    resolver, conflicts = build_resolver(fiches)
+
+    profile = None
+    prof_path = root / "data" / "zogzork_profile.json"
+    if prof_path.is_file():
+        profile = json.loads(prof_path.read_text(encoding="utf-8"))
+
+    full, report = build_html(fiches, resolver, conflicts, wiki_root,
+                              share=False, profile=profile)
+    share, _ = build_html(fiches, resolver, conflicts, wiki_root,
+                          share=True, profile=profile)
+    (root / "wiki.html").write_text(full, encoding="utf-8")
+    (root / "wiki_partage.html").write_text(share, encoding="utf-8")
+
+    print_report(report, time.time() - t0)
+    return 0
+
+
+if __name__ == "__main__":
+    sys.exit(main())

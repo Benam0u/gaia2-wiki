@@ -153,5 +153,29 @@ class TestAssembly(unittest.TestCase):
     def test_backlinks_affiches(self):
         self.assertIn("Mentionne dans", self.html)
 
+class TestShareBuild(unittest.TestCase):
+    def setUp(self):
+        fiches = load_fiches(FIX)
+        resolver, conflicts = build_resolver(fiches)
+        self.full, _ = build_html(fiches, resolver, conflicts, FIX, share=False, profile=None)
+        self.share, _ = build_html(fiches, resolver, conflicts, FIX, share=True, profile=None)
+
+    def test_fiche_privee_absente(self):
+        self.assertIn("Contact Secret", self.full)
+        self.assertNotIn("Contact Secret", self.share)
+        self.assertNotIn("p-secret", self.share)
+
+    def test_blocs_prives_absents(self):
+        self.assertIn("une biere", self.full)
+        self.assertNotIn("une biere", self.share)
+
+    def test_lien_vers_prive_aplati(self):
+        self.assertIn('href="#secret"', self.full)
+        self.assertNotIn('href="#secret"', self.share)
+
+    def test_backlinks_partage(self):
+        neros_share = self.share.split('id="p-neros"')[1].split("</section>")[0]
+        self.assertNotIn("Contact Secret", neros_share)
+
 if __name__ == "__main__":
     unittest.main()
