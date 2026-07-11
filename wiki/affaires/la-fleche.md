@@ -1,6 +1,5 @@
 ---
 resume: Signature mystérieuse annonçant le cambriolage de Kretel ; identité inconnue, seule intrigue clairement ouverte
-statut: hypothese
 etat: en-cours
 tags: [enquete, simpol]
 alias: [Flèche]

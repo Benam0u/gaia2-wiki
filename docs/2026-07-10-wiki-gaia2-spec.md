@@ -119,6 +119,7 @@ Le statut peut aussi s'appliquer inline dans le corps : `{?: Axelle serait Axxel
 - `prive: true` dans le frontmatter : la fiche entiere est exclue de `wiki_partage.html` (contenu, entree d'index, resultats de recherche, backlinks).
 - `%%...%%` dans un corps de fiche : le bloc est exclu du partage (et affiche sur fond legerement distinct dans la version complete, pour se rappeler que c'est prive).
 - Dans le build partage, un `[[lien]]` vers une fiche privee est rendu en texte simple (pas en lien mort : ne pas teaser l'existence de la fiche).
+- Un bloc `%%` non ferme fait ECHOUER le build (fail-closed, exit 2, aucune sortie ecrite) : rien n'est publie tant que la fiche n'est pas corrigee. Decision durcie post-review 2026-07-11 - c'est LE garde-fou de la confidentialite.
 - Les deux fichiers sont generes a chaque build. Le partage = envoyer `wiki_partage.html` (Discord ou autre).
 
 ## 9. Chronologie a deux regimes
@@ -172,7 +173,7 @@ Etapes du build :
 4. Rendre `data/zogzork_profile.json` dans la fiche ZogZork.
 5. Generer index, accueil, chronologie ; embarquer les images en data URI.
 6. Emettre `wiki.html` (tout) et `wiki_partage.html` (sans fiches `prive`, sans blocs `%%`, liens vers prive aplatis).
-7. Afficher le rapport : N fiches, liens morts (liste), alias en conflit, orphelines, `%%` non fermes.
+7. Afficher le rapport : N fiches, liens morts (liste), alias en conflit, orphelines, images manquantes. Un `%%` non ferme est fatal (voir section 8) : echec avant toute ecriture.
 
 Contrainte de perf : build complet < 2 s, ouverture du wiki.html instantanee en `file://`.
 

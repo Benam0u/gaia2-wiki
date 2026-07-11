@@ -13,9 +13,9 @@ Trafic clandestin soupçonné à [[Simpol]], principalement autour du passage se
 - Un homme aperçu dans les bains semblait lié aux contrebandiers : l'[[Enquêteur du sauna|enquêteur infiltré]], qui affirmait jouer un double jeu afin de remonter le réseau, recevait un paiement pour les aider. Il a été arrêté et interrogé par les autorités impériales.
 - Après la perquisition et la fermeture de la taverne ([[Passage d'Ambroise]], dossier FERMÉ), {?: le réseau de contrebande peut avoir changé de route ou continuer d'exister par une autre voie}.
 
-## Fragments liés (contexte incertain)
+## Autres mentions de drogues dans les notes - aucun lien établi avec ce dossier
 
-- [[Mick]] apparaît comme collègue ou contact dans une affaire liée à une drogue magique.
+- [[Mick]] apparaît comme collègue ou contact dans une affaire liée à une drogue magique (dossier distinct, non relié).
 - Une nouvelle drogue appelée [[Weed]] est mentionnée.
 - [[Matt]] est noté comme un porteur humain.
 
