@@ -9,11 +9,35 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 
 ## Utilisation
 
-- Consulter : double-clic sur `wiki.html` (complet) ; partager au MJ/joueurs : envoyer `wiki_partage.html` (sans fiches `prive: true` ni blocs `%%...%%`).
-- Rebuild apres edition : `python3 build_wiki.py` depuis `Gaia2/` (0.1 s, rapport de coherence en console).
-- Post-session, deux modes : dicter les notes en vrac a Claude (il met a jour fiches + `sessions/session-NN.md` + rebuild, relire le diff git), ou editer les .md soi-meme puis rebuild. Prochaine session = 21, template `wiki/sessions/_template.md`.
+- Consulter : double-clic sur `wiki.html` (complet) ; partager au MJ/joueurs : envoyer `wiki_partage.html` (sans fiches `prive: true` ni blocs `%%...%%`). JAMAIS wiki.html.
+- Rebuild apres edition : `python3 build_wiki.py` depuis `Gaia2/` (0.15 s, rapport de coherence en console).
 - GARDE-FOU : un `%%` non ferme fait ECHOUER le build (fail-closed, rien n'est ecrit) - corriger la fiche indiquee puis relancer.
 - `scripts/extract_systeme.py` : NE PAS relancer sans raison, il ecrase les fiches systeme (voir son en-tete).
+
+## Alimentation - le process (valide 2026-07-11)
+
+Un seul canal : ouvrir une session Claude dans `~/claude` (ou `Gaia2/`) et TOUT balancer en vrac dans un meme message, sans structurer. Quatre types d'entree, melangeables :
+
+1. Photo(s) de notes manuscrites : glisser l'image dans le terminal (drag & drop) ou donner son chemin - Claude lit les notes sur la photo.
+2. Texte tape/colle en vrac.
+3. Corrections ("j'avais mal note, en fait c'est X", "nouveaute sur Y") - en langage naturel.
+4. Etoffage ("developpe la fiche Ambroise avec ca").
+
+Ce que Claude fait a chaque fois :
+
+1. Session de jeu -> cree d'abord `sessions/session-NN.md` (deroule brut, template section 12).
+2. Propage sur les fiches : creations, mises a jour, liens `[[...]]`, statuts. Les liens morts nouveaux sont normaux (fiches a creer plus tard, listees sur l'accueil).
+3. Rebuild + rapport.
+4. Recap de ce qui a change (fiches creees/modifiees + points ou il a du interpreter) -> relecture par Benoit (recap ou `git diff`), corrections, puis commit.
+
+Conventions de dictee (optionnelles, sinon Claude choisit et le signale dans le recap) :
+- "pas sur / je crois / peut-etre" -> marque hypothese (`statut:` ou `{?: ...}`).
+- "note perso / prive" -> bloc `%%...%%` (exclu du partage).
+- "a demander au MJ / a verifier" -> va dans `questions.md`.
+
+Cas particuliers :
+- Level-up : re-exporter le profil depuis le createur de fiche -> remplacer `data/zogzork_profile.json` (Claude strippe l'avatar) -> rebuild. La fiche technique (layout PDF depuis 2026-07-11) se regenere seule.
+- Mode manuel toujours possible : editer les .md a la main puis `python3 build_wiki.py` ; demander a Claude une passe de coherence de temps en temps.
 
 ## Decisions cles
 
