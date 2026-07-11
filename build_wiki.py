@@ -1114,6 +1114,9 @@ div.prive{padding:10px 14px;margin:12px 0}
   background:var(--surface);border:1px solid var(--line);padding:12px 14px}
 @media(max-width:680px){
   .topbar,nav{padding-left:22px;padding-right:22px}
+  nav{flex-wrap:nowrap;overflow-x:auto}
+  nav button{white-space:nowrap;padding:10px 10px 12px}
+  nav button.nav-search{margin-left:0}
   main{padding:28px 22px 72px}
   .page h1{font-size:32px}.page h2{font-size:23px}
   .home-cols{grid-template-columns:1fr}
@@ -1163,15 +1166,17 @@ var sov=document.getElementById('search-ov'),sin=document.getElementById('search
     sres=document.getElementById('search-res'),sel=-1;
 function openSearch(){sov.classList.add('show');sin.value='';renderRes('');sin.focus();}
 function closeSearch(){sov.classList.remove('show');}
+function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function renderRes(q){
   q=q.trim().toLowerCase();sel=-1;
   var hits=!q?[]:SEARCH.filter(function(e){
     return (e.title+' '+e.alias+' '+e.resume+' '+e.tags).toLowerCase().indexOf(q)>=0;}).slice(0,20);
   sres.innerHTML=hits.map(function(e){
-    return '<a href="#'+e.id+'">'+e.title+'<span class="rtype">'+e.type+'</span></a>';}).join('');
+    return '<a href="#'+esc(e.id)+'">'+esc(e.title)+'<span class="rtype">'+esc(e.type)+'</span></a>';}).join('');
 }
 sin.addEventListener('input',function(){renderRes(sin.value);});
 sov.addEventListener('click',function(e){if(e.target===sov)closeSearch();});
+sres.addEventListener('click',function(e){if(e.target.closest('a'))closeSearch();});
 document.addEventListener('keydown',function(e){
   if((e.ctrlKey||e.metaKey)&&e.key.toLowerCase()==='k'){e.preventDefault();openSearch();return;}
   if(!sov.classList.contains('show'))return;
@@ -1190,6 +1195,11 @@ route();
 </body>
 </html>
 """
+
+
+def _js_json(obj):
+    """json.dumps sur pour un bloc <script> : neutralise </ (ex. </script>)."""
+    return json.dumps(obj, separators=(",", ":")).replace("</", "<\\/")
 
 
 def _nav_button(slug, label):
@@ -1249,12 +1259,14 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
 
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     title = "Gaia 2 - Archives de ZogZork"
+    # __SECTIONS__ substitue en DERNIER : un placeholder litteral dans un corps
+    # de fiche ne doit pas etre reinterprete.
     out = (TEMPLATE
            .replace("__TITLE__", title)
            .replace("__TIMESTAMP__", stamp)
            .replace("__NAV__", "\n    ".join(nav))
-           .replace("__SECTIONS__", "\n".join(sections))
-           .replace("__IMGDATA__", json.dumps(IMG_REGISTRY, separators=(",", ":"))))
+           .replace("__IMGDATA__", _js_json(IMG_REGISTRY))
+           .replace("__SECTIONS__", "\n".join(sections)))
     return out, report
 
 

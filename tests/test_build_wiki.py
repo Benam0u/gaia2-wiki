@@ -5,7 +5,7 @@ from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
                         load_fiches, build_resolver, collect_links,
                         extract_private, render_private, inline, split_row,
                         render_infobox, render_badges, render_fiche_technique,
-                        TYPE_LABELS, build_html)
+                        TYPE_LABELS, build_html, _js_json)
 
 FIX = Path(__file__).resolve().parent / "fixtures" / "mini_wiki"
 
@@ -330,6 +330,33 @@ class TestReviewFixes(unittest.TestCase):
     def test_backlink_special_slug(self):
         self.assertNotIn('href="#questions"', self.full)
         self.assertNotIn('href="#questions"', self.share)
+
+    # Fix 12 : la recherche echappe title/type avant innerHTML
+    def test_recherche_js_echappe(self):
+        self.assertIn("function esc(", self.full)
+        self.assertIn("esc(e.title)", self.full)
+
+    # Fix 14 : un placeholder litteral dans un corps de fiche survit
+    def test_placeholder_litteral_preserve(self):
+        fiches = [{"slug": "doc", "title": "Doc", "meta": {"resume": "x"},
+                   "body": "# Doc\n\nLe jeton __IMGDATA__ reste litteral.",
+                   "reldir": "concepts", "mtime": 0}]
+        resolver, conflicts = build_resolver(fiches)
+        out, _ = build_html(fiches, resolver, conflicts, FIX, share=False, profile=None)
+        self.assertIn("__IMGDATA__", out)
+
+    # Fix 15 : _js_json neutralise </ pour ne pas casser le bloc <script>
+    def test_js_json_echappe_slash(self):
+        self.assertNotIn("</", _js_json({"img</script>/p.png": "data:image/png;base64,AAA"}))
+        self.assertIn("<\\/", _js_json({"a</b": "x"}))
+
+    # Fix 16 : nav mobile en une ligne scrollable
+    def test_nav_mobile_scrollable(self):
+        self.assertIn("flex-wrap:nowrap", self.full)
+
+    # Fix 17 : un clic sur un resultat ferme l'overlay
+    def test_recherche_clic_ferme(self):
+        self.assertIn("sres.addEventListener('click'", self.full)
 
     # Fix 2 : %% non ferme fait echouer le build, aucune sortie ecrite
     def test_pourcent_non_ferme_fail_closed(self):
