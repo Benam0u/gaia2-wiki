@@ -459,7 +459,12 @@ class TestRelations(unittest.TestCase):
             self.assertIn("Relations :", fleche)           # bloc entrant cote cible
             self.assertIn("(Conseiller de)", fleche)
             # pas de doublon : Neros dans Relations, PAS dans Mentionne dans
-            self.assertEqual(fleche.count('href="#neros"'), 1)
+            import re
+            rel = re.search(r'class="relations-in">(.*?)</div>', fleche, re.S)
+            self.assertIn('href="#neros"', rel.group(1))
+            back = re.search(r'class="backlinks">(.*?)</div>', fleche, re.S)
+            if back:
+                self.assertNotIn('href="#neros"', back.group(1))
 
     def test_relations_source_privee_masquee_en_partage(self):
         with tempfile.TemporaryDirectory() as tmp:
