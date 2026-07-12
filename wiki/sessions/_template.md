@@ -2,9 +2,9 @@
 resume: (une ligne resumant la session)
 ---
 
-# Session NN
+# Session du JJ/MM/AAAA
 
-(Copier ce fichier en `session-NN.md`, remplacer NN par le numéro, puis remplir les sections ci-dessous.)
+(Copier ce fichier en `session-AAAA-MM-JJ.md` (date de la séance), titre `# Session du JJ/MM/AAAA`, puis remplir les sections ci-dessous.)
 
 ## Date réelle et numéro de séance
 

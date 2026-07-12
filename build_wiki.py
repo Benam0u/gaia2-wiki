@@ -819,8 +819,12 @@ def _strip_h1(body):
 
 
 def _session_num(fiche):
-    m = re.search(r"(\d+)", fiche["slug"])
-    return int(m.group(1)) if m else -1
+    """Cle de tri : concatene tous les chiffres du slug.
+
+    session-21 -> 21 ; session-2026-07-10 -> 20260710 (les dates ISO trient
+    naturellement et passent apres les anciens numeros simples)."""
+    digits = "".join(re.findall(r"\d+", fiche["slug"]))
+    return int(digits) if digits else -1
 
 
 def _attr(s):
@@ -1017,6 +1021,62 @@ def render_systeme(entity_fiches, wiki_root):
     return "".join(parts)
 
 
+# Groupes de la Toile : (libelle, couleur). Les cles systeme partagent un chip.
+GRAPH_GROUPS = {
+    "personnages": ("Personnages", "#D4A85A"),
+    "lieux": ("Lieux", "#6FAE96"),
+    "factions": ("Factions", "#7E9CC8"),
+    "affaires": ("Affaires", "#E25C3D"),
+    "objets": ("Objets", "#CFC9BB"),
+    "creatures": ("Creatures", "#B07FC7"),
+    "concepts": ("Concepts", "#5A9FAF"),
+    "sessions": ("Sessions", "#6A6660"),
+    "systeme/races": ("Systeme", "#4E5560"),
+    "systeme/classes": ("Systeme", "#4E5560"),
+    "systeme": ("Systeme", "#4E5560"),
+}
+
+
+def graph_data(entity_fiches, links_out):
+    """{nodes, links, colors} pour la Toile ; aretes = wikilinks dedupliques."""
+    idx, nodes = {}, []
+    for f in entity_fiches:
+        g = f["reldir"] if f["reldir"] in GRAPH_GROUPS else "concepts"
+        idx[f["slug"]] = len(nodes)
+        nodes.append({"id": f["slug"], "t": f["title"], "g": g})
+    pairs = set()
+    for src, targets in links_out.items():
+        if src not in idx:
+            continue
+        for dst in targets:
+            if dst in idx and dst != src:
+                pairs.add(tuple(sorted((idx[src], idx[dst]))))
+    colors = {k: v[1] for k, v in GRAPH_GROUPS.items()}
+    return {"nodes": nodes, "links": sorted(pairs), "colors": colors}
+
+
+def render_toile():
+    """Page Toile : graphe de connectivite des fiches (canvas, JS du TEMPLATE)."""
+    seen, chips = set(), []
+    for key, (label, color) in GRAPH_GROUPS.items():
+        if label in seen:
+            continue
+        seen.add(label)
+        keys = ",".join(k for k, v in GRAPH_GROUPS.items() if v[0] == label)
+        off = " off" if label in ("Sessions", "Systeme") else ""
+        chips.append('<button class="tchip%s" data-g="%s" style="--c:%s">%s</button>'
+                     % (off, keys, color, html.escape(label)))
+    return ('<section class="page" id="p-toile"><h1>Toile</h1>'
+            '<p class="toile-hint">Chaque n\u0153ud est une fiche, chaque fil un lien entre fiches. '
+            'Cliquer un n\u0153ud = ouvrir la fiche. Molette ou boutons = zoom, glisser = d\u00e9placer, '
+            'survoler = voisins.</p>'
+            '<div class="toile-chips">%s</div>'
+            '<div class="toile-wrap"><canvas id="toile"></canvas>'
+            '<div class="toile-zoom"><button id="tz-in">+</button>'
+            '<button id="tz-out">&minus;</button><button id="tz-fit">&#8962;</button></div>'
+            "</div></section>" % "".join(chips))
+
+
 TEMPLATE = r"""<!DOCTYPE html>
 <html lang="fr">
 <head>
@@ -1153,6 +1213,17 @@ div.prive{padding:10px 14px;margin:12px 0}
 .portrait-grid a{text-align:center;color:var(--text-2);text-decoration:none;font-size:13px}
 .portrait-grid img{width:100%;border:1px solid var(--line)}
 .home-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
+.toile-hint{font-size:13px;color:var(--text-3)}
+.toile-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
+.tchip{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
+  padding:5px 10px;background:transparent;border:1px solid var(--line-strong);color:var(--text-2);cursor:pointer}
+.tchip::before{content:'';display:inline-block;width:8px;height:8px;background:var(--c);margin-right:7px;vertical-align:baseline}
+.tchip.off{opacity:.35}
+.toile-wrap{position:relative;height:72vh;border:1px solid var(--line);background:var(--surface);overflow:hidden}
+#toile{width:100%;height:100%;display:block;cursor:grab;touch-action:none}
+.toile-zoom{position:absolute;right:10px;top:10px;display:flex;flex-direction:column;gap:6px}
+.toile-zoom button{width:34px;height:34px;background:var(--surface-2);border:1px solid var(--line-strong);
+  color:var(--text);font-size:16px;cursor:pointer}
 .fiche-tech{clear:both;margin-top:8px}
 .ft-title{text-align:center;font-family:var(--mono);font-size:12px;font-weight:600;
   letter-spacing:.2em;text-transform:uppercase;color:var(--gold);
@@ -1188,6 +1259,7 @@ div.prive{padding:10px 14px;margin:12px 0}
   .home-cols{grid-template-columns:1fr}
   .infobox{float:none;width:auto;margin:0 0 18px}
   .ft-id,.ft-main,.ft-combat,.ft-duo{grid-template-columns:1fr}
+  .toile-wrap{height:62vh}
 }
 </style>
 </head>
@@ -1217,6 +1289,7 @@ function show(slug){
   if(history.replaceState) history.replaceState(null,'','#'+slug);
   window.scrollTo(0,0);
   closeSearch();
+  if(slug==='toile'){if(!TL.ready)tlInit();else{tlSize();tlDraw();}}
 }
 function route(){
   var h=location.hash.replace('#','')||'accueil';
@@ -1269,6 +1342,123 @@ function mark(items){items.forEach(function(a,i){a.classList.toggle('sel',i===se
 var IMGS=__IMGDATA__;
 document.querySelectorAll('img.pimg').forEach(function(el){
   var u=IMGS[el.dataset.img];if(u)el.src=u;else el.style.display='none';});
+
+/* ---- Toile : graphe de connectivite ---------------------------------- */
+var GRAPH=__GRAPHDATA__;
+var TL={ready:false,off:{},nodes:[],links:[],zoom:1,ox:0,oy:0,hover:-1,drag:false};
+document.querySelectorAll('.tchip').forEach(function(c){
+  if(c.classList.contains('off'))c.dataset.g.split(',').forEach(function(g){TL.off[g]=1;});
+  c.addEventListener('click',function(){
+    var on=c.classList.toggle('off');
+    c.dataset.g.split(',').forEach(function(g){if(on)TL.off[g]=1;else delete TL.off[g];});
+    tlBuild();tlFit();tlDraw();});
+});
+function tlBuild(){
+  var map={};TL.nodes=[];TL.links=[];
+  GRAPH.nodes.forEach(function(n,i){
+    if(TL.off[n.g])return;
+    map[i]=TL.nodes.length;
+    TL.nodes.push({t:n.t,id:n.id,c:GRAPH.colors[n.g]||'#9D968A',x:0,y:0,vx:0,vy:0,d:1,nb:[]});});
+  GRAPH.links.forEach(function(e){
+    var a=map[e[0]],b=map[e[1]];
+    if(a===undefined||b===undefined)return;
+    TL.links.push([a,b]);TL.nodes[a].d++;TL.nodes[b].d++;
+    TL.nodes[a].nb.push(b);TL.nodes[b].nb.push(a);});
+  var n=TL.nodes.length;
+  TL.nodes.forEach(function(nd,i){
+    var a=i/Math.max(n,1)*6.2832;
+    nd.x=Math.cos(a)*260+Math.sin(i*7.3)*70;nd.y=Math.sin(a)*260+Math.cos(i*3.7)*70;});
+  for(var it=0;it<260;it++){
+    var k=(1-it/260)*0.85;
+    for(var i=0;i<n;i++)for(var j=i+1;j<n;j++){
+      var A=TL.nodes[i],B=TL.nodes[j],dx=A.x-B.x,dy=A.y-B.y,d2=dx*dx+dy*dy+1;
+      if(d2>90000)continue;
+      var f=Math.min(2600/d2,3)*k;A.vx+=dx*f;A.vy+=dy*f;B.vx-=dx*f;B.vy-=dy*f;}
+    TL.links.forEach(function(e){
+      var A=TL.nodes[e[0]],B=TL.nodes[e[1]],dx=B.x-A.x,dy=B.y-A.y,
+          d=Math.sqrt(dx*dx+dy*dy)+0.1,f=(d-70)*0.015*k;
+      A.vx+=dx/d*f*70;A.vy+=dy/d*f*70;B.vx-=dx/d*f*70;B.vy-=dy/d*f*70;});
+    TL.nodes.forEach(function(nd){
+      nd.vx-=nd.x*0.0012*k;nd.vy-=nd.y*0.0012*k;
+      nd.x+=Math.max(-14,Math.min(14,nd.vx));nd.y+=Math.max(-14,Math.min(14,nd.vy));
+      nd.vx*=0.6;nd.vy*=0.6;});
+  }
+}
+function tlCanvas(){return document.getElementById('toile');}
+function tlSize(){
+  var cv=tlCanvas(),r=cv.parentNode.getBoundingClientRect(),dpr=window.devicePixelRatio||1;
+  cv.width=r.width*dpr;cv.height=r.height*dpr;TL.w=r.width;TL.h=r.height;TL.dpr=dpr;}
+function tlFit(){
+  if(!TL.nodes.length){TL.zoom=1;TL.ox=0;TL.oy=0;return;}
+  var x0=1e9,y0=1e9,x1=-1e9,y1=-1e9;
+  TL.nodes.forEach(function(nd){x0=Math.min(x0,nd.x);y0=Math.min(y0,nd.y);x1=Math.max(x1,nd.x);y1=Math.max(y1,nd.y);});
+  TL.zoom=Math.min((TL.w-70)/Math.max(x1-x0,1),(TL.h-70)/Math.max(y1-y0,1));
+  TL.zoom=Math.max(0.12,Math.min(TL.zoom,2.2));
+  TL.ox=-(x0+x1)/2*TL.zoom;TL.oy=-(y0+y1)/2*TL.zoom;}
+function tlR(nd){return 3.5+Math.sqrt(nd.d)*1.7;}
+function tlDraw(){
+  var cv=tlCanvas(),cx=cv.getContext('2d');
+  cx.setTransform(TL.dpr,0,0,TL.dpr,0,0);
+  cx.clearRect(0,0,TL.w,TL.h);
+  cx.translate(TL.w/2+TL.ox,TL.h/2+TL.oy);cx.scale(TL.zoom,TL.zoom);
+  var hv=TL.hover,nbs={};
+  if(hv>=0){nbs[hv]=1;TL.nodes[hv].nb.forEach(function(i){nbs[i]=1;});}
+  TL.links.forEach(function(e){
+    var hi=hv>=0&&(e[0]===hv||e[1]===hv);
+    cx.strokeStyle=hi?'rgba(212,168,90,.75)':'rgba(157,150,138,'+(hv>=0?'.06':'.16')+')';
+    cx.lineWidth=(hi?1.6:1)/TL.zoom;
+    cx.beginPath();cx.moveTo(TL.nodes[e[0]].x,TL.nodes[e[0]].y);
+    cx.lineTo(TL.nodes[e[1]].x,TL.nodes[e[1]].y);cx.stroke();});
+  TL.nodes.forEach(function(nd,i){
+    var dim=hv>=0&&!nbs[i];
+    cx.globalAlpha=dim?0.25:1;
+    cx.fillStyle=nd.c;cx.beginPath();cx.arc(nd.x,nd.y,tlR(nd),0,6.2832);cx.fill();
+    if(i===hv){cx.strokeStyle='#ECE7DA';cx.lineWidth=1.5/TL.zoom;cx.stroke();}
+    cx.globalAlpha=1;});
+  cx.font=(11/TL.zoom)+'px JetBrains Mono,monospace';cx.textAlign='center';
+  TL.nodes.forEach(function(nd,i){
+    var show=(hv>=0?nbs[i]:(TL.zoom>=0.9||nd.d>=8));
+    if(!show)return;
+    cx.globalAlpha=hv>=0&&!nbs[i]?0.2:0.95;
+    cx.fillStyle=i===hv?'#ECE7DA':'#9D968A';
+    cx.fillText(nd.t,nd.x,nd.y-tlR(nd)-4/TL.zoom);cx.globalAlpha=1;});
+}
+function tlPick(mx,my){
+  var x=(mx-TL.w/2-TL.ox)/TL.zoom,y=(my-TL.h/2-TL.oy)/TL.zoom,best=-1,bd=1e9;
+  TL.nodes.forEach(function(nd,i){
+    var dx=nd.x-x,dy=nd.y-y,d=Math.sqrt(dx*dx+dy*dy);
+    if(d<tlR(nd)+6/TL.zoom&&d<bd){bd=d;best=i;}});
+  return best;}
+function tlInit(){
+  if(TL.ready)return;TL.ready=true;
+  tlSize();tlBuild();tlFit();tlDraw();
+  var cv=tlCanvas(),px=0,py=0,moved=false;
+  function xy(ev){var r=cv.getBoundingClientRect(),t=ev.touches?ev.touches[0]:ev;
+    return [t.clientX-r.left,t.clientY-r.top];}
+  cv.addEventListener('mousedown',function(e){TL.drag=true;moved=false;px=e.clientX;py=e.clientY;});
+  window.addEventListener('mouseup',function(){TL.drag=false;});
+  cv.addEventListener('mousemove',function(e){
+    if(TL.drag){TL.ox+=e.clientX-px;TL.oy+=e.clientY-py;px=e.clientX;py=e.clientY;moved=true;tlDraw();return;}
+    var m=xy(e),h=tlPick(m[0],m[1]);
+    if(h!==TL.hover){TL.hover=h;cv.style.cursor=h>=0?'pointer':'grab';tlDraw();}});
+  cv.addEventListener('click',function(e){
+    if(moved)return;var m=xy(e),h=tlPick(m[0],m[1]);
+    if(h>=0)location.hash=TL.nodes[h].id;});
+  cv.addEventListener('wheel',function(e){
+    e.preventDefault();
+    var m=xy(e),f=e.deltaY<0?1.18:0.85,z=Math.max(0.1,Math.min(TL.zoom*f,4));
+    TL.ox=m[0]-TL.w/2-(m[0]-TL.w/2-TL.ox)*(z/TL.zoom);
+    TL.oy=m[1]-TL.h/2-(m[1]-TL.h/2-TL.oy)*(z/TL.zoom);
+    TL.zoom=z;tlDraw();},{passive:false});
+  cv.addEventListener('touchstart',function(e){var m=xy(e);px=m[0];py=m[1];},{passive:true});
+  cv.addEventListener('touchmove',function(e){
+    e.preventDefault();var m=xy(e);TL.ox+=m[0]-px;TL.oy+=m[1]-py;px=m[0];py=m[1];tlDraw();},{passive:false});
+  document.getElementById('tz-in').addEventListener('click',function(){TL.zoom=Math.min(TL.zoom*1.3,4);tlDraw();});
+  document.getElementById('tz-out').addEventListener('click',function(){TL.zoom=Math.max(TL.zoom*0.77,0.1);tlDraw();});
+  document.getElementById('tz-fit').addEventListener('click',function(){tlFit();tlDraw();});
+  window.addEventListener('resize',function(){
+    if(document.getElementById('p-toile').classList.contains('active')){tlSize();tlDraw();}});
+}
 route();
 </script>
 </body>
@@ -1301,7 +1491,7 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
 
     visible = [f for f in fiches if not (share and f["meta"].get("prive"))]
     by_slug = {f["slug"]: f for f in visible}
-    _, backlinks, dead = collect_links(fiches, resolver, include_private=not share)
+    links_out, backlinks, dead = collect_links(fiches, resolver, include_private=not share)
     report["dead"] = dead
 
     ctx = {"share": share,
@@ -1329,10 +1519,12 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
         sections.append(render_index(reldir, label, entity_fiches))
     sections.append(render_chronologie(chrono, sessions, resolver, ctx))
     sections.append(render_systeme(entity_fiches, wiki_root))
+    sections.append(render_toile())
 
     nav = [_nav_button("accueil", "Accueil"), _nav_button("chronologie", "Chronologie")]
     nav += [_nav_button("index-" + r, l) for r, l in NAV_TYPES]
     nav.append(_nav_button("systeme", "Systeme"))
+    nav.append(_nav_button("toile", "Toile"))
     nav.append('<button class="nav-search" onclick="openSearch()" '
                'title="Rechercher (Ctrl+K)">&#9906;</button>')
 
@@ -1345,6 +1537,7 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
            .replace("__TIMESTAMP__", stamp)
            .replace("__NAV__", "\n    ".join(nav))
            .replace("__IMGDATA__", _js_json(IMG_REGISTRY))
+           .replace("__GRAPHDATA__", _js_json(graph_data(entity_fiches, links_out)))
            .replace("__SECTIONS__", "\n".join(sections)))
     return out, report
 

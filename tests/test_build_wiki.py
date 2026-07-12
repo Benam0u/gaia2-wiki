@@ -409,6 +409,32 @@ class TestReviewFixes(unittest.TestCase):
             self.assertFalse((td / "wiki.html").is_file())
 
 
+class TestToile(unittest.TestCase):
+    def test_graph_data(self):
+        from build_wiki import graph_data
+        fiches = [
+            {"slug": "neros", "title": "Neros", "reldir": "personnages"},
+            {"slug": "simpol", "title": "Simpol", "reldir": "lieux"},
+            {"slug": "canas", "title": "Canas", "reldir": "objets"},
+        ]
+        links_out = {"neros": {"simpol"}, "simpol": {"neros"}, "canas": set()}
+        g = graph_data(fiches, links_out)
+        self.assertEqual(len(g["nodes"]), 3)
+        self.assertEqual(g["links"], [(0, 1)])   # dedupliquee, non orientee
+        self.assertEqual(g["nodes"][0]["g"], "personnages")
+        self.assertIn("personnages", g["colors"])
+
+    def test_toile_dans_la_page(self):
+        fiches = load_fiches(FIX)
+        resolver, conflicts = build_resolver(fiches)
+        out, _ = build_html(fiches, resolver, conflicts, FIX, share=False, profile=None)
+        self.assertIn('id="p-toile"', out)
+        self.assertIn("var GRAPH=", out)
+        self.assertIn('<canvas id="toile">', out)
+        self.assertIn("tchip", out)
+        self.assertNotIn("__GRAPHDATA__", out)
+
+
 class TestH1Unique(unittest.TestCase):
     def test_h1_unique_et_h1_median_conserve(self):
         # Le H1 d'ouverture du corps ne doit pas doubler celui de render_section ;
