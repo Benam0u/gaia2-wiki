@@ -7,6 +7,8 @@ infobox:
   Race: "[[Mits|Mits des batraciens]] (grenouille humanoïde)"
   Classe: "[[Tavernier]]"
   Établissement: "[[La Goutte du fond du godet]]"
+relations:
+  Patron de: "[[La Goutte du fond du godet]]"
 ---
 
 # Le Gogne

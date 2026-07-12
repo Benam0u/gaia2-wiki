@@ -4,7 +4,7 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 
 ## Statut
 
-- 2026-07-13 : **v2 LIVREE** - Toile (graphe de connectivite), recherche full-text, polices embarquees (hors-ligne parfait), hover-cards, nouveautes depuis la derniere session (dates git). Reste en v-plus-tard : champ relations: type (sur besoin). Review adversariale : 6 findings corriges.
+- 2026-07-13 : **v2 INTEGRALEMENT LIVREE** - Toile, recherche full-text, polices embarquees (hors-ligne parfait), hover-cards, nouveautes depuis la derniere session (dates git), et champ `relations:` type (infobox cote source, bloc Relations agrege cote cible, aretes de Toile). Review adversariale : 6 findings corriges.
 
 - 2026-07-12 : **session 21 integree** (premier tour complet du process d'alimentation : photo + texte en vrac -> 127 fiches, 2 nouvelles affaires EN COURS, renommages La Vieille Garde / Eglise du Grand Ordonnateur, badges PJ/PNJ). Verifiee par contre-lecture agent. Points d'interpretation en attente de validation par Benoit (voir recap de conversation du 2026-07-12).
 - 2026-07-11 : **v1 LIVREE** - build core (52 tests) + import complet (111 fiches) + review adversariale (25 findings corriges) + acceptation spec section 16 passee. EN ATTENTE : relecture du contenu par Benoit (l'import est fidele aux PDFs du 2026-07-10 ; ses souvenirs priment sur les PDFs).
@@ -39,6 +39,7 @@ Conventions de dictee (optionnelles, sinon Claude choisit et le signale dans le 
 - "pas sur / je crois / peut-etre" -> marque hypothese (`statut:` ou `{?: ...}`).
 - "note perso / prive" -> bloc `%%...%%` (exclu du partage).
 - "a demander au MJ / a verifier" -> va dans `questions.md`.
+- Relations structurees ("X est chef de Y") -> frontmatter `relations:` (map indentee, valeurs entre guillemets : `Chef de: "[[La Vieille Garde]]"`). La fiche cible affiche automatiquement le bloc "Relations : X (Chef de)".
 
 Conventions editoriales (validees 2026-07-12) :
 - Le wiki = les connaissances et la memoire DE ZOGZORK (in-character). Les evenements vecus a la table mais dont ZogZork n'a pas ete temoin sont VOLONTAIREMENT exclus, meme si Benoit les connait (ex. la punition exacte du Dr Hakim). Les autres joueurs peuvent le feuilleter, pas s'en servir activement.

@@ -7,6 +7,8 @@ infobox:
   Classe: "[[Enquêteur]]"
   Niveau: "3"
   Alignement: "Chaotique Bon"
+relations:
+  Allié de: "[[Les Sauvages]]"
 ---
 
 # ZogZork

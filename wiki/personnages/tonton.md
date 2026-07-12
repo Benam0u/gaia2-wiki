@@ -6,6 +6,10 @@ infobox:
   Race: "[[Gravel]]"
   Rôle: Tavernier ; chef de La Vieille Garde
   Établissement: "[[Taverne des 3 Crânes]]"
+relations:
+  Chef de: "[[La Vieille Garde]]"
+  Oncle de: "[[Bill]]"
+  Patron de: "[[Taverne des 3 Crânes]]"
 ---
 
 # Tonton

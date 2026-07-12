@@ -437,6 +437,44 @@ class TestReviewFixes(unittest.TestCase):
             self.assertFalse((td / "wiki.html").is_file())
 
 
+class TestRelations(unittest.TestCase):
+    def test_relations_typees(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "w"
+            shutil.copytree(FIX, d)
+            p = d / "personnages" / "neros.md"
+            p.write_text(p.read_text(encoding="utf-8").replace(
+                "tags: [magie]",
+                'tags: [magie]\nrelations:\n  Conseiller de: "[[La Fleche]]"'),
+                encoding="utf-8")
+            fiches = load_fiches(d)
+            resolver, conflicts = build_resolver(fiches)
+            # La relation compte comme un lien (backlink + arete de Toile)
+            _, back, _ = collect_links(fiches, resolver, include_private=True)
+            self.assertIn("neros", back["la-fleche"])
+            out, _ = build_html(fiches, resolver, conflicts, d, share=False, profile=None)
+            neros = out.split('id="p-neros"')[1].split("</section>")[0]
+            self.assertIn("Conseiller de", neros)          # ligne d'infobox cote source
+            fleche = out.split('id="p-la-fleche"')[1].split("</section>")[0]
+            self.assertIn("Relations :", fleche)           # bloc entrant cote cible
+            self.assertIn("(Conseiller de)", fleche)
+
+    def test_relations_source_privee_masquee_en_partage(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "w"
+            shutil.copytree(FIX, d)
+            p = d / "personnages" / "secret.md"
+            p.write_text(p.read_text(encoding="utf-8").replace(
+                "prive: true",
+                'prive: true\nrelations:\n  Informateur de: "[[Neros]]"'),
+                encoding="utf-8")
+            fiches = load_fiches(d)
+            resolver, conflicts = build_resolver(fiches)
+            share, _ = build_html(fiches, resolver, conflicts, d, share=True, profile=None)
+            neros = share.split('id="p-neros"')[1].split("</section>")[0]
+            self.assertNotIn("Informateur de", neros)
+
+
 class TestDatesGit(unittest.TestCase):
     def test_git_dates_repo(self):
         from build_wiki import git_dates

@@ -5,6 +5,8 @@ infobox:
   Race: Haute-Naine
   Rôle: Tavernière
   Établissement: Taverne Sauna et Bains d'Ambroise (réouverte)
+relations:
+  Patronne de: "[[Taverne Sauna et Bains d'Ambroise]]"
 ---
 
 # Ambroise

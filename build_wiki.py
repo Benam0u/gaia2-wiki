@@ -601,7 +601,9 @@ def collect_links(fiches, resolver, include_private):
         body = CODE_SPAN_RE.sub(" ", f["body"])  # les [[liens]] en code ne comptent pas
         if not include_private:
             body = PRIVATE_RE.sub(" ", body)
-        for m in WIKILINK.finditer(body):
+        rels = f["meta"].get("relations")
+        rel_text = " ".join(str(v) for v in rels.values()) if isinstance(rels, dict) else ""
+        for m in WIKILINK.finditer(body + " " + rel_text):
             name = m.group(1).strip()
             target = resolver.get(norm_key(name))
             if target:
@@ -696,6 +698,10 @@ def render_infobox(fiche, wiki_root, resolver=None, ctx=None):
     box = meta.get("infobox")
     if isinstance(box, dict):
         for k, v in box.items():
+            rows.append((html.escape(str(k)), inline(str(v), resolver, ctx)))
+    rels = meta.get("relations")
+    if isinstance(rels, dict):
+        for k, v in rels.items():
             rows.append((html.escape(str(k)), inline(str(v), resolver, ctx)))
 
     portrait = meta.get("portrait")
@@ -921,6 +927,35 @@ def render_body(fiche, resolver, share, profile, wiki_root, report, ctx=None):
     return _render_markdown(body, resolver, share, ctx, tech)
 
 
+def relations_in(fiches, resolver):
+    """{slug cible: [(slug source, libelle)]} depuis les champs relations:."""
+    incoming = {}
+    for f in fiches:
+        rels = f["meta"].get("relations")
+        if not isinstance(rels, dict):
+            continue
+        for label, value in rels.items():
+            for m in WIKILINK.finditer(str(value)):
+                target = resolver.get(norm_key(m.group(1).strip()))
+                if target and target != f["slug"]:
+                    incoming.setdefault(target, []).append((f["slug"], str(label)))
+    return incoming
+
+
+def render_relations_in(slug, incoming, share, by_slug):
+    """Bloc "Relations" de la fiche cible : sources des relations: entrantes."""
+    items = []
+    for src, label in sorted(incoming.get(slug, ()), key=lambda x: norm_key(x[1])):
+        f = by_slug.get(src)
+        if not f or (share and f["meta"].get("prive")):
+            continue
+        items.append('<a class="wl" href="#%s">%s</a> <span class="rl">(%s)</span>'
+                     % (src, html.escape(f["title"]), html.escape(label)))
+    if not items:
+        return ""
+    return '<div class="relations-in">Relations : %s</div>' % ", ".join(items)
+
+
 def render_backlinks(slug, backlinks, share, by_slug):
     srcs = sorted(backlinks.get(slug, ()))
     links = []
@@ -952,11 +987,13 @@ def render_section(f, resolver, backlinks, share, profile, wiki_root, by_slug, r
     if meta.get("portrait"):
         attrs += ' data-portrait="%s"' % _attr(meta["portrait"])
     return ('<section class="page" id="p-%s"%s>'
-            "<h1>%s%s</h1>%s%s%s%s</section>") % (
+            "<h1>%s%s</h1>%s%s%s%s%s</section>") % (
         f["slug"], attrs, html.escape(f["title"]), render_badges(meta),
         render_infobox(f, wiki_root, resolver, ctx),
         render_fusion_warning(meta, resolver, ctx),
         render_body(f, resolver, share, profile, wiki_root, report, ctx),
+        render_relations_in(f["slug"], (ctx or {}).get("relations_in", {}),
+                            share, by_slug),
         render_backlinks(f["slug"], backlinks, share, by_slug))
 
 
@@ -1270,8 +1307,13 @@ div.prive{padding:10px 14px;margin:12px 0}
 .hyp-b{font-family:var(--mono);font-size:10px;color:var(--gold);border:1px solid var(--gold);padding:0 4px;margin-right:4px}
 .warn-fusion{border:1px solid var(--rust);color:#e0a99a;padding:10px 14px;margin:14px 0;
   font-family:var(--mono);font-size:12px}
+.relations-in{clear:both;margin-top:34px;padding-top:12px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:12px;color:var(--text-3)}
+.relations-in a.wl{color:var(--text-2)}
+.rl{color:var(--text-3)}
 .backlinks{clear:both;margin-top:34px;padding-top:12px;border-top:1px solid var(--line);
   font-family:var(--mono);font-size:12px;color:var(--text-3)}
+.relations-in+.backlinks{margin-top:8px;border-top:0;padding-top:0}
 .backlinks a.wl{color:var(--text-2)}
 .search-ov{display:none;position:fixed;inset:0;background:rgba(14,15,17,.7);z-index:50}
 .search-ov.show{display:flex;align-items:flex-start;justify-content:center;padding-top:12vh}
@@ -1281,7 +1323,7 @@ div.prive{padding:10px 14px;margin:12px 0}
 .search-box .res{max-height:50vh;overflow-y:auto}
 .search-box .res a{display:block;padding:9px 16px;color:var(--text-2);text-decoration:none;font-size:13px}
 .search-box .res a.sel,.search-box .res a:hover{background:rgba(212,168,90,.08);color:var(--text)}
-.res .rtype{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:8px}
+.rtype{font-family:var(--mono);font-size:10px;color:var(--text-3);margin-left:8px}
 .portrait-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:14px}
 .portrait-grid a{text-align:center;color:var(--text-2);text-decoration:none;font-size:13px}
 .portrait-grid img{width:100%;border:1px solid var(--line)}
@@ -1621,7 +1663,8 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
     report["dead"] = dead
 
     ctx = {"share": share,
-           "private_targets": {f["slug"] for f in fiches if f["meta"].get("prive")}}
+           "private_targets": {f["slug"] for f in fiches if f["meta"].get("prive")},
+           "relations_in": relations_in(fiches, resolver)}
 
     entity_fiches = [f for f in visible
                      if not (f["reldir"] == "" and f["slug"] in SPECIAL_SLUGS)]

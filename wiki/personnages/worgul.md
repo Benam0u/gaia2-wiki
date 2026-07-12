@@ -7,6 +7,9 @@ infobox:
   Rôle: Gardien des clés de la ville
   Taille: 1m50
   Proche de: "[[M. LeMaire]]"
+relations:
+  Best bro de: "[[M. LeMaire]]"
+  Possesseur de: "[[Dr Hakim]]"
 ---
 
 # Worgul

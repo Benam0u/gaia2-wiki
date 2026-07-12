@@ -4,6 +4,9 @@ tags: [pj, groupe]
 infobox:
   Race: Gravel
   Classe: Convoyeur
+relations:
+  Allié de: "[[La Vieille Garde]]"
+  Neveu de: "[[Tonton]]"
 ---
 
 # Bill

@@ -213,7 +213,7 @@ Idees notees, PAS dans la v1 - etat au 2026-07-13 :
 - FAIT (v2) : graphe de relations visuel = la page Toile.
 - FAIT (v2) : polices embarquees en base64 (assets/fonts.css, dedupliquees par famille/subset) - rendu identique 100% hors-ligne, zero CDN.
 - FAIT (v2) : nouveautes depuis la derniere session (dates git avec suivi des renames, bloc accueil + point dore dans les index) ; Recemment modifiees passe aussi sur les dates git.
-- RESTANT (volontairement) : champ `relations:` type dans le frontmatter - a ne faire que si le besoin de requetes structurees apparait ; la prose + backlinks + Toile couvrent l'usage actuel.
+- FAIT (2026-07-13) : champ `relations:` type dans le frontmatter - map indentee `Libelle: "[[Cible]]"` (valeurs TOUJOURS entre guillemets). Affiche dans l'infobox cote source, agrege automatiquement cote cible (bloc "Relations : Source (Libelle)"), compte comme lien (backlinks + aretes de la Toile). La liste v2 est donc entierement livree.
 
 Non-goals : moteur wiki serveur, editeur in-browser, hebergement, multi-utilisateurs, donnees du MJ.
 

@@ -4,6 +4,8 @@ tags: [pnj, sauvages]
 infobox:
   Rôle: Chef des Sauvages
   Territoire: Forêts aux abords de Simpol
+relations:
+  Chef de: "[[Les Sauvages]]"
 ---
 
 # Telem

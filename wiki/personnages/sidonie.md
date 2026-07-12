@@ -4,6 +4,8 @@ tags: [pj, groupe]
 infobox:
   Race: Mits des Lutins
   Classe: Laborantine
+relations:
+  Alliée de: "[[Les Réfugiés]]"
 ---
 
 # Sidonie

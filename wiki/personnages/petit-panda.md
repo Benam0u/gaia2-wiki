@@ -5,6 +5,8 @@ infobox:
   Race: Mits du démon de la colère
   Classe: Inspecteur des impôts
   Compagnon: Bébou, dragon d'environ 2 m
+relations:
+  Allié de: "[[Les Sauvages]]"
 ---
 
 # Petit Panda
