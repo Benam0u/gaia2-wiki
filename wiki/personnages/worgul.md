@@ -11,7 +11,7 @@ infobox:
 
 # Worgul
 
-Worgul est le « best bro » de [[M. LeMaire]] et le gardien des clés de [[Simpol]]. Rencontré à son anniversaire, fêté à la [[Taverne des 3 Crânes]] ([[Session 21]]).
+Worgul est le « best bro » de [[M. LeMaire]] et le gardien des clés de [[Simpol]]. Première apparition dans les notes : son anniversaire, fêté à la [[Taverne des 3 Crânes]] ([[Session 21]]) - mais sa relation avec ZogZork semble bien plus ancienne.
 
 ## Ce qu'on sait
 

@@ -1,5 +1,5 @@
 ---
-resume: Passage secret découvert dans les conduits du sauna d'Ambroise, portail probable ; taverne fermée et passage condamné par la garde impériale
+resume: Passage secret du sauna d'Ambroise, portail probable, condamné par la garde impériale ; Ambroise relaxée et taverne réouverte depuis
 etat: ferme
 tags: [enquete, simpol, contrebande]
 ne-pas-fusionner: [Crise du Canas, Vol des recherches de Neros]
@@ -17,6 +17,8 @@ Le groupe a découvert un passage mystérieux dans les conduits d'aération de l
 - {?: Des drogues ou marchandises de [[Contrebande|contrebande]] pourraient avoir été acheminées par ce passage.}
 - Un homme aperçu dans les bains semblait lié aux contrebandiers. Il s'est présenté ou révélé comme [[Enquêteur du sauna|enquêteur infiltré]], se faisant passer pour leur allié et recevant un paiement pour les aider, affirmant jouer un double jeu afin de remonter le réseau. Il a été arrêté et interrogé par les autorités impériales ; son degré réel de corruption ou de loyauté reste ambigu.
 - La garde impériale a perquisitionné la taverne ; l'établissement a été fermé et le passage secret condamné. Le dossier local est fermé.
+
+- Mise à jour [[Session 21]] : après un interrogatoire musclé par la garde impériale, [[Ambroise]] a été relaxée et libérée de tout soupçon ; sa [[Taverne Sauna et Bains d'Ambroise|taverne]] lui a été restituée et a réouvert. Le passage, lui, reste condamné.
 
 ## Zones d'ombre
 

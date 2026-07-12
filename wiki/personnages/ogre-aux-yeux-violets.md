@@ -10,7 +10,7 @@ infobox:
 
 # Ogre aux yeux violets
 
-Un [[Ogre]] figure parmi les suspects recherchés depuis l'affaire du [[Crise du Canas|Canas]]. Personne ne l'a encore confronté : seule sa description circule.
+Un [[Ogre]] figure parmi les suspects recherchés depuis l'affaire du [[Crise du Canas|Canas]]. Il n'est connu que par sa description.
 
 ## Ce qu'on sait
 

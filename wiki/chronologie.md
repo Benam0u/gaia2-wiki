@@ -62,3 +62,7 @@ Le groupe découvre un conduit d'aération anormalement long dans la [[Taverne S
 ## Affaire La Flèche
 
 Un message signé [[La Flèche]] annonce le futur cambriolage de [[Kretel]], Grand coordinateur des [[Guilde des monteurs de meubles|monteurs de meubles]] de [[Simpol]]. [[Turdan]], aventurier qui recherchait La Flèche, est surpris sur un toit puis meurt accidentellement lors de l'intervention de [[ZogZork]]. L'affaire est toujours en cours.
+
+## Depuis la session 21
+
+Le passé reconstitué s'arrête ici : à partir de la [[Session 21]], le déroulé est tenu séance par séance dans les fiches de session (listées plus bas sur cette page).
