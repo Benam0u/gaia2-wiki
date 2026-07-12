@@ -10,7 +10,7 @@ infobox:
 
 # Empereur de PaxAlpha
 
-L'Empereur est le souverain de l'[[Empire PaxAlpha]], auquel appartiennent [[Simpol]] et les villes du nord détruites pendant la guerre. Son nom est Bertrand (appris en [[Session 21]]) - à ne pas confondre avec le [[Prévôt Bertrand]] de Simpol.
+L'Empereur est le souverain de l'[[Empire PaxAlpha]], auquel appartiennent [[Simpol]] et les villes du nord détruites pendant la guerre. Son nom est Bertrand (appris en [[Session 21]]). Le Prévôt de Simpol, lui, s'appelle [[Prévôt Bernard|Bernard]] - deux prénoms proches à ne pas mélanger.
 
 ## Ce qu'on sait
 

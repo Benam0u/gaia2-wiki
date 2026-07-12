@@ -1,6 +1,6 @@
 ---
-resume: Gardien des clés de Simpol et « best bro » de M. LeMaire ; demi humain-orc d'1m50 qui refuse son côté orc, se déplace par portails
-tags: [pnj, simpol, mairie]
+resume: PJ - gardien des clés de Simpol et « best bro » de M. LeMaire ; demi humain-orc d'1m50 qui refuse son côté orc, se déplace par portails
+tags: [pj, groupe, simpol, mairie]
 decouverte: Session 21
 infobox:
   Race: Demi humain-orc
@@ -19,7 +19,9 @@ Worgul est le « best bro » de [[M. LeMaire]] et le gardien des clés de [[Simp
 - Demi humain-orc d'environ 1m50... mais raciste envers les orcs : il n'assume pas, voire refuse complètement, son côté orc.
 - Il porte dans le dos une hache de sa propre taille, dotée de runes capables d'absorber l'élément qu'elle touche, selon son intention. Il a tenté d'y assimiler le parchemin d'entrave offert par [[Sidonie]] - puis l'a testé sur [[ZogZork]], qui a fini saucissonné.
 - Il possède le [[Dr Hakim]], un livre magique qui semble agir de façon autonome.
-- La [[Mairie de Simpol|mairie]] lui a confié l'enquête sur les [[Enlèvements à Simpol|enlèvements]], avec l'équipe habituelle du groupe comme coéquipiers.
+- C'est un personnage joueur : il faisait partie de l'expédition qui a détruit l'âme de la [[Mère des Monstres]] dans la [[Prison des Mondes]], avec le groupe.
+- La [[Mairie de Simpol|mairie]] lui a confié l'enquête sur les [[Enlèvements à Simpol|enlèvements]] : il pouvait assembler l'équipe de son choix, mais le maire lui a fortement suggéré les aventuriers de la Prison des Mondes.
+- Il a puni le [[Dr Hakim]] pour avoir drogué [[Sidonie]] et une témoin pendant l'enquête.
 
 ## Relations
 

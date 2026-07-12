@@ -1,7 +1,7 @@
 ---
 resume: Les Mits vivent rarement entre eux : ils préfèrent s'insérer dans les sociétés existantes, comme s'ils cherchaient à accomplir un rôle plutôt qu'à fonder un peuple
 tags: [race]
-alias: [Mits du démon de la colère, Mits des Lutins, Mits de l'information]
+alias: [Mits du démon de la colère, Mits des Lutins, Mits de l'information, Mits des batraciens]
 portrait: img/races/mits.jpg
 ---
 

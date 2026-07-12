@@ -14,9 +14,10 @@ Tonton est un [[Gravel]], l'oncle de [[Bill]], le patron de la [[Taverne des 3 C
 
 ## Ce qu'on sait
 
-- Il a appris par [[Bill]] la mort de [[Yannick]] causée par [[ZogZork]] : il a très vivement réprimandé Bill sur le fait et sur ses fréquentations, lui a interdit de fréquenter Z, et a placé un écriteau interdisant l'accès de sa taverne à ZogZork.
-- À l'anniversaire de [[Worgul]] ([[Session 21]]), il a attrapé ZogZork comme un sac pour le mettre dehors (mais un gravel marche trèèès lentement) ; les aveux publics de Z (morts de [[Turdan]] et d'un pilier de bar) l'ont mis encore plus en colère.
-- Il tient [[Bill]] d'une main de fer : il menace de ne plus le considérer comme son neveu s'il ne remplit pas sa mission pour [[La Vieille Garde]] - d'après les notes de session : tuer le [[Prévôt Bertrand]] - et s'il ne « rétablit pas justice » vis-à-vis de ZogZork.
+- Il a appris par [[Bill]] la mort de [[Yannick]] causée par [[ZogZork]] : il a très vivement réprimandé Bill sur le fait et sur ses fréquentations, lui a interdit de fréquenter ZogZork, et a placé un écriteau interdisant l'accès de sa taverne à ZogZork.
+- À l'anniversaire de [[Worgul]] ([[Session 21]]), il a attrapé ZogZork comme un sac pour le mettre dehors (mais un gravel marche trèèès lentement) ; les aveux publics de ZogZork (morts de [[Turdan]] et d'un pilier de bar) l'ont mis encore plus en colère.
+- « Tonton », c'est ainsi que tout le monde l'appelle.
+- Il tient [[Bill]] d'une main de fer : après que ZogZork l'a indirectement impliqué dans trois meurtres, il lui a signifié que sa mission pour [[La Vieille Garde]] - tuer le [[Prévôt Bernard]] - était sa dernière chance de se racheter. Jusqu'à résolution, il ne l'appelle plus « mon neveu » mais « Bill ».
 
 ## Relations
 

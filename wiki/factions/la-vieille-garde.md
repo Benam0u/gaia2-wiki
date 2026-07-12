@@ -18,7 +18,7 @@ Mouvement implanté à l'intérieur de [[Simpol]], composé d'anciens combattant
 - Le nom complet est La Vieille Garde - à ne pas confondre ni avec la garde impériale de l'[[Empire PaxAlpha|Empire]], ni avec la garde de la ville.
 - Elle agit sur le terrain politique et militaire urbain.
 - [[Tonton]] en est le chef (appris en [[Session 21]]).
-- [[Bill]] est allié de La Vieille Garde et le pont naturel du groupe avec la résistance urbaine. Tonton lui a confié une mission pour le mouvement - d'après les notes de session : tuer le [[Prévôt Bertrand]] - et menace de le renier comme neveu s'il ne la remplit pas.
+- [[Bill]] est allié de La Vieille Garde et le pont naturel du groupe avec la résistance urbaine. Tonton lui a confié une mission pour le mouvement : tuer le [[Prévôt Bernard]] - très très complexe vu la cible, et présentée comme sa dernière chance de se racheter.
 
 ## Relations
 

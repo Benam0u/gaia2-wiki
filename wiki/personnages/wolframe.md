@@ -7,7 +7,7 @@ infobox:
 
 # Wolframe
 
-Wolframe est noté comme Némésis dans la fiche de personnage de [[ZogZork]], aux côtés du [[Prévôt Bertrand]].
+Wolframe est noté comme Némésis dans la fiche de personnage de [[ZogZork]], aux côtés du [[Prévôt Bernard]].
 
 ## Zones d'ombre
 

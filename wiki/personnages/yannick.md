@@ -18,7 +18,7 @@ Yannick est un enfant ou jeune réfugié originaire de [[Muscerie]], ville du no
 - Les notes le décrivent comme un « enfant poisson », avec une apparence inhabituelle ; cette description visuelle n'est pas développée davantage (voir [[Enfant poisson]]).
 - Le groupe a trouvé un antidote au Canas ; l'affaire de l'empoisonnement est considérée comme résolue.
 - Révélation de la [[Session 21]] : Yannick est mort. [[ZogZork]] l'avait attrapé par le cou pour un interrogatoire (« il est enquêteur après tout »), mais oubliant sa force d'orc pendant une discussion un peu longue avec ses collègues, il a mal géré son étreinte et l'a étranglé, le laissant pour mort avant d'avoir obtenu des informations cruciales.
-- Cette mort a été révélée par [[Bill]] à [[Tonton]], ce qui a valu à ZogZork son bannissement de la [[Taverne des 3 Crânes]].
+- Ce meurtre accidentel a été malencontreusement balancé par [[Bill]] à [[Tonton]], ce qui a valu à ZogZork son bannissement de la [[Taverne des 3 Crânes]].
 
 ## Zones d'ombre
 

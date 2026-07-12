@@ -21,7 +21,7 @@ tags: [questions]
 - Qui est derrière les [[Enlèvements à Simpol|enlèvements]] ? L'orc évoqué par les témoins est-il vraiment [[Taladrel]] ?
 - Qui ou quoi « possède » les [[Les gardes ensorcelés|gardes ensorcelés]] ? La tentative nocturne des druides sur le garde capturé a-t-elle fonctionné ?
 - Où sont passés [[André]] et [[Denis]], les piliers de bar disparus ?
-- Qu'est-ce que le [[Dr Hakim]] exactement, et qu'a-t-il fait à [[Bill]] et [[Sidonie]] ?
+- Quelle punition [[Worgul]] a-t-il infligée au [[Dr Hakim]] ? La témoin droguée aura-t-elle des conséquences sur l'enquête ?
 - Qui ou quoi est le « Grand Ordonnateur » de l'[[Église du Grand Ordonnateur]] ?
 
 ## A surveiller a la prochaine partie
@@ -32,8 +32,8 @@ tags: [questions]
 - Quelles conséquences politiques après la confrontation entre [[Neros]], [[Dr Van Richten|Van Richten]], [[M. LeMaire]] et l'[[Empire PaxAlpha|Empire]] ?
 - Le [[Navire marchand|navire marchand]] restera-t-il bloqué, et pourquoi "jusqu'à nouvel ordre" ?
 - Les infrastructures promises aux [[Les Réfugiés|Réfugiés]] seront-elles réellement installées ?
-- Les retombées des accusations de [[ZogZork]] contre [[Taladrel]] - et le risque que Z soit démasqué pour [[Yannick]] et le pilier de bar.
-- La mission de [[Bill]] pour [[La Vieille Garde]] (tuer le [[Prévôt Bertrand]], d'après les notes) et sa relation avec [[Tonton]].
+- Les retombées des accusations de [[ZogZork]] contre [[Taladrel]] - et le risque que ZogZork soit démasqué pour [[Yannick]] et le pilier de bar.
+- La mission de [[Bill]] pour [[La Vieille Garde]] (tuer le [[Prévôt Bernard]]) et sa réhabilitation aux yeux de [[Tonton]].
 - Le résultat du « truc » tenté par les druides sur le garde ensorcelé.
 
 ## Séparations à maintenir

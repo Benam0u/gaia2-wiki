@@ -44,9 +44,9 @@ Son engagement politique le plus clair : il a choisi d'aider [[Les Sauvages]] (a
 
 - [[Les Sauvages]] : amicaux envers lui ; récompense druidique obtenue, et un bracelet de force en attente d'après ses notes.
 - [[Neros]] : allié ancien de la guerre ; ZogZork l'a aidé à récupérer ses recherches lors du [[Vol des recherches de Neros|vol de son carnet]] ; Neros lui doit toujours un cours gratuit.
-- [[Prévôt Bertrand]] et [[Wolframe]] (commerce) : notés comme Némésis sur sa fiche de personnage ; le contexte détaillé n'est pas présent dans les notes actuelles.
+- [[Prévôt Bernard]] et [[Wolframe]] (commerce) : notés comme Némésis sur sa fiche de personnage ; le contexte détaillé n'est pas présent dans les notes actuelles.
 - [[Turdan]] : mort accidentellement de la main de ZogZork, un événement pouvant avoir des conséquences morales, judiciaires ou réputationnelles.
-- [[Yannick]] : mort étranglé accidentellement par ZogZork pendant un interrogatoire ; la révélation de cette mort par [[Bill]] à [[Tonton]] a valu à Z son bannissement des [[Taverne des 3 Crânes|3 Crânes]].
+- [[Yannick]] : mort étranglé accidentellement par ZogZork pendant un interrogatoire ; la révélation de cette mort par [[Bill]] à [[Tonton]] a valu à ZogZork son bannissement des [[Taverne des 3 Crânes|3 Crânes]].
 - [[Worgul]] : relation d'amour-haine - sales coups permanents, affection réelle dans les moments critiques.
 - [[Tonton]] : l'a banni de sa taverne et le considère comme un meurtrier.
 

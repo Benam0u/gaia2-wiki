@@ -5,7 +5,7 @@ tags: [guerre, plan]
 
 # Prison des Mondes
 
-Lieu où le groupe de [[ZogZork]] a détruit l'âme de la [[Mère des Monstres]].
+Lieu où le groupe de [[ZogZork]] - dont [[Worgul]] faisait partie - a détruit l'âme de la [[Mère des Monstres]].
 
 ## Ce qu'on sait
 
