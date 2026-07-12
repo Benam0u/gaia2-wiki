@@ -11,10 +11,9 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 ## Utilisation
 
 - Consulter : double-clic sur `wiki.html` (complet) ; partager au MJ/joueurs : envoyer `wiki_partage.html` (sans fiches `prive: true` ni blocs `%%...%%`). JAMAIS wiki.html.
-- Rebuild apres edition : `./publier.sh` depuis `Gaia2/` = build + copie vers `OneDrive/Gaia2/` (acces telephone). `python3 build_wiki.py` seul = build local sans publication.
-- TELEPHONE (en session) : app OneDrive -> dossier Gaia2 -> wiki.html -> ouvrir dans le navigateur. Marquer le fichier "Toujours conserver sur cet appareil" pour l'avoir hors connexion. Toujours relancer `./publier.sh` apres une mise a jour.
-- REMOTE : repo prive `github.com/Benam0u/Gaia2` (backup complet, cree 2026-07-12). Commit + push apres chaque mise a jour (convention Horde).
-- EN LIGNE : https://benam0u.github.io/gaia2-wiki/ - GitHub Pages sur le repo public minimal `gaia2-wiki` (UNIQUEMENT le rendu index.html, jamais les sources). `./publier.sh` redeploie automatiquement. URL devinable : assume (usage perso, decision Benoit 2026-07-12). Telephone : ouvrir l'URL -> menu navigateur -> Ajouter a l'ecran d'accueil.
+- Rebuild apres edition : `./publier.sh` = build + index.html (Pages) + copie vers `OneDrive/Gaia2-wiki/` (telephone hors-ligne). `python3 build_wiki.py` seul = build local sans publication. Le deploiement Pages part au commit+push.
+- TELEPHONE (en session) : https://benam0u.github.io/gaia2-wiki/ -> Ajouter a l'ecran d'accueil. Hors-ligne : app OneDrive -> dossier Gaia2-wiki -> wiki.html (marquer "Toujours conserver sur cet appareil").
+- REPO : `github.com/Benam0u/gaia2-wiki` (PUBLIC, assume - decision Benoit 2026-07-12) = TOUT le wiki : sources, docs, build, rendu, historique complet. Le nom `Gaia2` est reserve a l'editeur de fiches de personnage. L'ancien repo prive a ete renomme `gaia2-wiki-old-backup` (archive, supprimable a la main). Commit + push apres chaque mise a jour -> GitHub Pages redeploie index.html automatiquement.
 - GARDE-FOU : un `%%` non ferme fait ECHOUER le build (fail-closed, rien n'est ecrit) - corriger la fiche indiquee puis relancer.
 - `scripts/extract_systeme.py` : NE PAS relancer sans raison, il ecrase les fiches systeme (voir son en-tete).
 
