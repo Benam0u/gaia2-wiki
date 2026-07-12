@@ -223,6 +223,32 @@ class TestAssembly(unittest.TestCase):
     def test_backlinks_affiches(self):
         self.assertIn("Mentionne dans", self.html)
 
+    def test_hovercard(self):
+        self.assertIn('id="hovercard"', self.html)
+        self.assertIn("var HMAP=", self.html)
+
+    def test_data_portrait(self):
+        import base64
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp) / "w"
+            shutil.copytree(FIX, d)
+            (d / "img").mkdir()
+            png = ("iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mNk"
+                   "+M9QDwADhgGAWjR9awAAAABJRU5ErkJggg==")
+            (d / "img" / "x.png").write_bytes(base64.b64decode(png))
+            p = d / "personnages" / "neros.md"
+            p.write_text(p.read_text(encoding="utf-8").replace(
+                "tags: [magie]", "tags: [magie]\nportrait: img/x.png"), encoding="utf-8")
+            fiches = load_fiches(d)
+            resolver, conflicts = build_resolver(fiches)
+            out, _ = build_html(fiches, resolver, conflicts, d, share=False, profile=None)
+            self.assertIn('data-portrait="img/x.png"', out)
+
+    def test_polices_embarquees(self):
+        self.assertIn("@font-face", self.html)
+        self.assertIn("data:font/woff2;base64,", self.html)
+        self.assertNotIn("fonts.googleapis.com", self.html)
+
     def test_recherche_fulltext(self):
         # Recherche insensible aux accents + indexation du corps des fiches.
         self.assertIn("function norm(", self.html)
@@ -407,6 +433,21 @@ class TestReviewFixes(unittest.TestCase):
             self.assertEqual(proc.returncode, 2, proc.stderr)
             self.assertEqual((td / "wiki_partage.html").read_text(encoding="utf-8"), sentinel)
             self.assertFalse((td / "wiki.html").is_file())
+
+
+class TestDatesGit(unittest.TestCase):
+    def test_git_dates_repo(self):
+        from build_wiki import git_dates
+        repo = Path(__file__).resolve().parent.parent
+        newest, oldest = git_dates(repo)
+        self.assertTrue(newest)          # le repo a des commits
+        k = next(iter(newest))
+        self.assertLessEqual(oldest[k], newest[k])
+
+    def test_git_dates_sans_git(self):
+        from build_wiki import git_dates
+        with tempfile.TemporaryDirectory() as tmp:
+            self.assertEqual(git_dates(Path(tmp)), ({}, {}))
 
 
 class TestToile(unittest.TestCase):

@@ -400,6 +400,36 @@ def md_convert(md, resolver=None, ctx=None):
 #  Chargement des fiches, resolution, backlinks
 # ===========================================================================
 
+def git_dates(repo_root):
+    """(newest, oldest) : {chemin relatif: timestamp} du dernier / premier commit.
+
+    Les fichiers modifies ou non suivis (git status) sont retires de newest :
+    leur mtime local est alors plus fiable. Retourne ({}, {}) sans git."""
+    import subprocess
+    newest, oldest = {}, {}
+    try:
+        out = subprocess.run(["git", "-C", str(repo_root), "log",
+                              "--name-only", "--pretty=%ct"],
+                             capture_output=True, text=True, timeout=15)
+        if out.returncode != 0:
+            return {}, {}
+        ts = None
+        for line in out.stdout.splitlines():
+            s = line.strip()
+            if s.isdigit():
+                ts = int(s)
+            elif s and ts:
+                newest.setdefault(s, ts)   # premiere occurrence = commit le plus recent
+                oldest[s] = ts             # derniere occurrence = commit de creation
+        dirty = subprocess.run(["git", "-C", str(repo_root), "status", "--porcelain"],
+                               capture_output=True, text=True, timeout=15)
+        for line in dirty.stdout.splitlines():
+            newest.pop(line[3:].strip().strip('"'), None)
+    except Exception:
+        return {}, {}
+    return newest, oldest
+
+
 def load_fiches(root):
     """Scanne root/**/*.md. Retourne une liste de dicts fiche (tries par chemin)."""
     root = Path(root)
@@ -892,6 +922,8 @@ def render_section(f, resolver, backlinks, share, profile, wiki_root, by_slug, r
              ' data-tags="%s" data-type="%s"') % (
         _attr(f["title"]), _attr(", ".join(alias)), _attr(meta.get("resume", "")),
         _attr(", ".join(tags)), _attr(TYPE_LABELS.get(f["reldir"], "Page")))
+    if meta.get("portrait"):
+        attrs += ' data-portrait="%s"' % _attr(meta["portrait"])
     return ('<section class="page" id="p-%s"%s>'
             "<h1>%s%s</h1>%s%s%s%s</section>") % (
         f["slug"], attrs, html.escape(f["title"]), render_badges(meta),
@@ -909,9 +941,11 @@ def render_index(reldir, label, entity_fiches):
         tags = f["meta"].get("tags") or []
         if isinstance(tags, str):
             tags = [tags]
-        body += ('<tr><td><a class="wl" href="#%s">%s</a></td>'
+        dot = ('<span class="new-dot" title="Nouveau ou modifie depuis '
+               'la derniere session"></span>' if f.get("_new") else "")
+        body += ('<tr><td>%s<a class="wl" href="#%s">%s</a></td>'
                  "<td>%s</td><td>%s</td><td>%s</td></tr>") % (
-            f["slug"], html.escape(f["title"]),
+            dot, f["slug"], html.escape(f["title"]),
             html.escape(f["meta"].get("resume", "")),
             render_badges(f["meta"]), html.escape(", ".join(tags)))
     if not body:
@@ -928,7 +962,7 @@ def render_accueil(entity_fiches, by_slug, resolver, dead, ctx=None):
           if f["reldir"] == "affaires" and f["meta"].get("etat") == "en-cours"]
     questions = by_slug.get("questions")
     sessions = [f for f in entity_fiches if f["reldir"] == "sessions"]
-    recent = sorted(entity_fiches, key=lambda f: f["mtime"], reverse=True)[:10]
+    recent = sorted(entity_fiches, key=lambda f: f["_date"], reverse=True)[:10]
 
     left = []
     if ec:
@@ -958,6 +992,20 @@ def render_accueil(entity_fiches, by_slug, resolver, dead, ctx=None):
                 for s in sorted(grouped[name]) if s in by_slug)
             right.append("<li><strong>%s</strong> - cite dans %s</li>"
                          % (html.escape(name), srcs))
+        right.append("</ul>")
+    ref = (ctx or {}).get("ref_session")
+    news = [f for f in entity_fiches if f.get("_new")]
+    if ref and news:
+        news.sort(key=lambda f: (f["reldir"], norm_key(f["title"])))
+        right.append("<h2>Nouveautes depuis la %s</h2><ul>"
+                     % html.escape(ref["title"]))
+        for f in news[:30]:
+            right.append('<li><a class="wl" href="#%s">%s</a>'
+                         '<span class="rtype">%s</span></li>' % (
+                f["slug"], html.escape(f["title"]),
+                html.escape(TYPE_LABELS.get(f["reldir"], "Page"))))
+        if len(news) > 30:
+            right.append("<li>... et %d autres</li>" % (len(news) - 30))
         right.append("</ul>")
     if recent:
         right.append("<h2>Recemment modifiees</h2><ul>")
@@ -1083,10 +1131,8 @@ TEMPLATE = r"""<!DOCTYPE html>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>__TITLE__</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,300;9..144,400;9..144,500;9..144,600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
+__FONTFACE__
 :root{
   --bg:#0E0F11; --surface:#15171B; --surface-2:#1C1F25;
   --line:#2A2D34; --line-strong:#3A3E48;
@@ -1214,6 +1260,13 @@ div.prive{padding:10px 14px;margin:12px 0}
 .portrait-grid img{width:100%;border:1px solid var(--line)}
 .home-cols{display:grid;grid-template-columns:1fr 1fr;gap:28px}
 .toile-hint{font-size:13px;color:var(--text-3)}
+.hovercard{display:none;position:fixed;z-index:70;max-width:300px;background:var(--surface-2);
+  border:1px solid var(--line-strong);padding:12px 14px;pointer-events:none;font-size:13px;line-height:1.5}
+.hovercard img{max-width:100%;max-height:130px;object-fit:cover;object-position:top;
+  margin-bottom:8px;border:1px solid var(--line)}
+.hovercard .hc-t{font-family:var(--serif);font-size:16px;color:var(--text)}
+.hovercard .hc-r{color:var(--text-2);margin-top:4px}
+.new-dot{display:inline-block;width:7px;height:7px;background:var(--gold);margin-right:8px;vertical-align:middle}
 .toile-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
 .tchip{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:5px 10px;background:transparent;border:1px solid var(--line-strong);color:var(--text-2);cursor:pointer}
@@ -1274,6 +1327,7 @@ div.prive{padding:10px 14px;margin:12px 0}
 <main>
 __SECTIONS__
 </main>
+<div class="hovercard" id="hovercard"></div>
 <div class="search-ov" id="search-ov">
   <div class="search-box">
     <input id="search-input" type="text" placeholder="Rechercher une fiche..." autocomplete="off">
@@ -1342,6 +1396,35 @@ function mark(items){items.forEach(function(a,i){a.classList.toggle('sel',i===se
 var IMGS=__IMGDATA__;
 document.querySelectorAll('img.pimg').forEach(function(el){
   var u=IMGS[el.dataset.img];if(u)el.src=u;else el.style.display='none';});
+
+/* ---- Mini-cartes au survol des liens (desktop) ------------------------ */
+var HMAP={};
+document.querySelectorAll('.page[data-title]').forEach(function(p){
+  HMAP[p.id.replace(/^p-/,'')]={t:p.dataset.title||'',r:p.dataset.resume||'',
+    ty:p.dataset.type||'',img:p.dataset.portrait||''};});
+var hc=document.getElementById('hovercard'),hct=null;
+function hcHide(){if(hct){clearTimeout(hct);hct=null;}hc.style.display='none';}
+if(window.matchMedia&&matchMedia('(hover: hover)').matches){
+  document.addEventListener('mouseover',function(e){
+    var a=e.target.closest?e.target.closest('a.wl'):null;
+    if(!a){hcHide();return;}
+    var d=HMAP[(a.getAttribute('href')||'').replace('#','')];
+    if(!d){hcHide();return;}
+    if(hct)clearTimeout(hct);
+    var x=e.clientX,y=e.clientY;
+    hct=setTimeout(function(){
+      var img=d.img&&IMGS[d.img]?'<img src="'+IMGS[d.img]+'" alt="">':'';
+      hc.innerHTML=img+'<div class="hc-t">'+esc(d.t)+'<span class="rtype">'+esc(d.ty)+'</span></div>'
+        +(d.r?'<div class="hc-r">'+esc(d.r)+'</div>':'');
+      hc.style.display='block';
+      var W=hc.offsetWidth,H=hc.offsetHeight;
+      var lx=Math.min(x+16,innerWidth-W-10),ly=y+18;
+      if(ly+H>innerHeight-10)ly=y-H-12;
+      hc.style.left=Math.max(6,lx)+'px';hc.style.top=Math.max(6,ly)+'px';
+    },220);});
+  document.addEventListener('scroll',hcHide,true);
+  document.addEventListener('click',hcHide,true);
+}
 
 /* ---- Toile : graphe de connectivite ---------------------------------- */
 var GRAPH=__GRAPHDATA__;
@@ -1466,6 +1549,17 @@ route();
 """
 
 
+def _font_css():
+    """CSS @font-face embarque (assets/fonts.css) ; fallback CDN si absent."""
+    path = Path(__file__).resolve().parent / "assets" / "fonts.css"
+    if path.is_file():
+        return path.read_text(encoding="utf-8")
+    return ("/* assets/fonts.css absent : repli CDN */\n"
+            "@import url('https://fonts.googleapis.com/css2?family=Fraunces:opsz,"
+            "wght@9..144,300;9..144,400;9..144,500&family=Inter:wght@400;500;600"
+            "&family=JetBrains+Mono:wght@400;500;600&display=swap');")
+
+
 def _js_json(obj):
     """json.dumps sur pour un bloc <script> : neutralise </ (ex. </script>)."""
     return json.dumps(obj, separators=(",", ":")).replace("</", "<\\/")
@@ -1499,6 +1593,22 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
 
     entity_fiches = [f for f in visible
                      if not (f["reldir"] == "" and f["slug"] in SPECIAL_SLUGS)]
+
+    # Dates de modification : git (stable au clone) sinon mtime ; drapeau _new
+    # pour tout ce qui a change depuis la creation de la derniere page de session.
+    newest_git, oldest_git = git_dates(wiki_root.parent)
+    for f in visible:
+        rel = f["path"].relative_to(wiki_root.parent).as_posix() if f.get("path") else ""
+        f["_date"] = newest_git.get(rel, f["mtime"])
+        f["_created"] = oldest_git.get(rel, f["mtime"])
+    sessions_all = [f for f in entity_fiches if f["reldir"] == "sessions"]
+    ref_session = max(sessions_all, key=_session_num) if sessions_all else None
+    ref_ts = ref_session["_created"] if ref_session else None
+    for f in entity_fiches:
+        f["_new"] = bool(ref_ts and f["_date"] >= ref_ts and f is not ref_session)
+    if ctx is None:
+        ctx = {}
+    ctx["ref_session"] = ref_session
     report["n_fiches"] = len(entity_fiches)
     for f in entity_fiches:
         report["counts"][f["reldir"]] = report["counts"].get(f["reldir"], 0) + 1
@@ -1538,6 +1648,7 @@ def build_html(fiches, resolver, conflicts, wiki_root, share, profile):
            .replace("__NAV__", "\n    ".join(nav))
            .replace("__IMGDATA__", _js_json(IMG_REGISTRY))
            .replace("__GRAPHDATA__", _js_json(graph_data(entity_fiches, links_out)))
+           .replace("__FONTFACE__", _font_css())
            .replace("__SECTIONS__", "\n".join(sections)))
     return out, report
 
