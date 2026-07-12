@@ -403,26 +403,53 @@ def md_convert(md, resolver=None, ctx=None):
 def git_dates(repo_root):
     """(newest, oldest) : {chemin relatif: timestamp} du dernier / premier commit.
 
-    Les fichiers modifies ou non suivis (git status) sont retires de newest :
-    leur mtime local est alors plus fiable. Retourne ({}, {}) sans git."""
+    Suit les renames (--name-status, lignes R old->new) : un fichier renomme
+    garde la date de creation de son ancien nom. Les fichiers modifies ou non
+    suivis (git status) sont retires de newest : leur mtime local est alors
+    plus fiable. Retourne ({}, {}) sans git, ou si repo_root n'est pas la
+    racine du repo (les chemins ne seraient pas comparables)."""
     import subprocess
+
+    def run(*args):
+        return subprocess.run(["git", "-C", str(repo_root),
+                               "-c", "core.quotepath=false"] + list(args),
+                              capture_output=True, text=True, timeout=15)
+
     newest, oldest = {}, {}
     try:
-        out = subprocess.run(["git", "-C", str(repo_root), "log",
-                              "--name-only", "--pretty=%ct"],
-                             capture_output=True, text=True, timeout=15)
+        top = run("rev-parse", "--show-toplevel")
+        if top.returncode != 0 or Path(top.stdout.strip()).resolve() != Path(repo_root).resolve():
+            return {}, {}
+        out = run("log", "--name-status", "--pretty=%ct")
         if out.returncode != 0:
             return {}, {}
-        ts = None
+        alias, ts = {}, None   # ancien nom -> nom actuel (on descend du plus recent)
+
+        def cur(path):
+            while path in alias:
+                path = alias[path]
+            return path
+
         for line in out.stdout.splitlines():
-            s = line.strip()
+            s = line.rstrip()
+            if not s:
+                continue
             if s.isdigit():
                 ts = int(s)
-            elif s and ts:
-                newest.setdefault(s, ts)   # premiere occurrence = commit le plus recent
-                oldest[s] = ts             # derniere occurrence = commit de creation
-        dirty = subprocess.run(["git", "-C", str(repo_root), "status", "--porcelain"],
-                               capture_output=True, text=True, timeout=15)
+                continue
+            if "\t" not in s or ts is None:
+                continue
+            parts = s.split("\t")
+            status = parts[0]
+            if status[:1] in ("R", "C") and len(parts) == 3:
+                path = cur(parts[2])
+                if status[:1] == "R":
+                    alias[parts[1]] = path
+            else:
+                path = cur(parts[1])
+            newest.setdefault(path, ts)   # premiere occurrence = plus recent
+            oldest[path] = ts             # derniere occurrence = creation
+        dirty = run("status", "--porcelain")
         for line in dirty.stdout.splitlines():
             newest.pop(line[3:].strip().strip('"'), None)
     except Exception:
@@ -1343,6 +1370,7 @@ function show(slug){
   if(history.replaceState) history.replaceState(null,'','#'+slug);
   window.scrollTo(0,0);
   closeSearch();
+  if(typeof hcHide==='function')hcHide();
   if(slug==='toile'){if(!TL.ready)tlInit();else{tlSize();tlDraw();}}
 }
 function route(){
@@ -1362,7 +1390,7 @@ document.querySelectorAll('.page[data-title]').forEach(function(p){
 });
 var sov=document.getElementById('search-ov'),sin=document.getElementById('search-input'),
     sres=document.getElementById('search-res'),sel=-1;
-function openSearch(){sov.classList.add('show');sin.value='';renderRes('');sin.focus();}
+function openSearch(){hcHide();sov.classList.add('show');sin.value='';renderRes('');sin.focus();}
 function closeSearch(){sov.classList.remove('show');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function renderRes(q){
@@ -1424,6 +1452,7 @@ if(window.matchMedia&&matchMedia('(hover: hover)').matches){
     },220);});
   document.addEventListener('scroll',hcHide,true);
   document.addEventListener('click',hcHide,true);
+  document.addEventListener('mouseleave',hcHide,true);
 }
 
 /* ---- Toile : graphe de connectivite ---------------------------------- */
@@ -1536,6 +1565,9 @@ function tlInit(){
   cv.addEventListener('touchstart',function(e){var m=xy(e);px=m[0];py=m[1];},{passive:true});
   cv.addEventListener('touchmove',function(e){
     e.preventDefault();var m=xy(e);TL.ox+=m[0]-px;TL.oy+=m[1]-py;px=m[0];py=m[1];tlDraw();},{passive:false});
+  function tlReanchor(e){if(e.touches.length){var m=xy(e);px=m[0];py=m[1];}}
+  cv.addEventListener('touchend',tlReanchor,{passive:true});
+  cv.addEventListener('touchcancel',tlReanchor,{passive:true});
   document.getElementById('tz-in').addEventListener('click',function(){TL.zoom=Math.min(TL.zoom*1.3,4);tlDraw();});
   document.getElementById('tz-out').addEventListener('click',function(){TL.zoom=Math.max(TL.zoom*0.77,0.1);tlDraw();});
   document.getElementById('tz-fit').addEventListener('click',function(){tlFit();tlDraw();});

@@ -1,4 +1,4 @@
-import json, shutil, subprocess, sys, tempfile, time, unittest
+import json, os, shutil, subprocess, sys, tempfile, time, unittest
 from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent.parent))
 from build_wiki import (parse_frontmatter, slugify, norm_key, md_convert,
@@ -248,6 +248,8 @@ class TestAssembly(unittest.TestCase):
         self.assertIn("@font-face", self.html)
         self.assertIn("data:font/woff2;base64,", self.html)
         self.assertNotIn("fonts.googleapis.com", self.html)
+        # dedupliquees : un bloc par (famille, subset), pas par graisse
+        self.assertLessEqual(self.html.count("data:font/woff2"), 6)
 
     def test_recherche_fulltext(self):
         # Recherche insensible aux accents + indexation du corps des fiches.
@@ -443,6 +445,30 @@ class TestDatesGit(unittest.TestCase):
         self.assertTrue(newest)          # le repo a des commits
         k = next(iter(newest))
         self.assertLessEqual(oldest[k], newest[k])
+
+    def test_git_dates_suit_les_renames(self):
+        # Un fichier renomme garde la date de creation de son ancien nom.
+        from build_wiki import git_dates
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            env = {"GIT_AUTHOR_NAME": "t", "GIT_AUTHOR_EMAIL": "t@t",
+                   "GIT_COMMITTER_NAME": "t", "GIT_COMMITTER_EMAIL": "t@t",
+                   "GIT_AUTHOR_DATE": "2026-01-01T00:00:00", "GIT_COMMITTER_DATE": "2026-01-01T00:00:00",
+                   "PATH": os.environ.get("PATH", "")}
+            def git(*a, **kw):
+                e = dict(env); e.update(kw.get("env_extra", {}))
+                subprocess.run(["git", "-C", str(d)] + list(a), check=True,
+                               capture_output=True, env=e)
+            git("init", "-q")
+            (d / "a.md").write_text("x", encoding="utf-8")
+            git("add", "a.md"); git("commit", "-qm", "creation")
+            git("mv", "a.md", "b.md")
+            git("commit", "-qm", "rename",
+                env_extra={"GIT_AUTHOR_DATE": "2026-06-01T00:00:00",
+                           "GIT_COMMITTER_DATE": "2026-06-01T00:00:00"})
+            newest, oldest = git_dates(d)
+            self.assertIn("b.md", oldest)
+            self.assertLess(oldest["b.md"], newest["b.md"])   # creation < rename
 
     def test_git_dates_sans_git(self):
         from build_wiki import git_dates

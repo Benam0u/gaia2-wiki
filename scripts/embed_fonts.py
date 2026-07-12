@@ -37,17 +37,34 @@ def main():
     css = fetch(CSS_URL).decode("utf-8")
     # Blocs de la forme : /* subset */\n@font-face {...}
     blocks = re.findall(r"/\* ([a-z-]+) \*/\s*(@font-face \{[^}]+\})", css)
-    kept, total = [], 0
+    # Google sert la MEME police variable pour toutes les graisses demandees :
+    # on deduplique par (famille, subset) et on emet UN bloc avec une plage
+    # font-weight (syntaxe police variable), au lieu d'un bloc par graisse.
+    groups = {}   # (famille, subset) -> {"block", "url", "weights"}
     for subset, block in blocks:
         if subset not in KEEP_SUBSETS:
             continue
-        m = re.search(r"url\((https://[^)]+\.woff2)\)", block)
-        if not m:
+        fam = re.search(r"font-family: '([^']+)'", block)
+        url = re.search(r"url\((https://[^)]+\.woff2)\)", block)
+        w = re.search(r"font-weight: (\d+)", block)
+        if not (fam and url and w):
             continue
-        data = fetch(m.group(1))
-        total += len(data)
-        uri = "data:font/woff2;base64," + base64.b64encode(data).decode("ascii")
-        kept.append("/* %s */\n%s" % (subset, block.replace(m.group(1), uri)))
+        g = groups.setdefault((fam.group(1), subset),
+                              {"block": block, "url": url.group(1), "weights": []})
+        g["weights"].append(int(w.group(1)))
+        assert g["url"] == url.group(1), "URLs differentes pour %s/%s" % (fam.group(1), subset)
+    kept, total, cache = [], 0, {}
+    for (fam, subset), g in groups.items():
+        if g["url"] not in cache:
+            data = fetch(g["url"])
+            total += len(data)
+            cache[g["url"]] = ("data:font/woff2;base64,"
+                               + base64.b64encode(data).decode("ascii"))
+        block = g["block"].replace(g["url"], cache[g["url"]])
+        block = re.sub(r"font-weight: \d+;",
+                       "font-weight: %d %d;" % (min(g["weights"]), max(g["weights"])),
+                       block)
+        kept.append("/* %s */\n%s" % (subset, block))
     assert kept, "aucun bloc @font-face conserve - format Google change ?"
     os.makedirs(os.path.dirname(OUT), exist_ok=True)
     with open(OUT, "w", encoding="utf-8") as f:
