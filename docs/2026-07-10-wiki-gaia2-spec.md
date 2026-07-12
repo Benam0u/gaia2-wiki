@@ -207,13 +207,13 @@ Mode manuel : Benoit edite les .md, lance `python3 build_wiki.py`, commit.
 
 ## 15. v2 et non-goals
 
-Idees notees, PAS dans la v1 :
+Idees notees, PAS dans la v1 - etat au 2026-07-13 :
 
-- Mini-cartes au survol des liens (titre + resume + portrait).
-- Graphe de relations visuel (canvas vanilla).
-- Champ `relations:` type dans le frontmatter (X membre-de Y) pour un rendu structure ; en v1 les relations vivent dans la prose + backlinks.
-- Polices embarquees en base64 pour un rendu identique 100% hors-ligne.
-- Filtre "nouveautes depuis la session N".
+- FAIT (v2) : mini-cartes au survol des liens (titre + type + resume + portrait, desktop).
+- FAIT (v2) : graphe de relations visuel = la page Toile.
+- FAIT (v2) : polices embarquees en base64 (assets/fonts.css, dedupliquees par famille/subset) - rendu identique 100% hors-ligne, zero CDN.
+- FAIT (v2) : nouveautes depuis la derniere session (dates git avec suivi des renames, bloc accueil + point dore dans les index) ; Recemment modifiees passe aussi sur les dates git.
+- RESTANT (volontairement) : champ `relations:` type dans le frontmatter - a ne faire que si le besoin de requetes structurees apparait ; la prose + backlinks + Toile couvrent l'usage actuel.
 
 Non-goals : moteur wiki serveur, editeur in-browser, hebergement, multi-utilisateurs, donnees du MJ.
 

@@ -4,6 +4,8 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 
 ## Statut
 
+- 2026-07-13 : **v2 LIVREE** - Toile (graphe de connectivite), recherche full-text, polices embarquees (hors-ligne parfait), hover-cards, nouveautes depuis la derniere session (dates git). Reste en v-plus-tard : champ relations: type (sur besoin). Review adversariale : 6 findings corriges.
+
 - 2026-07-12 : **session 21 integree** (premier tour complet du process d'alimentation : photo + texte en vrac -> 127 fiches, 2 nouvelles affaires EN COURS, renommages La Vieille Garde / Eglise du Grand Ordonnateur, badges PJ/PNJ). Verifiee par contre-lecture agent. Points d'interpretation en attente de validation par Benoit (voir recap de conversation du 2026-07-12).
 - 2026-07-11 : **v1 LIVREE** - build core (52 tests) + import complet (111 fiches) + review adversariale (25 findings corriges) + acceptation spec section 16 passee. EN ATTENTE : relecture du contenu par Benoit (l'import est fidele aux PDFs du 2026-07-10 ; ses souvenirs priment sur les PDFs).
 - 2026-07-10 : spec de design validee -> `docs/2026-07-10-wiki-gaia2-spec.md` ; plan -> `docs/plans/2026-07-11-wiki-implementation.md`.
