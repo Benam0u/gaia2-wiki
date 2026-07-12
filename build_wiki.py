@@ -1224,10 +1224,14 @@ function route(){
 }
 window.addEventListener('hashchange',route);
 
+function norm(s){return String(s).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');}
 var SEARCH=[];
 document.querySelectorAll('.page[data-title]').forEach(function(p){
-  SEARCH.push({id:p.id.replace(/^p-/,''),title:p.dataset.title||'',alias:p.dataset.alias||'',
-    resume:p.dataset.resume||'',tags:p.dataset.tags||'',type:p.dataset.type||''});
+  var title=p.dataset.title||'';
+  SEARCH.push({id:p.id.replace(/^p-/,''),title:title,type:p.dataset.type||'',
+    ntitle:norm(title),
+    meta:norm(title+' '+(p.dataset.alias||'')+' '+(p.dataset.resume||'')+' '+(p.dataset.tags||'')),
+    body:norm(p.textContent||'')});
 });
 var sov=document.getElementById('search-ov'),sin=document.getElementById('search-input'),
     sres=document.getElementById('search-res'),sel=-1;
@@ -1235,11 +1239,19 @@ function openSearch(){sov.classList.add('show');sin.value='';renderRes('');sin.f
 function closeSearch(){sov.classList.remove('show');}
 function esc(s){return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
 function renderRes(q){
-  q=q.trim().toLowerCase();sel=-1;
-  var hits=!q?[]:SEARCH.filter(function(e){
-    return (e.title+' '+e.alias+' '+e.resume+' '+e.tags).toLowerCase().indexOf(q)>=0;}).slice(0,20);
-  sres.innerHTML=hits.map(function(e){
-    return '<a href="#'+esc(e.id)+'">'+esc(e.title)+'<span class="rtype">'+esc(e.type)+'</span></a>';}).join('');
+  sel=-1;
+  var words=norm(q).split(/\s+/).filter(Boolean);
+  var hits=!words.length?[]:SEARCH.map(function(e){
+    var score=0;
+    if(words.every(function(w){return e.ntitle.indexOf(w)>=0;}))score=3;
+    else if(words.every(function(w){return e.meta.indexOf(w)>=0;}))score=2;
+    else if(words.every(function(w){return e.meta.indexOf(w)>=0||e.body.indexOf(w)>=0;}))score=1;
+    return {e:e,score:score};
+  }).filter(function(h){return h.score>0;})
+    .sort(function(a,b){return b.score-a.score||a.e.title.localeCompare(b.e.title);})
+    .slice(0,20);
+  sres.innerHTML=hits.map(function(h){
+    return '<a href="#'+esc(h.e.id)+'">'+esc(h.e.title)+'<span class="rtype">'+esc(h.e.type)+'</span></a>';}).join('');
 }
 sin.addEventListener('input',function(){renderRes(sin.value);});
 sov.addEventListener('click',function(e){if(e.target===sov)closeSearch();});

@@ -140,7 +140,7 @@ Une seule page HTML, sections montrees/cachees par JS + hash routing (`#neros`, 
 - FICHE ENTITE : titre, badges, infobox a droite (champs frontmatter + portrait), corps, avertissement anti-fusion le cas echeant, backlinks en bas.
 - CHRONOLOGIE : periodes + sessions (section 9).
 - SYSTEME : index races (20, avec portraits), index classes (13, avec portraits et les 10 avantages de classe chacune), table competences (52), avantages generaux (15). Fiche ZogZork enrichie par le JSON (section 5).
-- RECHERCHE : overlay Ctrl+K (et bouton loupe), filtre instantane sur titre + alias + resume + tags, navigation clavier. Tout est deja dans le DOM : pas d'index externe.
+- RECHERCHE : overlay Ctrl+K (et bouton loupe), navigation clavier. Full-text depuis 2026-07-12 : insensible aux accents, multi-mots (ET logique), cherche dans titre + alias + resume + tags ET dans le corps des fiches (textContent du DOM), resultats classes titre > meta > corps. Pas d'index externe.
 
 ## 11. Style graphique
 

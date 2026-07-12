@@ -223,6 +223,12 @@ class TestAssembly(unittest.TestCase):
     def test_backlinks_affiches(self):
         self.assertIn("Mentionne dans", self.html)
 
+    def test_recherche_fulltext(self):
+        # Recherche insensible aux accents + indexation du corps des fiches.
+        self.assertIn("function norm(", self.html)
+        self.assertIn("\\u0300", self.html)
+        self.assertIn("body:norm(p.textContent", self.html)
+
 class TestShareBuild(unittest.TestCase):
     def setUp(self):
         fiches = load_fiches(FIX)
@@ -345,7 +351,7 @@ class TestReviewFixes(unittest.TestCase):
     # Fix 12 : la recherche echappe title/type avant innerHTML
     def test_recherche_js_echappe(self):
         self.assertIn("function esc(", self.full)
-        self.assertIn("esc(e.title)", self.full)
+        self.assertIn("esc(h.e.title)", self.full)
 
     # Fix 14 : un placeholder litteral dans un corps de fiche survit
     def test_placeholder_litteral_preserve(self):
