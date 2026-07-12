@@ -9,7 +9,7 @@ tags: [questions]
 
 - Qui est [[La Flèche]] ?
 - Pourquoi [[Kretel]] est-il la cible du cambriolage annoncé ?
-- Quelle était la relation exacte de [[Turdan]] avec [[La Flèche]] ?
+- Pourquoi [[Turdan]] voulait-il rencontrer [[La Flèche]] ? (son âme a confirmé cette intention en [[Session 21]])
 - Quel rôle [[Axxel]] a-t-il réellement joué pendant la guerre contre la [[Mère des Monstres]] ?
 - [[Axelle]] et [[Axxel]] sont-ils la même entité ?
 - Pourquoi le [[Navire marchand|navire]] de [[Gueule de Figue]] reste-t-il bloqué malgré la résolution de la quête ?
@@ -18,6 +18,11 @@ tags: [questions]
 - Le [[Réseau de contrebande|réseau de contrebande]] lié à [[Ambroise]] existe-t-il encore ailleurs ?
 - Gretel et [[Kretel]] sont-ils deux personnes distinctes ou une confusion de notes ?
 - Quel est le contexte exact de [[Tel]], [[Knitt]], [[Casper]], [[Mick]], [[Corien]] et [[Weed]] ?
+- Qui est derrière les [[Enlèvements à Simpol|enlèvements]] ? L'orc évoqué par les témoins est-il vraiment [[Taladrel]] ?
+- Qui ou quoi « possède » les [[Les gardes ensorcelés|gardes ensorcelés]] ? La tentative nocturne des druides sur le garde capturé a-t-elle fonctionné ?
+- Où sont passés [[André]] et [[Denis]], les piliers de bar disparus ?
+- Qu'est-ce que le [[Dr Hakim]] exactement, et qu'a-t-il fait à [[Bill]] et [[Sidonie]] ?
+- Qui ou quoi est le « Grand Ordonnateur » de l'[[Église du Grand Ordonnateur]] ?
 
 ## A surveiller a la prochaine partie
 
@@ -27,6 +32,9 @@ tags: [questions]
 - Quelles conséquences politiques après la confrontation entre [[Neros]], [[Dr Van Richten|Van Richten]], [[M. LeMaire]] et l'[[Empire PaxAlpha|Empire]] ?
 - Le [[Navire marchand|navire marchand]] restera-t-il bloqué, et pourquoi "jusqu'à nouvel ordre" ?
 - Les infrastructures promises aux [[Les Réfugiés|Réfugiés]] seront-elles réellement installées ?
+- Les retombées des accusations de [[ZogZork]] contre [[Taladrel]] - et le risque que Z soit démasqué pour [[Yannick]] et le pilier de bar.
+- La mission de [[Bill]] pour [[La Vieille Garde]] (tuer le [[Prévôt Bertrand]], d'après les notes) et sa relation avec [[Tonton]].
+- Le résultat du « truc » tenté par les druides sur le garde ensorcelé.
 
 ## Séparations à maintenir
 

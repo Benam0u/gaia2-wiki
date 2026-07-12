@@ -33,11 +33,12 @@ Déchiré mais résolu, ZogZork a rejoint une ville humaine cosmopolite, où il 
 
 Ancien du groupe envoyé par [[Neros]] dans la [[Prison des Mondes]] pour détruire l'âme de la [[Mère des Monstres]], ZogZork vit aujourd'hui à [[Simpol]], ville fermée sous contrôle de l'[[Empire PaxAlpha]].
 
-Son engagement politique le plus clair : il a choisi d'aider [[Les Sauvages]] (avec [[Petit Panda]], il est le pont du groupe vers ce mouvement, comme [[Bill]] l'est vers [[La Garde]] et [[Sidonie]] vers [[Les Réfugiés]]).
+Son engagement politique le plus clair : il a choisi d'aider [[Les Sauvages]] (avec [[Petit Panda]], il est le pont du groupe vers ce mouvement, comme [[Bill]] l'est vers [[La Vieille Garde]] et [[Sidonie]] vers [[Les Réfugiés]]).
 
 - Première mission : incendier un [[Entrepôt des quais|entrepôt]] situé près des [[Quais de Simpol|quais de Simpol]].
 - Deuxième mission : kidnapper vivant un [[Haut gradé impérial|haut gradé de l'Empire]]. Il y a combattu un [[Serpent et ours du kidnapping|énorme serpent et un ours]] ; le haut gradé a été assommé et remis vivant, conformément à l'objectif.
 - Récompense : un [[Enchantement druidique]] donnant +2 Force et -2 points de fatigue maximum.
+- [[Session 21]] : interrogatoire musclé du haut gradé, capture d'un garde {?: possédé} (voir [[Les gardes ensorcelés]]), fiasco de l'anniversaire de [[Worgul]] (banni des [[Taverne des 3 Crânes|3 Crânes]], aveux publics de deux morts), puis enquête officielle sur les [[Enlèvements à Simpol|enlèvements]] - avec un sérieux conflit d'intérêts.
 
 ## Relations
 
@@ -45,6 +46,9 @@ Son engagement politique le plus clair : il a choisi d'aider [[Les Sauvages]] (a
 - [[Neros]] : allié ancien de la guerre ; ZogZork l'a aidé à récupérer ses recherches lors du [[Vol des recherches de Neros|vol de son carnet]] ; Neros lui doit toujours un cours gratuit.
 - [[Prévôt Bertrand]] et [[Wolframe]] (commerce) : notés comme Némésis sur sa fiche de personnage ; le contexte détaillé n'est pas présent dans les notes actuelles.
 - [[Turdan]] : mort accidentellement de la main de ZogZork, un événement pouvant avoir des conséquences morales, judiciaires ou réputationnelles.
+- [[Yannick]] : mort étranglé accidentellement par ZogZork pendant un interrogatoire ; la révélation de cette mort par [[Bill]] à [[Tonton]] a valu à Z son bannissement des [[Taverne des 3 Crânes|3 Crânes]].
+- [[Worgul]] : relation d'amour-haine - sales coups permanents, affection réelle dans les moments critiques.
+- [[Tonton]] : l'a banni de sa taverne et le considère comme un meurtrier.
 
 ## Style d'action
 

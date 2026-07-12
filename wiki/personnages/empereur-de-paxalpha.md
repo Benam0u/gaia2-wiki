@@ -1,15 +1,16 @@
 ---
-resume: Souverain de l'Empire PaxAlpha, allié revendiqué d'Axxel pendant la guerre
-tags: [empire]
+resume: Bertrand, souverain de l'Empire PaxAlpha, allié revendiqué d'Axxel pendant la guerre
+tags: [pnj, empire]
 alias: [l'Empereur, L'Empereur de PaxAlpha]
 infobox:
+  Nom: Bertrand
   Rôle: Souverain de l'Empire PaxAlpha
   Épouse: Axelle
 ---
 
 # Empereur de PaxAlpha
 
-L'Empereur est le souverain de l'[[Empire PaxAlpha]], auquel appartiennent [[Simpol]] et les villes du nord détruites pendant la guerre. Son nom n'est pas connu.
+L'Empereur est le souverain de l'[[Empire PaxAlpha]], auquel appartiennent [[Simpol]] et les villes du nord détruites pendant la guerre. Son nom est Bertrand (appris en [[Session 21]]) - à ne pas confondre avec le [[Prévôt Bertrand]] de Simpol.
 
 ## Ce qu'on sait
 

@@ -1,6 +1,6 @@
 ---
 resume: Archimage très puissant devenu laborantin, allié du groupe depuis la guerre
-tags: [magie, simpol]
+tags: [pnj, magie, simpol]
 infobox:
   Rôle: Archimage de guerre devenu laborantin
   Allégeance: Au service de M. LeMaire

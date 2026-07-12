@@ -1,9 +1,11 @@
 ---
 resume: Citoyens de PaxAlpha deplaces par la guerre, vivant dans les camps autour de Simpol et revendiquant leurs droits
 tags: [mouvement, refugies, camp]
+alias: [les connards]
 infobox:
   Implantation: Camps et campagnes autour de Simpol
-  Alliee du groupe: Sidonie
+  Alliée du groupe: Sidonie
+  Surnom (M. LeMaire): les connards
 ---
 
 # Les Réfugiés
@@ -17,13 +19,15 @@ Citoyens déplacés vivant dans les campements et les campagnes autour de [[Simp
 - Leur détresse a conduit certains membres à organiser des actions radicales ou manipulatrices :
   - l'empoisonnement au [[Canas]], distribué en ville par [[Yannick]] (affaire [[Crise du Canas]], RÉSOLU) ;
   - le vol du [[Laissez-passer de Gerwin|laissez-passer]] du navire (affaire [[Navire marchand]], RÉSOLU) ;
-  - la [[Fausse épidémie|fausse épidémie]], mise en scène par la [[Secte des Réfugiés|secte du camp]] (RÉSOLU).
+  - la [[Fausse épidémie|fausse épidémie]], mise en scène par la [[Église du Grand Ordonnateur|secte du camp]] (RÉSOLU).
 - La résolution médicale du Canas ne règle pas nécessairement les causes politiques et sociales ayant conduit à l'action.
 - [[Sidonie]] est alliée des Réfugiés : elle constitue le pont naturel du groupe avec les camps.
+- [[M. LeMaire]] les surnomme "les connards" (il a donné un sobriquet à chacun des trois mouvements).
+- L'enquête sur les [[Enlèvements à Simpol|enlèvements]] ([[Session 21]]) est passée par leurs camps.
 
 ## Relations
 
-[[La Garde]], [[Les Sauvages]] et Les Réfugiés s'opposent chacun à un aspect du pouvoir impérial, mais rien ne prouve qu'ils constituent une alliance coordonnée. Les Réfugiés agissent pour leur survie, leur reconnaissance et leur accès à Simpol.
+[[La Vieille Garde]], [[Les Sauvages]] et Les Réfugiés s'opposent chacun à un aspect du pouvoir impérial, mais rien ne prouve qu'ils constituent une alliance coordonnée. Les Réfugiés agissent pour leur survie, leur reconnaissance et leur accès à Simpol.
 
 ## Zones d'ombre
 

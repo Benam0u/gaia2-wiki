@@ -1,5 +1,6 @@
 ---
 resume: Collègue ou contact dans une affaire liée à une drogue magique
+tags: [pnj]
 statut: fragment
 ---
 

@@ -1,11 +1,12 @@
 ---
-resume: Religion ou secte installee dans le camp des Refugies, organisatrice de la fausse epidemie au maquillage
+resume: Mouvement religieux du camp des Réfugiés, organisateur de la fausse épidémie au maquillage ; longtemps appelé "la secte des Réfugiés"
 tags: [religion, camp, refugies]
+alias: [Secte des Réfugiés, Grand Ordonnateur]
 ---
 
-# Secte des Réfugiés
+# Église du Grand Ordonnateur
 
-Religion ou secte installée à la sortie d'une église ou d'un temple dans le [[Camps des Réfugiés|camp des Réfugiés]] (voir [[Temple de la secte]]).
+Mouvement religieux installé à la sortie d'une église ou d'un temple dans le [[Camps des Réfugiés|camp des Réfugiés]] (voir [[Temple de la secte]]). Longtemps désigné dans les notes comme "la secte des Réfugiés", son nom réel a été appris en [[Session 21]] : l'Église du Grand Ordonnateur.
 
 ## Ce qu'on sait
 
@@ -17,4 +18,4 @@ Religion ou secte installée à la sortie d'une église ou d'un temple dans le [
 
 ## Zones d'ombre
 
-- La nature exacte de l'organisation (religion ou secte) n'est pas précisée dans les notes.
+- Qui ou quoi est le "Grand Ordonnateur" ? La doctrine du mouvement reste inconnue.

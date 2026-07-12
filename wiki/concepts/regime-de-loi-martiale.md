@@ -20,4 +20,4 @@ Régime sous lequel fonctionne [[Simpol]] depuis l'intervention de l'armée imp�
 ## Relations
 
 - [[Dr Van Richten]] a été placé par l'Empire dans une position de pouvoir comparable à celle du maire, voire temporairement à sa place.
-- [[La Garde]], mouvement d'anciens combattants opposés à la présence impériale, conteste ce régime de l'intérieur de la ville.
+- [[La Vieille Garde]], mouvement d'anciens combattants opposés à la présence impériale, conteste ce régime de l'intérieur de la ville.

@@ -1,6 +1,6 @@
 ---
 resume: Créateur du monde dont la beauté est inversement liée à la moralité
-tags: [cosmologie]
+tags: [pnj, cosmologie]
 infobox:
   Rôle: Créateur du monde
   Position actuelle: Inconnue

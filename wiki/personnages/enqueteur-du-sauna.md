@@ -1,7 +1,7 @@
 ---
 resume: Homme des bains se disant enquêteur infiltré chez les contrebandiers, loyauté ambiguë
 statut: hypothese
-tags: [enquete, contrebande]
+tags: [pnj, enquete, contrebande]
 alias: [Homme suspect du sauna]
 infobox:
   Rôle déclaré: Enquêteur infiltré

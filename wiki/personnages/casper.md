@@ -1,5 +1,6 @@
 ---
 resume: Bras droit de Corien, recherché par les militaires et par des criminels
+tags: [pnj]
 statut: fragment
 ---
 

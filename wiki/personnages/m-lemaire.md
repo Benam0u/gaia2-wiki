@@ -1,6 +1,6 @@
 ---
 resume: Dirigeant historique de Simpol, architecte de son expansion démesurée
-tags: [simpol, politique]
+tags: [pnj, simpol, politique]
 alias: [LeMaire]
 infobox:
   Rôle: Dirigeant de Simpol
@@ -18,9 +18,11 @@ M. LeMaire est le dirigeant historique de [[Simpol]] et l'architecte de son expa
 - Les bâtiments de la [[Mairie de Simpol|mairie]] encerclent ou occupent environ 60 % de la ville, donnant à l'administration municipale une présence physique écrasante.
 - Des statues de M. LeMaire ont été installées à la place ou au détriment de celles de l'[[Empereur de PaxAlpha]], ce qui a été interprété comme un défi à l'autorité impériale.
 - L'armée impériale est arrivée pour réaffirmer l'autorité de PaxAlpha : son autorité est désormais concurrencée ou surveillée par l'Empire.
+- Il a donné un sobriquet à chacun des trois mouvements contestataires ([[Session 21]]) : [[La Vieille Garde]] = "les Gougnafiers", [[Les Sauvages]] = "les gueux", [[Les Réfugiés]] = "les connards".
 
 ## Relations
 
+- [[Worgul]] : son "best bro" et gardien des clés de la ville.
 - [[Neros]] : archimage à son service.
 - [[Dr Van Richten]] : placé par l'Empire dans une position de pouvoir comparable à la sienne, voire temporairement à sa place.
 - [[Empereur de PaxAlpha]] : autorité ultime, défiée par les statues.

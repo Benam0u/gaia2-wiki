@@ -13,9 +13,9 @@ Un message signé « La Flèche » a annoncé le futur cambriolage de [[Kretel]]
 
 - Le [[Message de La Flèche|message]] annonçait le futur cambriolage de [[Kretel]] et était signé « La Flèche ».
 - À ce stade, La Flèche peut être une personne, un groupe, un pseudonyme ou une signature criminelle ; aucune identité n'est confirmée.
-- [[Turdan]] était un aventurier qui cherchait La Flèche et pouvait donc posséder des informations utiles sur le cambriolage.
-- Turdan a été surpris dans le cadre de cette enquête, présenté comme un prétendu voleur sur un toit. [[ZogZork]] l'a projeté à travers une cheminée « façon John Cena » ; Turdan est mort accidentellement à la suite de cette projection.
-- La mort de Turdan a supprimé une source potentielle de renseignements sur La Flèche.
+- [[Turdan]] était un aventurier qui voulait rencontrer La Flèche et pouvait donc posséder des informations utiles sur le cambriolage.
+- Surpris sur un toit pendant l'enquête, Turdan est mort accidentellement de la main de [[ZogZork]] (récit complet sur sa fiche). Sa mort a supprimé une source potentielle de renseignements.
+- Son âme, contactée ensuite par rituel, a confirmé son nom, sa profession d'aventurier et le fait qu'il voulait rencontrer La Flèche ([[Session 21]]).
 
 ## Zones d'ombre
 

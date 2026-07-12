@@ -28,11 +28,11 @@ Empire auquel appartient [[Simpol]] et auquel appartenaient aussi plusieurs vill
 
 ### Armée impériale et garde impériale
 
-L'armée impériale et la garde impériale représentent l'Empire. Elles ne doivent pas être confondues avec [[La Garde]], qui est un mouvement local de résistance ou de contestation opposé aux forces impériales. C'est la garde impériale qui a perquisitionné et fermé la [[Taverne Sauna et Bains d'Ambroise|taverne d'Ambroise]] et condamné son passage secret.
+L'armée impériale et la garde impériale représentent l'Empire. Elles ne doivent pas être confondues avec [[La Vieille Garde]], qui est un mouvement local de résistance ou de contestation opposé aux forces impériales. C'est la garde impériale qui a perquisitionné et fermé la [[Taverne Sauna et Bains d'Ambroise|taverne d'Ambroise]] et condamné son passage secret.
 
 ## Relations
 
-- Trois mouvements contestataires s'opposent chacun à un aspect du pouvoir impérial : [[La Garde]], [[Les Sauvages]] et [[Les Réfugiés]].
+- Trois mouvements contestataires s'opposent chacun à un aspect du pouvoir impérial : [[La Vieille Garde]], [[Les Sauvages]] et [[Les Réfugiés]].
 - [[Les Réfugiés]] sont des citoyens impériaux, mais l'Empire les laisse cantonnés hors de [[Simpol]].
 - L'intérêt de l'Empire pour les [[Baies de loyauté|baies de loyauté]] étudiées par [[Neros]] demeure préoccupant : le [[Dr Van Richten]] a volé le carnet de recherches pour les lui transmettre (affaire [[Vol des recherches de Neros]], RÉSOLU).
 

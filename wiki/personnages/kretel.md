@@ -1,6 +1,6 @@
 ---
 resume: Grand coordinateur des monteurs de meubles, cible annoncée de La Flèche
-tags: [simpol, enquete]
+tags: [pnj, simpol, enquete]
 alias: [Gretel]
 infobox:
   Rôle: Grand coordinateur des monteurs de meubles de Simpol

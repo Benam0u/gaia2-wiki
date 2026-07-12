@@ -1,5 +1,6 @@
 ---
 resume: Noté dans les carnets comme un porteur humain
+tags: [pnj]
 statut: fragment
 ---
 

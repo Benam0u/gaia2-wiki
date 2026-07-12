@@ -13,6 +13,7 @@ Document indispensable au départ du petit navire marchand de [[Gerwin]], volé 
 - Sans ce document, le navire ne pouvait pas quitter les [[Quais de Simpol|quais]].
 - Le groupe a appris que [[Les Réfugiés]] avaient volé le laissez-passer.
 - Le cadavre de [[Gerwin]] a ensuite été retrouvé ; [[Gueule de Figue]] a été nommé nouveau capitaine.
+- [[Session 21]] : un [[Humain à l'œil de verre|humain grand et fin, à l'œil de verre et au nez cassé, habillé de haillons]] serait en possession du laissez-passer volé. {?: Ce serait le meurtrier de Gerwin.}
 
 ## Zones d'ombre
 

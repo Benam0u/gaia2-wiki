@@ -1,6 +1,6 @@
 ---
 resume: Némésis de ZogZork notée sur sa fiche de personnage, contexte inconnu
-tags: [nemesis]
+tags: [pnj, nemesis]
 infobox:
   Rôle: Némésis de ZogZork
 ---

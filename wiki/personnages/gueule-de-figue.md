@@ -1,6 +1,6 @@
 ---
 resume: Nouveau capitaine du navire marchand, toujours bloqué à quai
-tags: [simpol]
+tags: [pnj, simpol]
 infobox:
   Rôle: Capitaine marchand
   Situation: Navire toujours à quai

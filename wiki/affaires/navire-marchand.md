@@ -16,6 +16,7 @@ Un petit navire marchand était bloqué à quai à [[Simpol]] car son capitaine,
 - Le cadavre de [[Gerwin]] a ensuite été retrouvé.
 - [[Gueule de Figue]] a été nommé nouveau capitaine du navire.
 - La quête du laissez-passer et de l'identité des responsables est considérée comme résolue.
+- [[Session 21]] : un [[Humain à l'œil de verre|humain à l'œil de verre]] serait en possession du laissez-passer volé. {?: Ce serait le meurtrier de Gerwin.}
 
 ## Zones d'ombre
 

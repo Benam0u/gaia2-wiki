@@ -1,6 +1,6 @@
 ---
 resume: Autorité placée par l'Empire à Simpol, voleur confondu du carnet de Neros
-tags: [empire, simpol]
+tags: [pnj, empire, simpol]
 alias: [Van Richten]
 infobox:
   Rôle: Autorité impériale à Simpol

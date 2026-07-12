@@ -1,6 +1,6 @@
 ---
 resume: Capitaine du navire marchand bloqué à quai, retrouvé mort
-tags: [simpol, enquete]
+tags: [pnj, simpol, enquete]
 infobox:
   Rôle: Capitaine marchand
   État: Décédé (cadavre retrouvé)
@@ -19,3 +19,4 @@ Gerwin était le capitaine d'un petit [[Navire marchand|navire marchand]] bloqu�
 ## Zones d'ombre
 
 - Les circonstances exactes de sa mort ne sont pas détaillées dans les notes.
+- {?: L'[[Humain à l'œil de verre|humain à l'œil de verre]] qui serait en possession de son laissez-passer serait-il son meurtrier ?} ([[Session 21]])

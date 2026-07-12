@@ -1,5 +1,5 @@
 ---
-resume: Ville principale de la campagne, ancien comptoir d'aventuriers devenu une cite fortifiee, fermee et sous forte influence imperiale
+resume: Ville fortifiée proche des frontières de l'Empire, ancien comptoir d'aventuriers, fermée et sous forte influence impériale
 tags: [ville, empire, simpol]
 infobox:
   Appartenance: Empire PaxAlpha
@@ -10,7 +10,7 @@ infobox:
 
 # Simpol
 
-Ville principale de la campagne, au sein de l'[[Empire PaxAlpha]]. Ancienne bourgade d'aventuriers devenue une ville fortifiée et bureaucratique, aujourd'hui fermée et surveillée par l'armée impériale.
+Ville principale de la campagne, au sein de l'[[Empire PaxAlpha]] mais proche de ses frontières (et non au centre de l'Empire). Ancienne bourgade d'aventuriers devenue une ville fortifiée et bureaucratique - fortifiée, mais pas une grande ville - aujourd'hui fermée et surveillée par l'armée impériale.
 
 ## Ce qu'on sait
 
@@ -41,14 +41,17 @@ L'armée impériale est arrivée pour rappeler que Simpol reste soumise à [[Emp
 ### Lieux notables
 
 - [[Chapiteau de Neros]] : laboratoire de l'archimage [[Neros]].
-- [[Taverne Sauna et Bains d'Ambroise]] : fermée après la découverte d'un passage secret.
+- [[Taverne Sauna et Bains d'Ambroise]] : restituée à [[Ambroise]] et réouverte après sa relaxe ([[Session 21]]) ; son passage secret reste condamné.
+- [[Taverne des 3 Crânes]] : tenue par [[Tonton]] ; [[ZogZork]] en est banni.
+- [[La Goutte du fond du godet]] : nouvelle taverne de [[Le Gogne]], juste en face des 3 Crânes.
+- [[Prison de Simpol]] : les gens "en attente du traitement" y seraient stockés (voir [[Les gardes ensorcelés]]).
 - [[Quais de Simpol]] : le [[Navire marchand|navire marchand]] y reste bloqué.
 - [[Entrepôt des quais]] : incendié par [[ZogZork]] pour [[Les Sauvages]].
 - [[Camps des Réfugiés]] : à l'extérieur de la ville.
 
 ## Relations
 
-Trois mouvements contestataires structurent la région : [[La Garde]] en ville, [[Les Sauvages]] dans les forêts et [[Les Réfugiés]] dans les camps et campagnes.
+Trois mouvements contestataires structurent la région : [[La Vieille Garde]] en ville, [[Les Sauvages]] dans les forêts et [[Les Réfugiés]] dans les camps et campagnes.
 
 ## Zones d'ombre
 

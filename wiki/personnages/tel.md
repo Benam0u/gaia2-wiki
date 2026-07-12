@@ -1,5 +1,6 @@
 ---
 resume: Nom des notes, recherché par les militaires avec Knitt et Casper
+tags: [pnj]
 statut: fragment
 ---
 

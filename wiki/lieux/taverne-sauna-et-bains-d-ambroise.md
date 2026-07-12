@@ -1,15 +1,15 @@
 ---
-resume: Etablissement de la Haute-Naine Ambroise, ferme apres la decouverte d'un passage secret condamne par la garde imperiale
+resume: Établissement de la Haute-Naine Ambroise, réouvert après sa relaxe ; le passage secret reste condamné
 tags: [simpol, contrebande]
 alias: [Taverne d'Ambroise, Taverne sauna]
 infobox:
   Proprietaire: Ambroise
-  Etat: Fermee, passage condamne
+  État: Réouverte ; passage condamné
 ---
 
 # Taverne Sauna et Bains d'Ambroise
 
-Établissement de [[Simpol]] tenu par [[Ambroise]], une Haute-Naine. Désormais fermé après la découverte d'un passage secret, dossier traité dans l'affaire [[Passage d'Ambroise]].
+Établissement de [[Simpol]] tenu par [[Ambroise]], une Haute-Naine. Fermé un temps après la découverte d'un passage secret (affaire [[Passage d'Ambroise]]), il a été restitué à Ambroise après sa relaxe et a réouvert ([[Session 21]]).
 
 ## Ce qu'on sait
 
@@ -31,9 +31,8 @@ Un homme aperçu dans les bains semblait lié aux contrebandiers. Il s'est prés
 
 ### État actuel
 
-- La garde impériale a perquisitionné la taverne.
-- L'établissement a été fermé.
-- Le passage secret a été condamné.
+- La garde impériale a perquisitionné la taverne ; l'établissement a été fermé et le passage secret condamné.
+- [[Ambroise]] a ensuite été relaxée après un interrogatoire musclé : taverne restituée et réouverte ([[Session 21]]).
 - Le dossier local est [[Passage d'Ambroise|FERMÉ]], mais le [[Réseau de contrebande|réseau de contrebande]] peut toujours exister par une autre voie.
 
 ## Zones d'ombre

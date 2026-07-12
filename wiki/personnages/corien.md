@@ -1,5 +1,6 @@
 ---
 resume: Nom des notes, connu seulement comme le patron de Casper
+tags: [pnj]
 statut: fragment
 ---
 

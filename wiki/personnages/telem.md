@@ -1,6 +1,6 @@
 ---
 resume: Chef des Sauvages, mouvement druidique opposé à la technomagie
-tags: [sauvages]
+tags: [pnj, sauvages]
 infobox:
   Rôle: Chef des Sauvages
   Territoire: Forêts aux abords de Simpol

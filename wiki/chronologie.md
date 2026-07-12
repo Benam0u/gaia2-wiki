@@ -33,7 +33,7 @@ L'armée impériale arrive pour rappeler que [[Simpol]] reste soumise à [[Empir
 
 ## Montée des mouvements
 
-Trois foyers de contestation apparaissent : [[La Garde]] en ville, [[Les Sauvages]] dans les forêts et [[Les Réfugiés]] dans les camps et campagnes. Chacun s'oppose à un aspect du pouvoir impérial, mais rien ne prouve qu'ils constituent une alliance coordonnée. Les membres du groupe se répartissent entre plusieurs sympathies : [[Bill]] vers [[La Garde]], [[Sidonie]] vers [[Les Réfugiés]], [[ZogZork]] et [[Petit Panda]] vers [[Les Sauvages]].
+Trois foyers de contestation apparaissent : [[La Vieille Garde]] en ville, [[Les Sauvages]] dans les forêts et [[Les Réfugiés]] dans les camps et campagnes. Chacun s'oppose à un aspect du pouvoir impérial, mais rien ne prouve qu'ils constituent une alliance coordonnée. Les membres du groupe se répartissent entre plusieurs sympathies : [[Bill]] vers [[La Vieille Garde]], [[Sidonie]] vers [[Les Réfugiés]], [[ZogZork]] et [[Petit Panda]] vers [[Les Sauvages]].
 
 ## Missions des Sauvages
 
@@ -45,7 +45,7 @@ Trois foyers de contestation apparaissent : [[La Garde]] en ville, [[Les Sauvage
 
 ## Fausse épidémie
 
-Le mouvement religieux des [[Les Réfugiés|Réfugiés]], une [[Secte des Réfugiés|secte installée dans le camp]], simule une épidémie à l'aide de maquillage pour recruter des fidèles et obtenir des infrastructures sanitaires. [[Kathlyn]] fait partie des faux malades. La supercherie est découverte et le groupe demande à la ville d'envoyer une aide sanitaire : l'affaire de la [[Fausse épidémie|fausse épidémie]] est résolue.
+Le mouvement religieux des [[Les Réfugiés|Réfugiés]], une [[Église du Grand Ordonnateur|secte installée dans le camp]], simule une épidémie à l'aide de maquillage pour recruter des fidèles et obtenir des infrastructures sanitaires. [[Kathlyn]] fait partie des faux malades. La supercherie est découverte et le groupe demande à la ville d'envoyer une aide sanitaire : l'affaire de la [[Fausse épidémie|fausse épidémie]] est résolue.
 
 ## Affaire du navire
 

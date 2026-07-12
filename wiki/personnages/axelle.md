@@ -1,6 +1,6 @@
 ---
 resume: Épouse de l'Empereur, soupçonnée d'être Axxel sous une autre forme
-tags: [cosmologie, empire]
+tags: [pnj, cosmologie, empire]
 infobox:
   Rôle: Épouse de l'Empereur
   Apparence: Exceptionnellement belle selon ses statues

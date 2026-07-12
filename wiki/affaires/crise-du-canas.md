@@ -16,6 +16,14 @@ Le [[Canas]], un poison provoquant une dissociation du corps et de l'esprit, ét
 - [[Yannick]] est un enfant ou jeune réfugié originaire de [[Muscerie]], ville du nord détruite pendant la guerre. Il distribuait le Canas en ville pour attirer l'attention sur la situation des [[Les Réfugiés|Réfugiés]]. Les notes le décrivent comme un « [[Enfant poisson|enfant poisson]] », à l'apparence inhabituelle.
 - Le groupe a identifié l'affaire et trouvé un antidote au Canas. L'affaire de l'empoisonnement est considérée comme résolue.
 
+## Suspects toujours recherchés
+
+Depuis l'affaire de l'empoisonnement, trois suspects sont recherchés en ville ([[Session 21]]) :
+
+- [[Taladrel]] : un orc très vindicatif qui parle et crie tout le temps ; il brûlait des maisons en ville pour déloger des citoyens et faire de la place aux réfugiés, et {?: serait également lié aux empoisonnements au Canas}.
+- Un [[Ogre aux yeux violets|Ogre]] très gros, au sourire bizarre et inquiétant, aux dents pointues, aux yeux violets et aux bras anormalement longs.
+- Un [[Humain à l'œil de verre|humain]] grand et fin, à l'œil de verre et au nez cassé, habillé de haillons, qui serait en possession du [[Laissez-passer de Gerwin|laissez-passer volé à Gerwin]].
+
 ## Zones d'ombre
 
 - La résolution médicale ne règle pas nécessairement les causes politiques et sociales ayant conduit à l'action.
