@@ -13,6 +13,7 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 - Consulter : double-clic sur `wiki.html` (complet) ; partager au MJ/joueurs : envoyer `wiki_partage.html` (sans fiches `prive: true` ni blocs `%%...%%`). JAMAIS wiki.html.
 - Rebuild apres edition : `./publier.sh` depuis `Gaia2/` = build + copie vers `OneDrive/Gaia2/` (acces telephone). `python3 build_wiki.py` seul = build local sans publication.
 - TELEPHONE (en session) : app OneDrive -> dossier Gaia2 -> wiki.html -> ouvrir dans le navigateur. Marquer le fichier "Toujours conserver sur cet appareil" pour l'avoir hors connexion. Toujours relancer `./publier.sh` apres une mise a jour.
+- REMOTE : repo prive `github.com/Benam0u/Gaia2` (cree 2026-07-12). Commit + push apres chaque mise a jour (convention Horde). `public/index.html` = copie de wiki.html prete pour un hebergement statique (Cloudflare Pages envisage ; GitHub Pages ecarte : gratuit = repo public + URL devinable benam0u.github.io).
 - GARDE-FOU : un `%%` non ferme fait ECHOUER le build (fail-closed, rien n'est ecrit) - corriger la fiche indiquee puis relancer.
 - `scripts/extract_systeme.py` : NE PAS relancer sans raison, il ecrase les fiches systeme (voir son en-tete).
 
