@@ -172,6 +172,11 @@ class TestInfobox(unittest.TestCase):
         self.assertIn("HYPOTHESE", render_badges({"statut": "hypothese"}))
         self.assertEqual(render_badges({"statut": "confirme"}), "")
 
+    def test_badge_pj_pnj(self):
+        self.assertIn(">PJ<", render_badges({"tags": ["pj", "groupe"]}))
+        self.assertIn(">PNJ<", render_badges({"tags": ["pnj"]}))
+        self.assertEqual(render_badges({"tags": ["lieu"]}), "")
+
 class TestFicheTechnique(unittest.TestCase):
     def test_rendu(self):
         prof = json.loads((Path(__file__).resolve().parent / "fixtures" / "mini_profile.json").read_text())

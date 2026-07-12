@@ -593,8 +593,15 @@ def _int(v):
 
 
 def render_badges(meta):
-    """Badges de statut/etat. "" si confirme et sans etat."""
+    """Badges de statut/etat + PJ/PNJ (via tags). "" si confirme et sans etat."""
     out = []
+    tags = meta.get("tags") or []
+    if isinstance(tags, str):
+        tags = [tags]
+    if "pj" in tags:
+        out.append('<span class="st st-pj">PJ</span>')
+    elif "pnj" in tags:
+        out.append('<span class="st st-pnj">PNJ</span>')
     statut = meta.get("statut")
     if statut == "hypothese":
         out.append('<span class="st st-hyp">? HYPOTHESE</span>')
@@ -1119,6 +1126,7 @@ td.empty{color:var(--text-3);font-style:italic}
   border:1px solid var(--line-strong);margin-left:10px;vertical-align:middle}
 .st-hyp{color:var(--gold)}.st-frag{color:var(--text-3)}.st-encours{color:var(--gold)}
 .st-resolu{color:var(--green)}.st-ferme{color:var(--text-3)}
+.st-pj{color:var(--green)}.st-pnj{color:var(--text-3)}
 a.wl{color:var(--gold);text-decoration:none;border-bottom:1px solid rgba(212,168,90,.35)}
 a.wl:hover{border-bottom-color:var(--gold)}
 .deadlink{color:var(--rust);border-bottom:1px dotted var(--rust);cursor:help}
