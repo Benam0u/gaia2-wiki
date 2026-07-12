@@ -458,6 +458,8 @@ class TestRelations(unittest.TestCase):
             fleche = out.split('id="p-la-fleche"')[1].split("</section>")[0]
             self.assertIn("Relations :", fleche)           # bloc entrant cote cible
             self.assertIn("(Conseiller de)", fleche)
+            # pas de doublon : Neros dans Relations, PAS dans Mentionne dans
+            self.assertEqual(fleche.count('href="#neros"'), 1)
 
     def test_relations_source_privee_masquee_en_partage(self):
         with tempfile.TemporaryDirectory() as tmp:

@@ -956,12 +956,16 @@ def render_relations_in(slug, incoming, share, by_slug):
     return '<div class="relations-in">Relations : %s</div>' % ", ".join(items)
 
 
-def render_backlinks(slug, backlinks, share, by_slug):
+def render_backlinks(slug, backlinks, share, by_slug, rel_in=()):
+    """Mentionne dans : sources, MOINS celles deja affichees dans le bloc
+    Relations juste au-dessus (sinon chaque relation double le nom)."""
+    shown_rel = {src for src, _ in rel_in
+                 if src in by_slug and not (share and by_slug[src]["meta"].get("prive"))}
     srcs = sorted(backlinks.get(slug, ()))
     links = []
     for s in srcs:
         src = by_slug.get(s)
-        if not src:
+        if not src or s in shown_rel:
             continue
         if share and src["meta"].get("prive"):
             continue
@@ -994,7 +998,8 @@ def render_section(f, resolver, backlinks, share, profile, wiki_root, by_slug, r
         render_body(f, resolver, share, profile, wiki_root, report, ctx),
         render_relations_in(f["slug"], (ctx or {}).get("relations_in", {}),
                             share, by_slug),
-        render_backlinks(f["slug"], backlinks, share, by_slug))
+        render_backlinks(f["slug"], backlinks, share, by_slug,
+                         (ctx or {}).get("relations_in", {}).get(f["slug"], ())))
 
 
 def render_index(reldir, label, entity_fiches):

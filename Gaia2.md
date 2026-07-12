@@ -39,7 +39,7 @@ Conventions de dictee (optionnelles, sinon Claude choisit et le signale dans le 
 - "pas sur / je crois / peut-etre" -> marque hypothese (`statut:` ou `{?: ...}`).
 - "note perso / prive" -> bloc `%%...%%` (exclu du partage).
 - "a demander au MJ / a verifier" -> va dans `questions.md`.
-- Relations structurees ("X est chef de Y") -> frontmatter `relations:` (map indentee, valeurs entre guillemets : `Chef de: "[[La Vieille Garde]]"`). La fiche cible affiche automatiquement le bloc "Relations : X (Chef de)".
+- Relations structurees ("X est chef de Y") -> frontmatter `relations:` (map indentee, valeurs entre guillemets : `Chef de: "[[La Vieille Garde]]"`). La fiche cible affiche automatiquement le bloc "Relations : X (Chef de)" ; la source n'apparait alors plus en double dans "Mentionne dans". Limite (comme infobox:) : pas de ":" dans les libelles.
 
 Conventions editoriales (validees 2026-07-12) :
 - Le wiki = les connaissances et la memoire DE ZOGZORK (in-character). Les evenements vecus a la table mais dont ZogZork n'a pas ete temoin sont VOLONTAIREMENT exclus, meme si Benoit les connait (ex. la punition exacte du Dr Hakim). Les autres joueurs peuvent le feuilleter, pas s'en servir activement.
