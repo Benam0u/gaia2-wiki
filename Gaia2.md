@@ -36,6 +36,11 @@ Conventions de dictee (optionnelles, sinon Claude choisit et le signale dans le 
 - "note perso / prive" -> bloc `%%...%%` (exclu du partage).
 - "a demander au MJ / a verifier" -> va dans `questions.md`.
 
+Conventions editoriales (validees 2026-07-12) :
+- Le wiki = les connaissances et la memoire DE ZOGZORK (in-character). Les evenements vecus a la table mais dont ZogZork n'a pas ete temoin sont VOLONTAIREMENT exclus, meme si Benoit les connait (ex. la punition exacte du Dr Hakim). Les autres joueurs peuvent le feuilleter, pas s'en servir activement.
+- Benoit ecrit "Z" en dictant pour aller vite : JAMAIS cette abreviation dans les fiches, toujours ZogZork.
+- Verification post-integration : fournir aux agents verificateurs le texte VERBATIM de Benoit (une transcription condensee genere des faux positifs).
+
 Cas particuliers :
 - Level-up : re-exporter le profil depuis le createur de fiche -> remplacer `data/zogzork_profile.json` (Claude strippe l'avatar) -> rebuild. La fiche technique (layout PDF depuis 2026-07-11) se regenere seule.
 - Mode manuel toujours possible : editer les .md a la main puis `python3 build_wiki.py` ; demander a Claude une passe de coherence de temps en temps.
