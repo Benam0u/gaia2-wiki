@@ -49,6 +49,9 @@ Cas particuliers :
 
 ## Decisions cles
 
+- Sessions nommees PAR DATE depuis le 2026-07-13 : `sessions/session-AAAA-MM-JJ.md`, titre `# Session du JJ/MM/AAAA` (l'ex session-21 = Session du 10/07/2026, alias conserve).
+- Page Toile : graphe de connectivite des fiches (onglet dedie, filtres par type).
+
 - Single-file `wiki.html` + `wiki_partage.html`, design system exact de board.html (sombre chaud + or, Fraunces/Inter/JetBrains Mono), images dedupliquees en JPEG (1.4 MB par fichier).
 - Sources = un .md par fiche dans `wiki/`, wikilinks `[[...]]` (resolution titre H1 puis alias, insensible casse/accents), backlinks calcules, liens morts = moteur de croissance (listes sur l'accueil).
 - Confiance : confirme / hypothese / fragment ; etats d'affaires EN COURS / RESOLU / FERME ; `ne-pas-fusionner` affiche en avertissement.

@@ -140,6 +140,7 @@ Une seule page HTML, sections montrees/cachees par JS + hash routing (`#neros`, 
 - FICHE ENTITE : titre, badges, infobox a droite (champs frontmatter + portrait), corps, avertissement anti-fusion le cas echeant, backlinks en bas.
 - CHRONOLOGIE : periodes + sessions (section 9).
 - SYSTEME : index races (20, avec portraits), index classes (13, avec portraits et les 10 avantages de classe chacune), table competences (52), avantages generaux (15). Fiche ZogZork enrichie par le JSON (section 5).
+- TOILE (ajout 2026-07-13, ex-idee v2) : page graphe de connectivite - noeuds = fiches (couleur par type, taille = degre), aretes = wikilinks ; survol = voisins, clic = ouvre la fiche ; chips de filtrage par type (Sessions et Systeme off par defaut) ; canvas vanilla, zoom/pan souris et tactile.
 - RECHERCHE : overlay Ctrl+K (et bouton loupe), navigation clavier. Full-text depuis 2026-07-12 : insensible aux accents, multi-mots (ET logique), cherche dans titre + alias + resume + tags ET dans le corps des fiches (textContent du DOM), resultats classes titre > meta > corps. Pas d'index externe.
 
 ## 11. Style graphique
