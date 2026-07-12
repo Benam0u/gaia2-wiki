@@ -11,7 +11,8 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 ## Utilisation
 
 - Consulter : double-clic sur `wiki.html` (complet) ; partager au MJ/joueurs : envoyer `wiki_partage.html` (sans fiches `prive: true` ni blocs `%%...%%`). JAMAIS wiki.html.
-- Rebuild apres edition : `python3 build_wiki.py` depuis `Gaia2/` (0.15 s, rapport de coherence en console).
+- Rebuild apres edition : `./publier.sh` depuis `Gaia2/` = build + copie vers `OneDrive/Gaia2/` (acces telephone). `python3 build_wiki.py` seul = build local sans publication.
+- TELEPHONE (en session) : app OneDrive -> dossier Gaia2 -> wiki.html -> ouvrir dans le navigateur. Marquer le fichier "Toujours conserver sur cet appareil" pour l'avoir hors connexion. Toujours relancer `./publier.sh` apres une mise a jour.
 - GARDE-FOU : un `%%` non ferme fait ECHOUER le build (fail-closed, rien n'est ecrit) - corriger la fiche indiquee puis relancer.
 - `scripts/extract_systeme.py` : NE PAS relancer sans raison, il ecrase les fiches systeme (voir son en-tete).
 
