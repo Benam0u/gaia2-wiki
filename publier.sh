@@ -7,5 +7,12 @@ set -e
 cd "$(dirname "$0")"
 python3 build_wiki.py
 cp wiki.html index.html
-cp wiki.html wiki_partage.html "/mnt/c/Users/benoi/OneDrive/Gaia2-wiki/"
-echo "Publie : index.html (Pages au prochain push) + OneDrive/Gaia2-wiki/"
+# OneDrive = plan B hors-ligne OPTIONNEL : copie seulement si le dossier existe.
+# Supprime, il ne revient pas ; pour reactiver : mkdir "/mnt/c/Users/benoi/OneDrive/Gaia2-wiki"
+ONEDRIVE="/mnt/c/Users/benoi/OneDrive/Gaia2-wiki"
+if [ -d "$ONEDRIVE" ]; then
+  cp wiki.html wiki_partage.html "$ONEDRIVE/"
+  echo "Publie : index.html (Pages au prochain push) + OneDrive/Gaia2-wiki/"
+else
+  echo "Publie : index.html (Pages au prochain push) - OneDrive absent, copie sautee"
+fi
