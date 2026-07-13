@@ -488,6 +488,35 @@ class TestRelations(unittest.TestCase):
             self.assertNotIn("Informateur de", neros)
 
 
+class TestGuardPrive(unittest.TestCase):
+    SCRIPT = Path(__file__).resolve().parent.parent / "scripts" / "guard_prive.sh"
+
+    def _run(self, d):
+        return subprocess.run(["bash", str(self.SCRIPT), str(d)],
+                              capture_output=True, text=True)
+
+    def test_refuse_prive_true(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "a.md").write_text("---\nresume: x\nprive: true\n---\n\n# A\n",
+                                    encoding="utf-8")
+            r = self._run(d)
+            self.assertEqual(r.returncode, 1)
+            self.assertIn("a.md", r.stderr)
+            self.assertIn("PUBLIC", r.stderr)
+
+    def test_refuse_bloc_pourcent(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            d = Path(tmp)
+            (d / "b.md").write_text("---\nresume: x\n---\n\n# B\n\n%%secret%%\n",
+                                    encoding="utf-8")
+            self.assertEqual(self._run(d).returncode, 1)
+
+    def test_passe_sur_corpus_reel(self):
+        r = self._run(Path(__file__).resolve().parent.parent / "wiki")
+        self.assertEqual(r.returncode, 0, r.stderr)
+
+
 class TestDatesGit(unittest.TestCase):
     def test_git_dates_repo(self):
         from build_wiki import git_dates

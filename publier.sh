@@ -5,6 +5,8 @@
 # Le deploiement Pages part au commit+push (index.html est committe avec le reste).
 set -e
 cd "$(dirname "$0")"
+# Garde-fou : repo public => refus bloquant si du contenu prive existe (voir scripts/guard_prive.sh)
+scripts/guard_prive.sh wiki
 python3 build_wiki.py
 cp wiki.html index.html
 # OneDrive = plan B hors-ligne OPTIONNEL : copie seulement si le dossier existe.

@@ -16,7 +16,8 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 - Rebuild apres edition : `./publier.sh` = build + index.html (Pages) + copie OneDrive si le dossier existe. `python3 build_wiki.py` seul = build local sans publication. Le deploiement Pages part au commit+push.
 - TELEPHONE (en session) : https://benam0u.github.io/gaia2-wiki/ -> Ajouter a l'ecran d'accueil. Hors-ligne (OPTIONNEL) : le dossier OneDrive/Gaia2-wiki n'est qu'un plan B pour jouer sans reseau - publier.sh n'y copie que s'il existe ; supprimable sans consequence, recreable par mkdir.
 - REPO : `github.com/Benam0u/gaia2-wiki` (PUBLIC, assume - decision Benoit 2026-07-12) = TOUT le wiki : sources, docs, build, rendu, historique complet. Le nom `Gaia2` est reserve a l'editeur de fiches de personnage. L'ancien repo prive a ete renomme `gaia2-wiki-old-backup` (archive, supprimable a la main). Commit + push apres chaque mise a jour -> GitHub Pages redeploie index.html automatiquement.
-- GARDE-FOU : un `%%` non ferme fait ECHOUER le build (fail-closed, rien n'est ecrit) - corriger la fiche indiquee puis relancer.
+- GARDE-FOU build : un `%%` non ferme fait ECHOUER le build (fail-closed, rien n'est ecrit) - corriger la fiche indiquee puis relancer.
+- GARDE-FOU confidentialite (2026-07-13) : TANT QUE LE REPO EST PUBLIC, aucun contenu prive (`prive: true` ou bloc `%%...%%`) ne doit exister dans wiki/ - les sources et wiki.html complet y sont lisibles par quiconque devine l'URL. `publier.sh` (via `scripts/guard_prive.sh`) REFUSE la publication et explique. Le jour du vrai besoin : split repo prive (sources) + repo public (wiki_partage.html seul). NB : le garde-fou ne couvre pas un `git push` manuel sans passer par publier.sh.
 - `scripts/extract_systeme.py` : NE PAS relancer sans raison, il ecrase les fiches systeme (voir son en-tete).
 
 ## Alimentation - le process (valide 2026-07-11)
