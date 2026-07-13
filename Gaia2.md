@@ -13,7 +13,7 @@ Wiki personnel de la campagne JDR Gaia 2 (personnage ZogZork). Source de verite 
 ## Utilisation
 
 - Consulter : double-clic sur `wiki.html` (complet) ; partager au MJ/joueurs : envoyer `wiki_partage.html` (sans fiches `prive: true` ni blocs `%%...%%`). JAMAIS wiki.html.
-- Rebuild apres edition : `./publier.sh` = build + index.html (Pages) + copie vers `OneDrive/Gaia2-wiki/` (telephone hors-ligne). `python3 build_wiki.py` seul = build local sans publication. Le deploiement Pages part au commit+push.
+- Rebuild apres edition : `./publier.sh` = build + index.html (Pages) + copie OneDrive si le dossier existe. `python3 build_wiki.py` seul = build local sans publication. Le deploiement Pages part au commit+push.
 - TELEPHONE (en session) : https://benam0u.github.io/gaia2-wiki/ -> Ajouter a l'ecran d'accueil. Hors-ligne (OPTIONNEL) : le dossier OneDrive/Gaia2-wiki n'est qu'un plan B pour jouer sans reseau - publier.sh n'y copie que s'il existe ; supprimable sans consequence, recreable par mkdir.
 - REPO : `github.com/Benam0u/gaia2-wiki` (PUBLIC, assume - decision Benoit 2026-07-12) = TOUT le wiki : sources, docs, build, rendu, historique complet. Le nom `Gaia2` est reserve a l'editeur de fiches de personnage. L'ancien repo prive a ete renomme `gaia2-wiki-old-backup` (archive, supprimable a la main). Commit + push apres chaque mise a jour -> GitHub Pages redeploie index.html automatiquement.
 - GARDE-FOU : un `%%` non ferme fait ECHOUER le build (fail-closed, rien n'est ecrit) - corriger la fiche indiquee puis relancer.
@@ -70,6 +70,5 @@ Cas particuliers :
 
 ## Next
 
-1. Relecture du wiki par Benoit (verif visuelle du look incluse, + rendu mobile de la nav) ; corrections de memoire par dictee ou edition directe.
-2. Session 21 : premier tour du workflow post-session en mode dictee.
-3. Idees v2 notees dans la spec section 15 (hover-cards, graphe de relations, tri "recemment modifiees" par date git plutot que mtime).
+1. Session 22 : notes en vrac + photos -> integration en mode dictee (le process tourne).
+2. Backlog vide - la spec section 15 est integralement livree. Les nouvelles idees naitront de l'usage.
