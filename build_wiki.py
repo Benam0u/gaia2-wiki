@@ -1019,7 +1019,7 @@ def render_index(reldir, label, entity_fiches):
             render_badges(f["meta"]), html.escape(", ".join(tags)))
     if not body:
         body = '<tr><td colspan="4" class="empty">Aucune fiche.</td></tr>'
-    table = ('<div class="tablewrap"><table><thead><tr><th>Nom</th><th>Resume</th>'
+    table = ('<div class="tablewrap"><table class="idx"><thead><tr><th>Nom</th><th>Resume</th>'
              "<th>Statut</th><th>Tags</th></tr></thead><tbody>%s</tbody></table></div>") % body
     return '<section class="page" id="p-index-%s"><h1>%s</h1>%s</section>' % (
         reldir, html.escape(label), table)
@@ -1298,7 +1298,9 @@ td.empty{color:var(--text-3);font-style:italic}
   letter-spacing:.16em;color:var(--text-3);margin-top:8px}
 .infobox .v{color:var(--text-2)}
 .st{font-family:var(--mono);font-size:10px;letter-spacing:.14em;padding:2px 7px;
-  border:1px solid var(--line-strong);margin-left:10px;vertical-align:middle}
+  border:1px solid var(--line-strong);margin-left:10px;vertical-align:middle;
+  white-space:nowrap;display:inline-block}
+td .st{margin:0 8px 4px 0}
 .st-hyp{color:var(--gold)}.st-frag{color:var(--text-3)}.st-encours{color:var(--gold)}
 .st-resolu{color:var(--green)}.st-ferme{color:var(--text-3)}
 .st-pj{color:var(--green)}.st-pnj{color:var(--text-3)}
@@ -1387,6 +1389,8 @@ div.prive{padding:10px 14px;margin:12px 0}
   .infobox{float:none;width:auto;margin:0 0 18px}
   .ft-id,.ft-main,.ft-combat,.ft-duo{grid-template-columns:1fr}
   .toile-wrap{height:62vh}
+  table.idx th:nth-child(4),table.idx td:nth-child(4){display:none}
+  th,td{padding:11px 8px}
 }
 </style>
 </head>

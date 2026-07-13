@@ -251,6 +251,12 @@ class TestAssembly(unittest.TestCase):
         # dedupliquees : un bloc par (famille, subset), pas par graisse
         self.assertLessEqual(self.html.count("data:font/woff2"), 6)
 
+    def test_tables_index_mobile(self):
+        # badges insecables + classe idx (colonne Tags masquable sur mobile)
+        self.assertIn("white-space:nowrap", self.html.split(".st{")[1].split("}")[0])
+        self.assertIn('<table class="idx">', self.html)
+        self.assertIn("table.idx th:nth-child(4)", self.html)
+
     def test_recherche_fulltext(self):
         # Recherche insensible aux accents + indexation du corps des fiches.
         self.assertIn("function norm(", self.html)
