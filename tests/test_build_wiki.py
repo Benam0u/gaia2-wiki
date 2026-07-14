@@ -577,6 +577,14 @@ class TestToile(unittest.TestCase):
         self.assertEqual(g["nodes"][0]["g"], "personnages")
         self.assertIn("personnages", g["colors"])
 
+    def test_toile_tactile(self):
+        fiches = load_fiches(FIX)
+        resolver, conflicts = build_resolver(fiches)
+        out, _ = build_html(fiches, resolver, conflicts, FIX, share=False, profile=None)
+        self.assertIn("matchMedia('(hover: none)')", out)   # mode deux-taps mobile
+        self.assertIn("e.touches.length===2", out)          # pincement deux doigts
+        self.assertIn("Sur mobile : un tap", out)           # astuce visible
+
     def test_toile_dans_la_page(self):
         fiches = load_fiches(FIX)
         resolver, conflicts = build_resolver(fiches)

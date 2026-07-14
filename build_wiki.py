@@ -1198,7 +1198,7 @@ def render_toile():
     return ('<section class="page" id="p-toile"><h1>Toile</h1>'
             '<p class="toile-hint">Chaque n\u0153ud est une fiche, chaque fil un lien entre fiches. '
             'Cliquer un n\u0153ud = ouvrir la fiche. Molette ou boutons = zoom, glisser = d\u00e9placer, '
-            'survoler = voisins.</p>'
+            'survoler = voisins. Sur mobile : un tap = voisins, un second tap = ouvrir, pincer = zoom.</p>'
             '<div class="toile-chips">%s</div>'
             '<div class="toile-wrap"><canvas id="toile"></canvas>'
             '<div class="toile-zoom"><button id="tz-in">+</button>'
@@ -1611,28 +1611,51 @@ function tlPick(mx,my){
 function tlInit(){
   if(TL.ready)return;TL.ready=true;
   tlSize();tlBuild();tlFit();tlDraw();
-  var cv=tlCanvas(),px=0,py=0,moved=false;
+  var cv=tlCanvas(),px=0,py=0,moved=false,pinch=0,pmid=null;
+  var TOUCHUI=window.matchMedia&&matchMedia('(hover: none)').matches;
   function xy(ev){var r=cv.getBoundingClientRect(),t=ev.touches?ev.touches[0]:ev;
     return [t.clientX-r.left,t.clientY-r.top];}
+  function tpos(t){var r=cv.getBoundingClientRect();return [t.clientX-r.left,t.clientY-r.top];}
+  function dist2(e){var a=tpos(e.touches[0]),b=tpos(e.touches[1]);
+    return Math.hypot(a[0]-b[0],a[1]-b[1]);}
+  function mid2(e){var a=tpos(e.touches[0]),b=tpos(e.touches[1]);
+    return [(a[0]+b[0])/2,(a[1]+b[1])/2];}
+  function zoomTo(z,m){
+    z=Math.max(0.1,Math.min(z,4));
+    TL.ox=m[0]-TL.w/2-(m[0]-TL.w/2-TL.ox)*(z/TL.zoom);
+    TL.oy=m[1]-TL.h/2-(m[1]-TL.h/2-TL.oy)*(z/TL.zoom);
+    TL.zoom=z;}
   cv.addEventListener('mousedown',function(e){TL.drag=true;moved=false;px=e.clientX;py=e.clientY;});
   window.addEventListener('mouseup',function(){TL.drag=false;});
   cv.addEventListener('mousemove',function(e){
     if(TL.drag){TL.ox+=e.clientX-px;TL.oy+=e.clientY-py;px=e.clientX;py=e.clientY;moved=true;tlDraw();return;}
+    if(TOUCHUI)return; /* pas de survol tactile : la selection passe par le tap */
     var m=xy(e),h=tlPick(m[0],m[1]);
     if(h!==TL.hover){TL.hover=h;cv.style.cursor=h>=0?'pointer':'grab';tlDraw();}});
   cv.addEventListener('click',function(e){
     if(moved)return;var m=xy(e),h=tlPick(m[0],m[1]);
-    if(h>=0)location.hash=TL.nodes[h].id;});
+    if(TOUCHUI){
+      /* mobile : 1er tap = voisins, 2e tap sur le meme noeud = fiche, tap ailleurs = deselection */
+      if(h<0){if(TL.hover>=0){TL.hover=-1;tlDraw();}return;}
+      if(h!==TL.hover){TL.hover=h;tlDraw();return;}
+      location.hash=TL.nodes[h].id;
+    }else if(h>=0){location.hash=TL.nodes[h].id;}});
   cv.addEventListener('wheel',function(e){
     e.preventDefault();
-    var m=xy(e),f=e.deltaY<0?1.18:0.85,z=Math.max(0.1,Math.min(TL.zoom*f,4));
-    TL.ox=m[0]-TL.w/2-(m[0]-TL.w/2-TL.ox)*(z/TL.zoom);
-    TL.oy=m[1]-TL.h/2-(m[1]-TL.h/2-TL.oy)*(z/TL.zoom);
-    TL.zoom=z;tlDraw();},{passive:false});
-  cv.addEventListener('touchstart',function(e){var m=xy(e);px=m[0];py=m[1];},{passive:true});
+    zoomTo(TL.zoom*(e.deltaY<0?1.18:0.85),xy(e));tlDraw();},{passive:false});
+  cv.addEventListener('touchstart',function(e){
+    if(e.touches.length===2){pinch=dist2(e);pmid=mid2(e);}
+    else{pinch=0;var m=xy(e);px=m[0];py=m[1];}},{passive:true});
   cv.addEventListener('touchmove',function(e){
-    e.preventDefault();var m=xy(e);TL.ox+=m[0]-px;TL.oy+=m[1]-py;px=m[0];py=m[1];tlDraw();},{passive:false});
-  function tlReanchor(e){if(e.touches.length){var m=xy(e);px=m[0];py=m[1];}}
+    e.preventDefault();
+    if(e.touches.length===2){
+      var d=dist2(e),m=mid2(e);
+      if(pinch>0)zoomTo(TL.zoom*d/pinch,m);
+      if(pmid){TL.ox+=m[0]-pmid[0];TL.oy+=m[1]-pmid[1];}
+      pinch=d;pmid=m;tlDraw();return;}
+    pinch=0;
+    var m=xy(e);TL.ox+=m[0]-px;TL.oy+=m[1]-py;px=m[0];py=m[1];tlDraw();},{passive:false});
+  function tlReanchor(e){pinch=0;pmid=null;if(e.touches.length){var m=xy(e);px=m[0];py=m[1];}}
   cv.addEventListener('touchend',tlReanchor,{passive:true});
   cv.addEventListener('touchcancel',tlReanchor,{passive:true});
   document.getElementById('tz-in').addEventListener('click',function(){TL.zoom=Math.min(TL.zoom*1.3,4);tlDraw();});
