@@ -21,7 +21,7 @@ Le groupe de [[ZogZork]] est d'abord envoyé enquêter sur des [[Créatures noir
 
 ## La Prison des Mondes
 
-Sur le plan de la prison, différent du monde de Gaïa 2, le groupe rencontre [[Pandore]], le gardien, qui exige douze clés : douze colonnes, douze créatures incarnant des émotions négatives, douze dilemmes à résoudre - avec objets magiques et bonus à la clé ([[ZogZork]] y gagne le [[Brassard de Cruauté]]). Les clés réunies, la voie s'ouvre sur un labyrinthe d'épreuves où chacun rencontre son double. Le duo des deux ZogZork fonce tout droit et trouve le portail de l'âme de la [[Mère des Monstres]] : long combat, finisher de ZogZork. Les héros se réveillent à [[Simpol]] dans des cercueils, grassement récompensés, et découvrent le nouveau fonctionnement de la ville (nouveaux métiers, Empire s'immisçant dans l'administration).
+Sur le plan de la prison, différent du monde de Gaïa 2, le groupe rencontre [[Pandore]], le gardien, qui exige douze clés : douze colonnes, douze créatures incarnant des émotions négatives, douze dilemmes à résoudre - avec objets magiques et bonus à la clé ([[ZogZork]] y gagne le [[Brassard de Cruauté]]). Les clés réunies, la voie s'ouvre sur un labyrinthe d'épreuves où chacun rencontre son double. Le duo des deux ZogZork fonce tout droit et trouve le portail de l'âme de la [[Mère des Monstres]] : long combat, finisher de ZogZork. Les héros se réveillent plus tard à [[Simpol]], dans des cercueils - la guerre du monde physique s'est achevée entre-temps (voir les sections suivantes). Grassement récompensés, ils découvrent le nouveau fonctionnement de la ville : nouveaux métiers, Empire s'immisçant dans l'administration.
 
 ## Victoire et destructions
 

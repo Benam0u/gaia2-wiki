@@ -33,7 +33,7 @@ Déchiré mais résolu, ZogZork a rejoint une ville humaine cosmopolite, où il 
 
 ## Parcours dans la campagne
 
-Vétéran de la quête de la [[Prison des Mondes]] - remise par le [[Dr Van Richten]] et épaulée par [[Neros]] - où le groupe a détruit l'âme de la [[Mère des Monstres]], ZogZork vit aujourd'hui à [[Simpol]], ville fermée sous contrôle de l'[[Empire PaxAlpha]]. C'est là-bas qu'il a gagné le [[Brassard de Cruauté]] au défi de [[Pandore]], adoré rencontrer son propre double dans le labyrinthe, et achevé l'âme de la Mère des Monstres d'un finisher.
+Vétéran de la quête de la [[Prison des Mondes]] - remise par le [[Dr Van Richten]] et épaulée par [[Neros]] - où le groupe a détruit l'âme de la [[Mère des Monstres]], ZogZork vit aujourd'hui à [[Simpol]], ville fermée sous contrôle de l'[[Empire PaxAlpha]]. C'est au cours de cette quête qu'il a gagné le [[Brassard de Cruauté]] au défi de [[Pandore]], adoré rencontrer son propre double dans le labyrinthe, et achevé l'âme de la Mère des Monstres d'un finisher.
 
 Son engagement politique le plus clair : il a choisi d'aider [[Les Sauvages]] (avec [[Petit Panda]], il est le pont du groupe vers ce mouvement, comme [[Bill]] l'est vers [[La Vieille Garde]] et [[Sidonie]] vers [[Les Réfugiés]]).
 

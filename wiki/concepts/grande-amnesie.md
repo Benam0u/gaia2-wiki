@@ -3,6 +3,7 @@ resume: Confusion qui a frappé le groupe au retour de Phrense - mémoire arrêt
 tags: [mystere, memoire]
 alias: [Amnésie du groupe]
 decouverte: Le comté de Phrense
+ne-pas-fusionner: [Les gardes ensorcelés, Centre de recherche de Phrense]
 ---
 
 # Grande amnésie

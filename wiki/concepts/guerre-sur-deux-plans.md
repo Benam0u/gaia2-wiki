@@ -12,7 +12,7 @@ Principe qui a structuré la guerre contre la [[Mère des Monstres]] : la victoi
 - Le choix du front a été offert au groupe par le [[Dr Van Richten]], au débrief de l'enquête sur les [[Créatures noires|créatures noires]] : combattre le corps qui ravageait l'Empire, ou l'âme pour affaiblir le corps. Le groupe a choisi l'âme.
 - La [[Mère des Monstres]] possédait un corps physique, combattu par les forces de l'[[Empire PaxAlpha|Empire]] dans le monde physique.
 - Son âme devait être détruite séparément afin d'obtenir une victoire définitive.
-- [[Neros]] a aidé le groupe de [[ZogZork]] à accéder à la [[Prison des Mondes]], où il a été envoyé détruire l'âme pendant que l'Empire affrontait le corps.
+- [[Neros]] a épaulé le groupe de [[ZogZork]] dans la quête de la [[Prison des Mondes]], où l'âme a été détruite pendant que l'Empire affrontait le corps.
 - La mission a réussi : la Mère des Monstres est considérée comme vaincue.
 
 ## Zones d'ombre

@@ -1,10 +1,10 @@
 ---
-resume: Cité elfique hors de l'Empire, théâtre du fiasco de l'idylle d'Artor ; en grande partie brûlée par le groupe
+resume: Cité elfique hors de l'Empire, théâtre du fiasco de l'idylle d'Artor ; cramée par le groupe
 tags: [hors-empire, elfes]
 decouverte: L'idylle d'Artor
 infobox:
   Souverain: "[[Roi des Elfes du Vent]]"
-  État: En grande partie brûlée par le groupe
+  État: Cramée par le groupe
 ---
 
 # Cité des Elfes du Vent
