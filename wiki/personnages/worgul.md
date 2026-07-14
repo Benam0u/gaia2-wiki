@@ -25,6 +25,8 @@ Worgul est le « best bro » de [[M. LeMaire]] et le gardien des clés de [[Simp
 - C'est un personnage joueur : il faisait partie de l'expédition qui a détruit l'âme de la [[Mère des Monstres]] dans la [[Prison des Mondes]], avec le groupe.
 - La [[Mairie de Simpol|mairie]] lui a confié l'enquête sur les [[Enlèvements à Simpol|enlèvements]] : il pouvait assembler l'équipe de son choix, mais le maire lui a fortement suggéré les aventuriers de la Prison des Mondes.
 - Il a puni le [[Dr Hakim]] pour avoir drogué [[Sidonie]] et une témoin pendant l'enquête.
+- C'est lui qui avait convoqué le groupe en secret, par portail, dans la pièce sans porte ni fenêtre où attendait [[Artor]] - le fils secret de son « best bro ».
+- À la [[Cité des Elfes du Vent]], il s'est retrouvé avec [[ZogZork]] et [[Sidonie]] en audience devant le [[Roi des Elfes du Vent|roi]]... qu'ils ont fini par kidnapper avant de fuir par un de ses portails.
 
 ## Relations
 

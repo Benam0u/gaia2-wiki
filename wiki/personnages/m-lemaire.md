@@ -18,10 +18,13 @@ M. LeMaire est le dirigeant historique de [[Simpol]] et l'architecte de son expa
 - Les bâtiments de la [[Mairie de Simpol|mairie]] encerclent ou occupent environ 60 % de la ville, donnant à l'administration municipale une présence physique écrasante.
 - Des statues de M. LeMaire ont été installées à la place ou au détriment de celles de l'[[Empereur de PaxAlpha]], ce qui a été interprété comme un défi à l'autorité impériale.
 - L'armée impériale est arrivée pour réaffirmer l'autorité de PaxAlpha : son autorité est désormais concurrencée ou surveillée par l'Empire.
+- Il a un fils, [[Artor]], dont l'existence était tenue top secrète - et qu'il a renié après l'affaire de la [[Cité des Elfes du Vent|cité des Elfes du Vent]] : « qu'il parte vivre avec elle, je ne veux plus jamais en entendre parler ».
+- Pas trop revanchard, il a ensuite envoyé le groupe enquêter au [[Comté de Phrense]] sur de possibles traîtres à l'Empire.
 - Il a donné un sobriquet à chacun des trois mouvements contestataires ([[Session 21]]) : [[La Vieille Garde]] = "les Gougnafiers", [[Les Sauvages]] = "les gueux", [[Les Réfugiés]] = "les connards".
 
 ## Relations
 
+- [[Artor]] : son fils secret, renié.
 - [[Worgul]] : son "best bro" et gardien des clés de la ville.
 - [[Neros]] : archimage à son service.
 - [[Dr Van Richten]] : placé par l'Empire dans une position de pouvoir comparable à la sienne, voire temporairement à sa place.

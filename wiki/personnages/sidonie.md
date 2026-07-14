@@ -16,6 +16,7 @@ Sidonie est un membre du groupe de [[ZogZork]] : une [[Mits des Lutins|Mits des 
 
 - Compétences scientifiques et médicales.
 - Alliée des [[Les Réfugiés|Réfugiés]] : elle est le pont naturel du groupe avec les [[Camps des Réfugiés|camps]].
+- À la [[Cité des Elfes du Vent]] (idylle d'[[Artor]]), elle s'est retrouvée avec [[ZogZork]] et [[Worgul]] en audience devant le [[Roi des Elfes du Vent|roi]], accusée des exploits de ses compagnons - avant le kidnapping du roi et la fuite par portail.
 - À l'anniversaire de [[Worgul]] ([[Session 21]]), elle lui a offert un parchemin d'entrave, qu'il a essayé d'assimiler aux runes de sa hache - puis testé sur [[ZogZork]].
 - Pendant l'enquête sur les [[Enlèvements à Simpol|enlèvements]], elle a été droguée par le [[Dr Hakim]] (pour « détendre l'atmosphère et délier les langues », selon lui) : retrouvée complètement défoncée - ébêtement, tristesse, sérieux administratif effrayant, puis coma. [[ZogZork]] l'a portée sur son épaule le temps qu'elle retrouve ses esprits.
 

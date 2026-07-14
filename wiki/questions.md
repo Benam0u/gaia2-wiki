@@ -23,6 +23,10 @@ tags: [questions]
 - Où sont passés [[André]] et [[Denis]], les piliers de bar disparus ?
 - Quelle punition [[Worgul]] a-t-il infligée au [[Dr Hakim]] ? La témoin droguée aura-t-elle des conséquences sur l'enquête ?
 - Qui ou quoi est le « Grand Ordonnateur » de l'[[Église du Grand Ordonnateur]] ?
+- D'où vient la [[Grande amnésie|grande amnésie]] du groupe, et que contiennent les deux mois manquants ?
+- Qui a attaqué le [[Centre de recherche de Phrense|centre de Phrense]] de l'intérieur ? Les œufs de la [[Création végétale de Phrense|création végétale]] ont-ils tous été détruits ?
+- Le [[Roi des Elfes du Vent]] cherchera-t-il vengeance (kidnapping + cité cramée) ?
+- Que sont devenues les [[Créatures noires|créatures noires]] des campagnes ?
 
 ## A surveiller a la prochaine partie
 

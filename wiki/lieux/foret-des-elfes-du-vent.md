@@ -16,4 +16,4 @@ Forêt située hors de l'[[Empire PaxAlpha|Empire]], destination supposée du pa
 
 ## Zones d'ombre
 
-- Les Elfes du Vent eux-mêmes ne sont pas décrits dans les notes.
+- Le lien géographique avec la [[Cité des Elfes du Vent]] (visitée - et en partie cramée - par le groupe lors de l'idylle d'[[Artor]]) n'est pas établi : même peuple, lieux possiblement distincts.

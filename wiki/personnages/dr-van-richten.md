@@ -13,6 +13,7 @@ Le Dr Van Richten a été placé par l'[[Empire PaxAlpha|Empire]] dans une posit
 
 ## Ce qu'on sait
 
+- Bien avant de devenir l'autorité impériale de Simpol, c'est LUI qui a remis au groupe la quête de la [[Prison des Mondes]] : au débrief de leur enquête sur les [[Créatures noires|créatures noires]] des campagnes, il a exposé la gravité de la situation et offert le choix entre combattre le corps de la [[Mère des Monstres]] ou son âme.
 - Il a volé le [[Carnet de recherches de Neros|carnet de recherches]] de [[Neros]] afin de transmettre à l'Empire ses travaux sur les [[Baies de loyauté|baies]] (voir [[Vol des recherches de Neros]]).
 - Le groupe l'a confronté en présence de Neros ; Neros a récupéré ses recherches. L'affaire est RÉSOLUE.
 - La confrontation autour du carnet révèle une lutte d'influence entre l'administration municipale, les serviteurs de M. LeMaire et les autorités impériales.
