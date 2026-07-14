@@ -47,4 +47,4 @@ Dossiers distincts, à ne pas fusionner sans élément explicite en séance :
 - [[Canas]] : poison ogre causant une dissociation corps/esprit ; affaire résolue avec antidote.
 - [[Baies de loyauté|Baies de Neros]] : recherches sur la loyauté des soldats impériaux ; carnet récupéré.
 - [[Réseau de contrebande|Drogues de contrebande]] : produits potentiellement transportés par le [[Passage d'Ambroise|passage d'Ambroise]] ; nature non établie.
-- [[Grande amnésie]] : son origine n'est PAS établie - ni le [[Centre de recherche de Phrense|centre de Phrense]] et son poison, ni l'[[Les gardes ensorcelés|effacement de mémoire des gardes]] ne sont confirmés comme cause.
+- [[Grande amnésie]] : son origine n'est PAS établie - ni le [[Centre de recherche de Phrense|centre de Phrense]] et son poison, ni l'[[Les gardes ensorcelés|effacement de mémoire des gardes]] ne sont confirmés comme cause. Et les phénomènes diffèrent : l'amnésie a frappé tout le monde sans distinction, l'effacement des gardes cible des individus, environ deux mois après.

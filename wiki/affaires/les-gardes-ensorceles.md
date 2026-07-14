@@ -15,6 +15,7 @@ Enquête secrète menée avec [[Les Sauvages]], née de l'interrogatoire du [[Ha
 - Cela facilite grandement le processus de recrutement des gardes.
 - {?: Les gens « en attente du traitement » seraient stockés dans la [[Prison de Simpol]].}
 - Les druides cherchent à inverser le processus pour libérer les gens enrôlés contre leur gré et rétablir leur mémoire et leur personnalité.
+- À distinguer de la [[Grande amnésie]] : celle-ci a touché absolument tout le monde sans distinction, tandis que cet effacement est ciblé sur des individus, environ deux mois après elle - aucun lien établi, ne pas fusionner sans preuve.
 - Mission confiée à [[ZogZork]] : trouver un garde fraîchement recruté. D'après les notes, « assommer est un échec » : le simple assommage ne règle rien. ZogZork a donc assommé et enlevé un garde isolé, l'a ligoté à un arbre aux abords de la forêt pour l'interroger : impassible et complètement dévoué à l'Empire. Sans moyen de le libérer sans risquer de le tuer, ZogZork l'a amené au camp des druides.
 - Diagnostic druidique : {?: il s'agirait d'une forme de possession}. Les druides devaient « tenter un truc » dans la nuit.
 
