@@ -69,7 +69,7 @@ Le [[Dr Van Richten]] vole le [[Carnet de recherches de Neros|carnet de Neros]] 
 
 ## Passage d'Ambroise
 
-Le groupe découvre un conduit d'aération anormalement long dans la [[Taverne Sauna et Bains d'Ambroise|taverne d'Ambroise]], débouchant dans une forêt dense, probablement via un portail {?: vers la Forêt des Elfes du Vent}, avec un possible lien avec un [[Réseau de contrebande|trafic de drogues]]. Un [[Enquêteur du sauna|enquêteur infiltré]] jouant un double jeu avec les contrebandiers y est identifié, arrêté et interrogé. Puis la garde impériale perquisitionne la taverne, la ferme, et le [[Passage d'Ambroise|passage]] est condamné.
+Le groupe découvre un conduit d'aération anormalement long dans la [[Taverne Sauna et Bains d'Ambroise|taverne d'Ambroise]], débouchant dans une forêt dense, probablement via un portail {?: vers la Forêt des Elfes du Vent}, avec un possible lien avec un [[Réseau de contrebande|trafic de drogues]]. [[Casper]], employé corion de la taverne, bouche le conduit d'un mur en bois puis devient suspect et prend la fuite, traqué par des unités spéciales. Un [[Enquêteur du sauna|enquêteur infiltré]] jouant un double jeu avec les contrebandiers y est identifié, arrêté et interrogé. Puis la garde impériale perquisitionne la taverne, la ferme, et le [[Passage d'Ambroise|passage]] est condamné.
 
 ## Affaire La Flèche
 

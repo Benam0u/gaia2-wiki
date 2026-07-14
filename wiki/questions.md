@@ -17,7 +17,8 @@ tags: [questions]
 - Quelles conséquences le vol du [[Carnet de recherches de Neros|carnet de Neros]] aura-t-il sur [[Dr Van Richten|Van Richten]] et l'[[Empire PaxAlpha|Empire]] ?
 - Le [[Réseau de contrebande|réseau de contrebande]] lié à [[Ambroise]] existe-t-il encore ailleurs ?
 - Gretel et [[Kretel]] sont-ils deux personnes distinctes ou une confusion de notes ?
-- Quel est le contexte exact de [[Tel]], [[Knitt]], [[Casper]], [[Mick]], [[Corien]] et [[Weed]] ?
+- Quel est le contexte exact de [[Tel]], [[Knitt]] (vus à Simpol, localisation inconnue), [[Mick]] et [[Weed]] ? (« Corien » s'est avéré être la race de [[Casper]], désormais identifié.)
+- Où se cache [[Casper]] ? Les unités spéciales de l'armée le trouveront-elles ?
 - Qui est derrière les [[Enlèvements à Simpol|enlèvements]] ? L'orc évoqué par les témoins est-il vraiment [[Taladrel]] ?
 - Qui ou quoi « possède » les [[Les gardes ensorcelés|gardes ensorcelés]] ? La tentative nocturne des druides sur le garde capturé a-t-elle fonctionné ?
 - Où sont passés [[André]] et [[Denis]], les piliers de bar disparus ?

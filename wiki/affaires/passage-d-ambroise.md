@@ -18,6 +18,7 @@ Le groupe a découvert un passage mystérieux dans les conduits d'aération de l
 - Un homme aperçu dans les bains semblait lié aux contrebandiers. Il s'est présenté ou révélé comme [[Enquêteur du sauna|enquêteur infiltré]], se faisant passer pour leur allié et recevant un paiement pour les aider, affirmant jouer un double jeu afin de remonter le réseau. Il a été arrêté et interrogé par les autorités impériales ; son degré réel de corruption ou de loyauté reste ambigu.
 - La garde impériale a perquisitionné la taverne ; l'établissement a été fermé et le passage secret condamné. Le dossier local est fermé.
 
+- [[Casper]], employé corion de la taverne, très méfiant et peu coopératif : informé de la trouvaille du conduit, il a voulu s'en occuper et l'a bouché d'un mur en bois. Quand la garde impériale est intervenue et que le groupe lui a montré ce mur - solide mais destructible -, Casper est devenu suspect et s'est enfui ; l'armée a dépêché des unités spéciales pour le traquer.
 - Mise à jour [[Session 21]] : après un interrogatoire musclé par la garde impériale, [[Ambroise]] a été relaxée et libérée de tout soupçon ; sa [[Taverne Sauna et Bains d'Ambroise|taverne]] lui a été restituée et a réouvert. Le passage, lui, reste condamné.
 
 ## Zones d'ombre

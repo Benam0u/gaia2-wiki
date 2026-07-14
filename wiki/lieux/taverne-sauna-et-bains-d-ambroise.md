@@ -25,6 +25,10 @@ infobox:
 - {?: Le passage pourrait mener à la [[Forêt des Elfes du Vent]], hors de l'Empire.}
 - {?: Des drogues ou marchandises de [[Contrebande|contrebande]] pourraient avoir été acheminées par ce passage.}
 
+### Casper, l'employé en fuite
+
+[[Casper]], employé [[Corion|corion]] de la taverne (les Corions nagent dans le sol - pratique parmi les canalisations), a bouché d'un mur en bois le conduit menant au portail, avant de devenir suspect et de prendre la fuite, traqué par des unités spéciales de l'armée.
+
 ### L'homme suspect du sauna
 
 Un homme aperçu dans les bains semblait lié aux contrebandiers. Il s'est présenté ou révélé comme [[Enquêteur du sauna|enquêteur infiltré]], se faisant passer pour leur allié et recevant un paiement pour les aider, affirmant jouer un double jeu afin de remonter le [[Réseau de contrebande|réseau]]. Il a été arrêté et interrogé par les autorités impériales. Son degré réel de corruption ou de loyauté reste ambigu.
