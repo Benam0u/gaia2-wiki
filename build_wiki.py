@@ -194,7 +194,8 @@ def inline(text, resolver=None, ctx=None):
     text = re.sub(r"(?<![\w\\])_([^_]+)_(?![\w])", r"<em>\1</em>", text)
     text = re.sub(
         r"\{\?:\s*([^}]+)\}",
-        r'<span class="hyp"><span class="hyp-b">?</span> \1</span>',
+        r'<span class="hyp" title="Hypothèse : non confirmé en séance">'
+        r'<span class="hyp-b">?</span> \1</span>',
         text,
     )
 
@@ -1083,8 +1084,19 @@ def render_accueil(entity_fiches, by_slug, resolver, dead, ctx=None):
                 f["slug"], html.escape(f["title"])))
         right.append("</ul>")
 
+    legende = (
+        '<div class="legende">L\u00e9gende : '
+        '<span class="hyp"><span class="hyp-b">?</span> passage hypoth\u00e9tique</span> &middot; '
+        '<span class="st st-hyp">? HYPOTHESE</span> fiche non confirm\u00e9e &middot; '
+        '<span class="st st-frag">~ FRAGMENT</span> note brute peu contextualis\u00e9e &middot; '
+        '<span class="st st-encours">EN COURS</span><span class="st st-resolu">RESOLU</span>'
+        '<span class="st st-ferme">FERME</span> \u00e9tat des affaires &middot; '
+        '<span class="st st-pj">PJ</span><span class="st st-pnj">PNJ</span> personnage joueur / non joueur &middot; '
+        '<span class="deadlink">lien rouille</span> fiche \u00e0 cr\u00e9er &middot; '
+        '<span class="new-dot"></span> nouveau depuis la derni\u00e8re session</div>')
     return ('<section class="page" id="p-accueil"><h1>Archives de ZogZork</h1>'
-            '<div class="home-cols"><div>%s</div><div>%s</div></div></section>') % (
+            '<div class="home-cols"><div>%s</div><div>%s</div></div>' + legende
+            + "</section>") % (
         "".join(left), "".join(right))
 
 
@@ -1343,6 +1355,10 @@ div.prive{padding:10px 14px;margin:12px 0}
 .hovercard .hc-t{font-family:var(--serif);font-size:16px;color:var(--text)}
 .hovercard .hc-r{color:var(--text-2);margin-top:4px}
 .new-dot{display:inline-block;width:7px;height:7px;background:var(--gold);margin-right:8px;vertical-align:middle}
+.legende{clear:both;margin-top:44px;padding-top:14px;border-top:1px solid var(--line);
+  font-family:var(--mono);font-size:11px;color:var(--text-3);line-height:2.4}
+.legende .st{margin:0 6px 0 0}
+.legende .new-dot{margin-right:6px}
 .toile-chips{display:flex;flex-wrap:wrap;gap:8px;margin:0 0 12px}
 .tchip{font-family:var(--mono);font-size:10px;letter-spacing:.14em;text-transform:uppercase;
   padding:5px 10px;background:transparent;border:1px solid var(--line-strong);color:var(--text-2);cursor:pointer}

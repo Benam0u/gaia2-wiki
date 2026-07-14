@@ -215,6 +215,12 @@ class TestAssembly(unittest.TestCase):
         self.assertIn("Fiches a creer", self.html)
         self.assertIn("Kretel", self.html)             # lien mort liste
 
+    def test_legende_accueil(self):
+        acc = self.html.split('id="p-accueil"')[1].split("</section>")[0]
+        self.assertIn("Légende", acc)
+        self.assertIn("passage hypothétique", acc)
+        self.assertIn("fiche à créer", acc)
+
     def test_recherche_data(self):
         neros = self.html.split('id="p-neros"')[1].split("</section>")[0]
         self.assertIn("data-alias", neros)
